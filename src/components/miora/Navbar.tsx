@@ -12,10 +12,10 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { id: "challenge", label: "Мәселе", href: "#challenge" },
   { id: "reveal", label: "Технология", href: "#reveal" },
-  { id: "cascade", label: "4-Gate Каскад", href: "#cascade" },
-  { id: "human", label: "Клиникалық зерттеу", href: "#human" },
-  { id: "results", label: "Нәтижелер", href: "#results" },
-  { id: "research", label: "Ғылым", href: "#research" },
+  { id: "cortex", label: "3D Cortex", href: "#cortex" },
+  { id: "cascade", label: "4 Шлюз", href: "#cascade" },
+  { id: "demo", label: "Симулятор", href: "#demo" },
+  { id: "specs", label: "Спецификация", href: "#specs" },
 ];
 
 export default function Navbar() {

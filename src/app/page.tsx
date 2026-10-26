@@ -2,10 +2,10 @@ import Navbar from "@/components/miora/Navbar";
 import HeroSection from "@/components/miora/HeroSection";
 import ProblemSection from "@/components/miora/ProblemSection";
 import IntroducingSection from "@/components/miora/IntroducingSection";
-import HumanSection from "@/components/miora/HumanSection";
+import NeuralCortex3D from "@/components/miora/NeuralCortex3D";
 import CascadeSection from "@/components/miora/CascadeSection";
 import InteractiveDemo from "@/components/miora/InteractiveDemo";
-import ResultsSection from "@/components/miora/ResultsSection";
+import ProductSpecsSection from "@/components/miora/ProductSpecsSection";
 import ResearchSection from "@/components/miora/ResearchSection";
 import TeamFooter from "@/components/miora/TeamFooter";
 
@@ -16,10 +16,10 @@ export default function Home() {
       <HeroSection />
       <ProblemSection />
       <IntroducingSection />
-      <HumanSection />
+      <NeuralCortex3D />
       <CascadeSection />
       <InteractiveDemo />
-      <ResultsSection />
+      <ProductSpecsSection />
       <ResearchSection />
       <TeamFooter />
     </main>
