@@ -35,3 +35,4 @@ for f in files:
     shutil.copy(f'scripts/{f}', rf'C:\Users\erbos\.gemini\antigravity\brain\6e93a0da-3703-40e9-ada6-eabceb7d2ca0\{f}')
 
 print('All transformation screenshots captured and copied!')
+
