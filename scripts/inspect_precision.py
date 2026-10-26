@@ -1,46 +1,27 @@
-import os
-import time
-from playwright.sync_api import sync_playwright
+import urllib.request
+import re
+import sys
 
-CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
-OUTPUT_DIR = r"d:\RKNP_Website\research"
+sys.stdout.reconfigure(encoding='utf-8')
 
-with sync_playwright() as p:
-    browser = p.chromium.launch(executable_path=CHROME_PATH, headless=True)
-    context = browser.new_context(viewport={"width": 1440, "height": 900})
-    page = context.new_page()
-    
-    print("Navigating to Precision Neuroscience...")
-    page.goto("https://www.precisionneuro.io/", wait_until="domcontentloaded", timeout=45000)
-    page.wait_for_timeout(5000)
-    
-    print("Capturing desktop screenshot...")
-    page.screenshot(path=f"{OUTPUT_DIR}/screenshots/precision_desktop_full.png", full_page=True)
-    
-    print("Saving HTML...")
-    with open(f"{OUTPUT_DIR}/raw_dumps/precisionneuro.html", "w", encoding="utf-8") as f:
-        f.write(page.content())
-        
-    print("Capturing mobile screenshot...")
-    page.set_viewport_size({"width": 390, "height": 844})
-    page.wait_for_timeout(3000)
-    page.screenshot(path=f"{OUTPUT_DIR}/screenshots/precision_mobile_full.png", full_page=True)
-    
-    # Extract structure details: headings, sections, layout
-    sections = page.eval_on_selector_all("section, header, footer, div[class*='section'], main > div", """
-        elements => elements.map((el, i) => ({
-            index: i,
-            tagName: el.tagName,
-            id: el.id,
-            className: el.className,
-            textExcerpt: el.innerText ? el.innerText.slice(0, 150).replace(/\\n/g, ' ') : '',
-            rect: el.getBoundingClientRect()
-        }))
-    """)
-    import json
-    with open(f"{OUTPUT_DIR}/raw_dumps/precision_sections.json", "w", encoding="utf-8") as f:
-        json.dump(sections, f, indent=2)
-        
-    browser.close()
-    print("Precision inspection complete!")
+req = urllib.request.Request(
+    'https://www.precisionneuro.io/',
+    headers={'User-Agent': 'Mozilla/5.0'}
+)
+with urllib.request.urlopen(req) as resp:
+    html = resp.read().decode('utf-8', errors='ignore')
 
+matches = list(re.finditer(r'<video[^>]*>.*?</video>', html, re.DOTALL))
+for i, m in enumerate(matches):
+    start = max(0, m.start() - 1500)
+    end = min(len(html), m.end() + 1500)
+    context = html[start:end]
+    src = re.findall(r'src=["\']([^"\']+)["\']', m.group(0))
+    poster = re.findall(r'poster=["\']([^"\']+)["\']', m.group(0))
+    h_tags = re.findall(r'<h[1-4][^>]*>(.*?)</h[1-4]>', context)
+    p_tags = re.findall(r'<p[^>]*>(.*?)</p>', context)
+    print(f"\n==================== Video {i+1} ====================")
+    print("Src:", src)
+    print("Poster:", poster)
+    print("Headings nearby:", [re.sub(r'<[^>]+>', '', h).strip() for h in h_tags])
+    print("Paragraphs nearby:", [re.sub(r'<[^>]+>', '', p).strip() for p in p_tags[:3]])

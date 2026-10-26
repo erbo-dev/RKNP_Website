@@ -1,171 +1,144 @@
 "use client";
 
 import React, { useState } from "react";
-import { AlertTriangle, Zap, Volume2, ShieldAlert } from "lucide-react";
+import StepPlayer from "@/components/StepPlayer";
+import ImageCompare from "@/components/ImageCompare";
+import { AlertTriangle, Activity, ShieldAlert, Cpu } from "lucide-react";
 
 export default function ProblemSection() {
-  const [noiseLevel, setNoiseLevel] = useState(65);
+  const [activeStep, setActiveStep] = useState(0);
 
-  // Generate SVG path points based on noise slider
-  const generateWavePath = (isContaminated: boolean) => {
-    const points: string[] = [];
-    const width = 800;
-    const height = 140;
-    const midY = height / 2;
-
-    for (let x = 0; x <= width; x += 4) {
-      // Base EEG mu rhythm (10-12 Hz approx)
-      const baseWave = Math.sin(x * 0.045) * 26 + Math.sin(x * 0.09) * 12;
-
-      let y = midY + baseWave;
-
-      if (isContaminated) {
-        // High-frequency, high-amplitude EMG burst depending on noiseLevel
-        const noiseFactor = noiseLevel / 100;
-        const emgSpike =
-          (Math.sin(x * 0.45) * 18 +
-            Math.cos(x * 0.78) * 14 +
-            (Math.random() - 0.5) * 35) *
-          noiseFactor;
-        y += emgSpike;
-      }
-
-      points.push(`${x === 0 ? "M" : "L"} ${x} ${y.toFixed(2)}`);
-    }
-
-    return points.join(" ");
-  };
+  const stepDescriptions = [
+    {
+      title: "1-Қадам: Таза моторлық ниет (Clean Cortical Intent)",
+      detail: "Пайдаланушы қол қозғалысын елестетеді. Моторлық қыртыста (C3, Cz, C4) тән сенсорлық-моторлық ырғақтар (Mu/Beta) қалыптасады.",
+      status: "SIGNAL: NOMINAL // SNR: +18 dB",
+      color: "text-[#00e5ff]",
+    },
+    {
+      title: "2-Қадам: Шайнау артефактісінің пайда болуы (EMG Contamination)",
+      detail: "Шайнау немесе жақ бұлшықеттерінің қозғалысы жоғары жиілікті (>30 Гц) қуатты электрлік импульстер тудырып, ЭЭГ сигналын басады.",
+      status: "EMG NOISE DETECTED // SNR: -14 dB",
+      color: "text-[#ff5252]",
+    },
+    {
+      title: "3-Қадам: 4-Шлюзді қорғаныс каскады (4-Gate Verification)",
+      detail: "MIORA автоматты түрде пайдаланушының пайдасын, шу шегін, декодерлердің қайшылығын және классификациялық отступты тексереді.",
+      status: "GATE CHECK: 4/4 CONDITIONS ARMED",
+      color: "text-[#ffab00]",
+    },
+    {
+      title: "4-Қадам: Дұрыс шешімнің сақталуы (Signal Integrity Preserved)",
+      detail: "Егер қосымша эксперттің шешімі толық негізделмесе, бастапқы шешім өзгеріссіз сақталады. Жалған түзетулердің (Weak HARM) алдын алады.",
+      status: "VERIFIED // ERROR RATE REDUCED BY 6.1%",
+      color: "text-[#00e676]",
+    },
+  ];
 
   return (
-    <section id="problem" className="py-28 px-6 md:px-12 bg-[#0c0e12] border-b border-white/10">
+    <section id="challenge" className="py-28 px-6 md:px-12 bg-[#050608] border-b border-white/10">
       <div className="max-w-7xl mx-auto">
-        {/* Section Tag */}
-        <div className="flex items-center gap-2 font-mono text-xs tracking-[0.25em] text-[#757575] uppercase mb-4">
-          <AlertTriangle size={14} className="text-brand-accent" />
-          <span>02 // Мәселе: Шайнау артефактілері</span>
+        {/* Category kicker */}
+        <div className="font-mono text-xs tracking-[0.25em] text-[#757575] uppercase mb-4">
+          01 // The Core Challenge
         </div>
 
         {/* Section Heading */}
         <h2 className="text-3xl sm:text-5xl md:text-6xl font-normal text-white max-w-4xl tracking-tight leading-tight mb-8">
-          Адам тамақ шайнаған кезде, жақ бұлшықеттері ми сигналын толықтай бұрмалайды.
+          Today, brain–computer interfaces struggle when real-world physiology interferes with cortical signals.
         </h2>
 
-        <p className="text-sm sm:text-base md:text-lg text-[#9ba3af] max-w-3xl leading-relaxed mb-12">
-          Brain–Computer Interfaces (BCI) жүйелері адамның қозғалыс ниетін тануға арналған. Алайда қарапайым шайнау немесе тісті қысу кезінде туындайтын электромиографиялық (ЭМГ) кедергілер ЭЭГ сигналын басып озады да, құрылғылар қате командалар орындай бастайды.
+        <p className="text-base sm:text-lg text-[#9ba3af] max-w-3xl leading-relaxed font-light mb-16">
+          Адам тамақ шайнағанда (chewing) жақ бұлшықеттерінің электромиографиялық (EMG) шуы нәзік ЭЭГ толқындарынан ондаған есе асып түседі. Қарапайым сүзгілер мұндай кезде дұрыс командаларды да қате түзетіп, пайдаланушының сеніміне нұқсан келтіреді.
         </p>
 
-        {/* Interactive Waveform Visualizer */}
-        <div className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#050608] my-10">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-6 border-b border-white/10">
-            <div>
-              <div className="font-mono text-xs text-white uppercase tracking-wider flex items-center gap-2">
-                <Zap size={14} className="text-brand-secondary" />
-                <span>ЭЭГ Сигналының динамикалық салыстыруы</span>
-              </div>
-              <span className="text-[11px] font-mono text-[#757575]">
-                Көрнекі мысал: Сигналдың шайнау әсерінен бұрмалануы
-              </span>
+        {/* Precision 3-Metric Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+          <div className="p-8 rounded-xl border border-white/10 bg-[#0c0e12]">
+            <div className="text-4xl font-light text-white mb-2">38.5%</div>
+            <div className="font-mono text-xs text-[#757575] uppercase tracking-wider mb-4">
+              Базалық декодер қателігі
             </div>
-
-            {/* Slider control */}
-            <div className="flex items-center gap-4 w-full sm:w-auto">
-              <span className="font-mono text-xs text-[#9ba3af] whitespace-nowrap">
-                ЭМГ шу деңгейі: {noiseLevel}%
-              </span>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={noiseLevel}
-                onChange={(e) => setNoiseLevel(Number(e.target.value))}
-                className="w-36 sm:w-48 accent-brand-secondary cursor-pointer"
-                aria-label="ЭМГ шу деңгейінің реттегіші"
-              />
-            </div>
+            <p className="text-sm text-[#9ba3af] leading-relaxed">
+              Шайнау артефактілері бар сынақтарда қарапайым BCI алгоритмдері әрбір үшінші командада дерлік қателеседі.
+            </p>
           </div>
 
-          {/* Waveforms */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Clean EEG */}
-            <div className="p-5 rounded-xl border border-white/5 bg-[#0c0e12] flex flex-col justify-between">
-              <div className="flex justify-between items-center mb-3">
-                <span className="font-mono text-xs text-brand-secondary">
-                  [CH_01: ТАЗА ЭЭГ СИГНАЛЫ]
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-secondary/10 text-brand-secondary">
-                  ҚАЛЫПТЫ ЖАҒДАЙ
-                </span>
-              </div>
-              <div className="h-32 sm:h-36 w-full flex items-center justify-center overflow-hidden">
-                <svg viewBox="0 0 800 140" className="w-full h-full stroke-brand-secondary fill-none">
-                  <path d={generateWavePath(false)} strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </div>
-              <div className="font-mono text-[11px] text-[#757575] mt-2">
-                Жиілік: 8-13 Гц (мю-ырғақ) • Базалық декодер сенімділігі: 88%
-              </div>
+          <div className="p-8 rounded-xl border border-white/10 bg-[#0c0e12]">
+            <div className="text-4xl font-light text-[#ff5252] mb-2">EMG Spikes</div>
+            <div className="font-mono text-xs text-[#757575] uppercase tracking-wider mb-4">
+              Бұлшықет кедергісі
             </div>
+            <p className="text-sm text-[#9ba3af] leading-relaxed">
+              Жақ бұлшықеттерінің белсенділігі 30-100 Гц жиілікті электрлік кернеу тудырып, ЭЭГ спектрограммасын бұрмалайды.
+            </p>
+          </div>
 
-            {/* Contaminated EEG */}
-            <div className="p-5 rounded-xl border border-white/5 bg-[#0c0e12] flex flex-col justify-between">
-              <div className="flex justify-between items-center mb-3">
-                <span className="font-mono text-xs text-brand-accent flex items-center gap-1.5">
-                  <AlertTriangle size={12} />
-                  [CH_01: ШАЙНАУ КЕДЕРГІСІ ҚОСЫЛҒАН]
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-accent/15 text-brand-accent">
-                  ЭМГ ШУЫ {noiseLevel}%
-                </span>
-              </div>
-              <div className="h-32 sm:h-36 w-full flex items-center justify-center overflow-hidden">
-                <svg viewBox="0 0 800 140" className="w-full h-full stroke-brand-accent fill-none">
-                  <path d={generateWavePath(true)} strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </div>
-              <div className="font-mono text-[11px] text-[#757575] mt-2">
-                Жоғары жиілік: 40-100 Гц • Базалық декодер қателігі: 38.5%
-              </div>
+          <div className="p-8 rounded-xl border border-white/10 bg-[#0c0e12]">
+            <div className="text-4xl font-light text-[#00e5ff] mb-2">4-Gate</div>
+            <div className="font-mono text-xs text-[#757575] uppercase tracking-wider mb-4">
+              Каскадты шешім қорғанысы
             </div>
+            <p className="text-sm text-[#9ba3af] leading-relaxed">
+              Жүйе тек төрт шарт қатар орындалғанда ғана түзетуді мақұлдап, «зиян келтірмеу» қағидасын қамтамасыз етеді.
+            </p>
           </div>
         </div>
 
-        {/* 3 Core Analytical Points */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-          <div className="p-8 rounded-xl border border-white/10 bg-[#050608]">
-            <div className="font-mono text-xs text-[#757575] uppercase mb-3">
-              01 // Спектрлік қабаттасу
+        {/* Interactive Dual Bench: Bencho StepPlayer + Bencho ImageCompare */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center p-8 sm:p-12 rounded-2xl border border-white/10 bg-[#0c0e12]">
+          {/* Left: Interactive StepPlayer walkthrough (7 cols) */}
+          <div className="lg:col-span-7 space-y-6">
+            <div className="font-mono text-xs text-[#00e5ff] uppercase tracking-widest flex items-center gap-2">
+              <Activity size={14} />
+              <span>Артефактіні реттеу қадамдары // Interactive Step Player</span>
             </div>
-            <h3 className="text-lg text-white font-medium mb-3">
-              Бұлшықет импульстерінің күші
+
+            <h3 className="text-2xl sm:text-3xl font-normal text-white">
+              {stepDescriptions[activeStep].title}
             </h3>
-            <p className="text-sm text-[#9ba3af] leading-relaxed">
-              Шайнау кезіндегі бұлшықет потенциалы (100–500 мкВ) мидың нәзік биопотенциалдарынан (10–50 мкВ) 10 есеге дейін асып түседі.
+
+            <p className="text-sm sm:text-base text-[#9ba3af] leading-relaxed font-light">
+              {stepDescriptions[activeStep].detail}
             </p>
+
+            <div className="p-3 rounded-lg border border-white/10 bg-[#050608] font-mono text-xs flex items-center justify-between">
+              <span className="text-[#757575]">STATUS:</span>
+              <span className={`font-semibold ${stepDescriptions[activeStep].color}`}>
+                {stepDescriptions[activeStep].status}
+              </span>
+            </div>
+
+            {/* Bencho StepPlayer Component */}
+            <div className="pt-4 flex flex-col items-start gap-4">
+              <div className="font-mono text-[11px] text-[#757575] uppercase tracking-wider">
+                Қадамдарды бақылау (Play / Pause немесе нүктелерді таңдаңыз):
+              </div>
+              <StepPlayer steps={4} pace={3.2} wake={80} />
+            </div>
           </div>
 
-          <div className="p-8 rounded-xl border border-white/10 bg-[#050608]">
-            <div className="font-mono text-xs text-[#757575] uppercase mb-3">
-              02 // Базалық декодер қатесі
+          {/* Right: Bencho ImageCompare wipe slider (5 cols) */}
+          <div className="lg:col-span-5 flex flex-col items-center">
+            <div className="font-mono text-xs text-[#757575] uppercase tracking-wider mb-3 text-center">
+              Слайдерді сүйреп салыстырыңыз (Image Compare)
             </div>
-            <h3 className="text-lg text-white font-medium mb-3">
-              38.5% Қателік деңгейі
-            </h3>
-            <p className="text-sm text-[#9ba3af] leading-relaxed">
-              Қалыпты декодерлер артефакт кезінде пайдаланушының ниетін дұрыс танымай, қате немесе қауіпті қозғалыс пәрмендерін тудырады.
-            </p>
-          </div>
 
-          <div className="p-8 rounded-xl border border-white/10 bg-[#050608]">
-            <div className="font-mono text-xs text-brand-accent uppercase mb-3 flex items-center gap-1.5">
-              <ShieldAlert size={12} />
-              <span>03 // Қате түзету қаупі (Weak HARM)</span>
+            <div className="shadow-2xl rounded-2xl overflow-hidden border border-white/15">
+              <ImageCompare
+                before="/images/eeg_contaminated.jpg"
+                after="/images/eeg_miora_protected.jpg"
+                beforeLabel="RAW EMG NOISE"
+                afterLabel="MIORA PROTECTED"
+                width={300}
+                height={380}
+                corner={18}
+              />
             </div>
-            <h3 className="text-lg text-white font-medium mb-3">
-              Кездейсоқ түзетудің зияны
-            </h3>
-            <p className="text-sm text-[#9ba3af] leading-relaxed">
-              Тіпті артефактіні сүзетін жүйелердің өзі кейде бастапқы дұрыс командаларды қате өзгертіп, жүйеге кері әсерін тигізеді.
-            </p>
+
+            <div className="text-[11px] font-mono text-[#757575] mt-3 text-center">
+              Сол жақта: шайнаудан ластанған ЭЭГ · Оң жақта: MIORA қорғаған шешім
+            </div>
           </div>
         </div>
       </div>

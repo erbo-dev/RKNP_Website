@@ -1,72 +1,116 @@
 "use client";
 
 import React from "react";
-import { Shield, CheckCircle2, Lock, Cpu, Sparkles } from "lucide-react";
+import ActionNode from "@/components/ActionNode";
+import { ShieldCheck, Cpu, Layers, Sparkles } from "lucide-react";
 
 export default function IntroducingSection() {
   return (
-    <section id="reveal" className="py-32 px-6 md:px-12 max-w-7xl mx-auto border-b border-white/10">
-      {/* Category header */}
-      <div className="font-mono text-xs tracking-[0.25em] text-brand-secondary uppercase mb-6 flex items-center gap-2">
-        <Sparkles size={14} />
-        <span>03 // MIORA шешімі</span>
-      </div>
-
-      <h2 className="text-4xl sm:text-6xl md:text-7xl font-normal text-white max-w-5xl tracking-tight leading-[1.05] mb-12">
-        MIORA сигналды себепсіз өзгертпейді. Ол шешімнің дұрыстығын қорғайды.
-      </h2>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-        <div className="space-y-6 text-[#9ba3af] text-base sm:text-lg leading-relaxed font-light">
-          <p>
-            Дәстүрлі тәсілдер сигналды үнемі сүзуге немесе күдікті командаларды автоматты түрде қайта жазуға тырысады. Алайда мұндай агрессивті араласу жиі дұрыс командаларды да бұзып, BCI сенімділігін төмендетеді.
-          </p>
-          <p>
-            <strong className="text-white font-medium">MIORA философиясы:</strong> Егер қосымша сарапшының түзетуі қатаң 4 критерийге сай келмесе, жүйе базалық шешімді қол сұқпай сол күйінде қалдырады. Бұл «зиян келтірмеу» қағидасын қамтамасыз етеді.
-          </p>
+    <section id="reveal" className="py-32 px-6 md:px-12 bg-[#0c0e12] border-t border-b border-white/10">
+      <div className="max-w-7xl mx-auto">
+        {/* Category kicker */}
+        <div className="font-mono text-xs tracking-[0.25em] text-[#757575] uppercase mb-4">
+          02 // Technological Breakthrough
         </div>
 
-        {/* Conceptual Diagram Card */}
-        <div className="p-8 sm:p-10 rounded-2xl border border-brand-secondary/30 bg-gradient-to-br from-brand-secondary/10 via-[#0c0e12] to-[#050608] relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-brand-secondary/10 rounded-full blur-3xl pointer-events-none" />
+        <h2 className="text-3xl sm:text-5xl md:text-6xl font-normal text-white max-w-4xl tracking-tight leading-[1.08] mb-16">
+          MIORA сигналды себепсіз өзгертпейді. Ол адамның бастапқы ниетін қорғайды.
+        </h2>
 
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-brand-secondary/20 border border-brand-secondary/40 flex items-center justify-center text-brand-secondary">
-              <Shield size={20} />
-            </div>
-            <div>
-              <div className="font-mono text-xs text-white uppercase tracking-wider font-semibold">
-                Decision Protection Layer
+        {/* Dual column: 3D Cortical Hardware Video + Bencho ActionNode */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Left: Cortical Array Video Loop */}
+          <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#050608] group">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-[440px] object-cover scale-105 group-hover:scale-100 transition-transform duration-700 opacity-80"
+              src="/videos/layer7_array.mp4"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050608] via-transparent to-transparent opacity-80" />
+
+            <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-xs font-mono text-[#9ba3af] border-t border-white/10 pt-4">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00e5ff]" />
+                <span className="text-white">CORTICAL ARRAY INTERFACE</span>
               </div>
-              <div className="text-[11px] font-mono text-[#757575]">
-                Шешім қабылдаудың қорғаныс каскады
-              </div>
+              <span className="text-[#757575]">MICRO-ELECTRODE SURFACE</span>
             </div>
           </div>
 
-          <div className="space-y-3 font-mono text-xs">
-            <div className="p-3 rounded-lg border border-white/10 bg-[#050608]/80 flex justify-between items-center">
-              <span className="text-[#9ba3af]">Бастапқы декодер:</span>
-              <span className="text-white font-semibold">Негізгі қозғалыс ниеті</span>
+          {/* Right: Technical Explanation & Bencho ActionNode */}
+          <div className="flex flex-col gap-8">
+            <div className="space-y-6 text-[#9ba3af] text-base sm:text-lg leading-relaxed font-light">
+              <p>
+                Дәстүрлі BCI сүзгілері сигналды үнемі агрессивті тазалауға немесе кез келген ауытқу кезінде команданы бірден қайта жазуға тырысады. Бұл жиі дұрыс командалардың өзін бұзып, қауіпті жалған түзетулерге (Weak HARM) соқтырады.
+              </p>
+              <p>
+                <strong className="text-white font-medium">MIORA каскадының принципі:</strong> Егер қосымша эксперт белгіленген 4 қатаң критерийдің бәрін толық қанағаттандырмаса, жүйе базалық шешімді өзгеріссіз сақтайды.
+              </p>
             </div>
 
-            <div className="text-center text-brand-secondary text-[11px]">
-              ↓ ШАЙНАУ КЕДЕРГІСІ ТІРКЕЛДІ
-            </div>
+            {/* Embedded Bencho Action Node interactive widget */}
+            <div className="pt-4 flex flex-col items-start">
+              <div className="font-mono text-xs text-[#757575] uppercase tracking-wider mb-2 flex items-center gap-2">
+                <Cpu size={14} className="text-[#00e5ff]" />
+                <span>Интерактивті түйін (Action Node): басқару батырмаларын ашу үшін курсорды жақындатыңыз</span>
+              </div>
 
-            <div className="p-3 rounded-lg border border-brand-secondary/30 bg-brand-secondary/5 flex justify-between items-center text-white">
-              <span className="text-brand-secondary">MIORA 4-Шлюздік тексерісі:</span>
-              <span className="text-brand-success font-semibold">Тек толық негізделсе ғана</span>
+              <div className="p-4 rounded-2xl border border-white/10 bg-[#050608]">
+                <ActionNode
+                  node="Cascade Gate 01 // Decision Node"
+                  description="Төрт қорғаныс критерийі толық орындалғанда ғана түзетуге рұқсат беретін сәулелі түйін."
+                  count={4}
+                  bounce={25}
+                  corner={20}
+                />
+              </div>
             </div>
+          </div>
+        </div>
 
-            <div className="text-center text-brand-success text-[11px]">
-              ↓ ҚАУІПСІЗ НӘТИЖЕ
+        {/* 4-Gate Feature Matrix */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-20 pt-16 border-t border-white/10">
+          <div className="p-6 rounded-xl border border-white/10 bg-[#050608]/60">
+            <div className="font-mono text-xs text-[#00e5ff] uppercase tracking-widest mb-3">
+              Gate 01
             </div>
+            <h3 className="text-lg font-normal text-white mb-2">User Benefit Gate</h3>
+            <p className="text-xs text-[#9ba3af] leading-relaxed">
+              Қосымша сарапшы осы нақты қолданушының оқыту деректерінде қателікті азайтқаны математикалық түрде расталған.
+            </p>
+          </div>
 
-            <div className="p-3 rounded-lg border border-brand-success/30 bg-brand-success/10 flex justify-between items-center text-brand-success">
-              <span>Қорғалған команда:</span>
-              <span className="font-bold">Қателіктер -6.1% төмендеді</span>
+          <div className="p-6 rounded-xl border border-white/10 bg-[#050608]/60">
+            <div className="font-mono text-xs text-[#00e5ff] uppercase tracking-widest mb-3">
+              Gate 02
             </div>
+            <h3 className="text-lg font-normal text-white mb-2">Noise Threshold</h3>
+            <p className="text-xs text-[#9ba3af] leading-relaxed">
+              ЭЭГ спектрінде байқалған жоғары жиілікті бұлшықет шуының қуаты белгіленген шекті деңгейден асқан жағдайда ғана іске қосылады.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-xl border border-white/10 bg-[#050608]/60">
+            <div className="font-mono text-xs text-[#00e5ff] uppercase tracking-widest mb-3">
+              Gate 03
+            </div>
+            <h3 className="text-lg font-normal text-white mb-2">Decoder Disagreement</h3>
+            <p className="text-xs text-[#9ba3af] leading-relaxed">
+              Базалық декодер мен қосымша эксперт бір-бірінен өзгеше командаларды ұсынғанда ғана каскад тексерісі жалғасады.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-xl border border-white/10 bg-[#050608]/60">
+            <div className="font-mono text-xs text-[#00e5ff] uppercase tracking-widest mb-3">
+              Gate 04
+            </div>
+            <h3 className="text-lg font-normal text-white mb-2">Classification Margin</h3>
+            <p className="text-xs text-[#9ba3af] leading-relaxed">
+              Қосымша эксперттің шешім қабылдау сенімділігі базалық декодерге қарағанда жеткілікті үлкен отступпен басым болуы тиіс.
+            </p>
           </div>
         </div>
       </div>

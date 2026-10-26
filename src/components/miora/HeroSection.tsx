@@ -1,82 +1,97 @@
 "use client";
 
 import React from "react";
-import HeroBrain3D from "./HeroBrain3D";
-import { ChevronDown, ShieldCheck, Cpu, Activity, Sparkles } from "lucide-react";
+import { ChevronDown, Shield, Activity, Cpu } from "lucide-react";
 
 export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative min-h-[96vh] flex flex-col justify-between items-center text-center px-6 pt-28 pb-12 overflow-hidden border-b border-white/10"
+      className="relative min-h-screen flex flex-col justify-between items-center px-6 pt-32 pb-12 overflow-hidden bg-[#050608]"
     >
-      {/* Background ambient light */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-brand-secondary/[0.07] rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-1/2 left-1/4 w-[350px] h-[350px] bg-brand-primary/[0.04] rounded-full blur-[120px] pointer-events-none" />
+      {/* 1. Cinematic Background Video (Precision Neuroscience Style) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover opacity-45 scale-105 transition-opacity duration-1000"
+          src="/videos/hero_bg.mp4"
+        />
+        {/* Film grain and atmospheric gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050608] via-transparent to-[#050608]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050608]/80 via-transparent to-[#050608]/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_20%,_#050608_80%)]" />
+      </div>
 
-      {/* Top telemetry badge */}
+      {/* 2. Top Kicker Telemetry Badge */}
       <div className="relative z-10 pt-4">
-        <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/15 bg-white/[0.03] backdrop-blur-md text-[11px] font-mono tracking-widest text-[#d7e2e9] uppercase">
-          <span className="w-2 h-2 rounded-full bg-brand-secondary animate-ping" />
+        <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-white/15 bg-[#0c0e12]/80 backdrop-blur-md text-[11px] font-mono tracking-[0.2em] text-[#d7e2e9] uppercase">
+          <span className="w-2 h-2 rounded-full bg-[#00e5ff] animate-pulse" />
           <span>MIORA // NEURAL SIGNAL INTEGRITY</span>
+          <span className="text-white/20">|</span>
+          <span className="text-[#9ba3af]">V18 OFFLINE PROTOCOL</span>
         </div>
       </div>
 
-      {/* Central Hero Content */}
-      <div className="relative z-10 max-w-5xl mx-auto my-auto flex flex-col items-center">
-        <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal tracking-[-0.04em] text-white leading-[0.95] mb-6">
-          MIORA
+      {/* 3. Central Monumental Editorial Statement */}
+      <div className="relative z-10 max-w-6xl mx-auto my-auto text-center flex flex-col items-center">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[-0.035em] text-white leading-[1.02] mb-8 max-w-5xl">
+          The brain-computer interface that protects intent.
         </h1>
 
-        <div className="text-xl sm:text-2xl md:text-3xl text-brand-primary font-light tracking-tight max-w-3xl mb-4">
-          Protecting the signal. Preserving the intent.
+        <div className="text-lg sm:text-xl md:text-2xl text-[#d7e2e9] font-light tracking-tight max-w-3xl mb-6">
+          “Protecting the signal. Preserving the intent.”
         </div>
 
-        <p className="text-xs sm:text-sm md:text-base text-[#9ba3af] font-mono max-w-2xl leading-relaxed mb-6">
-          Ми-компьютер интерфейстерінің (BCI) сенімділігін қамтамасыз ететін эксперименттік шешімді қорғау деңгейі.
+        <p className="text-sm sm:text-base text-[#9ba3af] max-w-2xl leading-relaxed font-light mb-10">
+          Адам шайнағанда пайда болатын бұлшықет кедергілерінен (EMG) ми сигналдарын қорғайтын және жалған түзетулердің алдын алатын 4 деңгейлі шешім қорғанысы.
         </p>
 
-        {/* 3D Brain Canvas */}
-        <div className="w-full max-w-3xl relative">
-          <HeroBrain3D />
-
-          {/* Floating HUD Badges */}
-          <div className="absolute top-6 left-2 sm:left-6 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/10 bg-[#0c0e12]/80 backdrop-blur-md text-[11px] font-mono text-[#9ba3af]">
-            <Activity size={12} className="text-brand-secondary" />
-            <span>EEG SAMPLING: 250 HZ</span>
-          </div>
-
-          <div className="absolute top-6 right-2 sm:right-6 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/10 bg-[#0c0e12]/80 backdrop-blur-md text-[11px] font-mono text-[#9ba3af]">
-            <ShieldCheck size={12} className="text-brand-success" />
-            <span>4-GATE CASCADE: ARMED</span>
-          </div>
-
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-[#050608]/80 backdrop-blur-md text-[10px] font-mono text-[#757575] uppercase tracking-widest">
-            <span>Курсормен 3D модельді айналдырыңыз</span>
-          </div>
+        {/* Dual CTA buttons */}
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <a
+            href="#challenge"
+            className="px-7 py-3.5 rounded-full bg-white text-black text-xs font-mono tracking-wider font-semibold hover:bg-[#d7e2e9] transition-all shadow-xl"
+          >
+            ЗЕРТТЕУМЕН ТАНЫСУ
+          </a>
+          <a
+            href="#cascade"
+            className="px-7 py-3.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white text-xs font-mono tracking-wider hover:bg-white/10 transition-all"
+          >
+            4-GATE CASCADE КӨРУ
+          </a>
         </div>
       </div>
 
-      {/* Bottom status & scroll cue */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 text-xs font-mono text-[#757575] tracking-wider uppercase">
-        <div className="flex items-center gap-4">
-          <span>9 PARTICIPANTS TESTED</span>
-          <span className="hidden sm:inline">•</span>
-          <span>-6.1% ERROR REDUCTION</span>
+      {/* 4. Bottom Scientific Metrics Strip & Scroll Cue */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-6 text-xs font-mono text-[#9ba3af] tracking-wider uppercase">
+        <div className="flex flex-wrap items-center justify-center md:justify-start gap-6">
+          <div className="flex items-center gap-2">
+            <span className="text-white font-medium">9 ҚАТЫСУШЫ</span>
+            <span className="text-[#757575]">(ЭЭГ зерттеуі)</span>
+          </div>
+          <span className="text-white/20 hidden sm:inline">•</span>
+          <div className="flex items-center gap-2">
+            <span className="text-[#00e5ff] font-medium">-6.1 П.П.</span>
+            <span className="text-[#757575]">(Қателіктердің төмендеуі)</span>
+          </div>
+          <span className="text-white/20 hidden sm:inline">•</span>
+          <div className="flex items-center gap-2">
+            <span className="text-[#00e676] font-medium">4.7% → 3.9%</span>
+            <span className="text-[#757575]">(Weak HARM төмендеуі)</span>
+          </div>
         </div>
 
         <a
-          href="#problem"
-          className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
+          href="#challenge"
+          className="flex items-center gap-2 text-[#757575] hover:text-white transition-colors"
         >
-          <span>Төмен қарай жылжыңыз</span>
-          <ChevronDown size={14} className="animate-bounce text-brand-secondary" />
+          <span>SCROLL TO EXPLORE</span>
+          <ChevronDown size={14} className="animate-bounce" />
         </a>
-
-        <div className="flex items-center gap-2 text-[11px]">
-          <span className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
-          <span>RESEARCH PROTOTYPE (NOT A MEDICAL DEVICE)</span>
-        </div>
       </div>
     </section>
   );
