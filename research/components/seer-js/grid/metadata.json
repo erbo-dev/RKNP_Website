@@ -1,0 +1,16 @@
+{
+  "name": "Seer.js Grid",
+  "source": "Seer.js",
+  "url": "https://seer-js.com/customize.html?effect=grid",
+  "category": "3D WebGL Backgrounds",
+  "visual_description": "Precision constellation coordinate grid with interactive nodal links",
+  "interaction_type": "Pointer & Gyroscope 3D Reactive",
+  "technology": "Three.js, WebGL Shaders",
+  "dependencies": [
+    "three"
+  ],
+  "source_code_availability": "Full minified standalone engine & shader bundle acquired",
+  "license": "Publicly distributed by seer-js.com",
+  "relevance_to_miora": "Precision constellation coordinate grid with interactive nodal links",
+  "suggested_section": "Decision Matrix"
+}

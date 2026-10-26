@@ -1,0 +1,19 @@
+{
+  "name": "Libraries.dev Liquid Metal",
+  "source": "Libraries.dev",
+  "url": "https://libraries.dev/metal",
+  "github_url": "https://github.com/Jakubantalik/Libraries.dev",
+  "category": "Motion & Visual Effects",
+  "visual_description": "Photorealistic liquid metal chromatic shader reflections",
+  "interaction_type": "Pointer / Continuous Ambient / CSS Animation",
+  "technology": "React, Tailwind CSS, Canvas / SVG Shaders",
+  "dependencies": [
+    "react",
+    "framer-motion",
+    "clsx"
+  ],
+  "source_code_availability": "Full source acquired (TypeScript + Specs)",
+  "license": "MIT License (Jakub Antalik / Libraries.dev)",
+  "relevance_to_miora": "Photorealistic liquid metal chromatic shader reflections",
+  "suggested_section": "Hero Visual Polish"
+}

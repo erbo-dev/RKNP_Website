@@ -1,0 +1,19 @@
+{
+  "name": "Libraries.dev Bot Avatars",
+  "source": "Libraries.dev",
+  "url": "https://libraries.dev/bot-avatars",
+  "github_url": "https://github.com/Jakubantalik/Libraries.dev",
+  "category": "Motion & Visual Effects",
+  "visual_description": "Generative high-tech avatar shapes with procedural geometry",
+  "interaction_type": "Pointer / Continuous Ambient / CSS Animation",
+  "technology": "React, Tailwind CSS, Canvas / SVG Shaders",
+  "dependencies": [
+    "react",
+    "framer-motion",
+    "clsx"
+  ],
+  "source_code_availability": "Full source acquired (TypeScript + Specs)",
+  "license": "MIT License (Jakub Antalik / Libraries.dev)",
+  "relevance_to_miora": "Generative high-tech avatar shapes with procedural geometry",
+  "suggested_section": "Team / Methodology"
+}

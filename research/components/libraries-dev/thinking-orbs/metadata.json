@@ -1,0 +1,19 @@
+{
+  "name": "Libraries.dev Thinking Orbs",
+  "source": "Libraries.dev",
+  "url": "https://libraries.dev/thinking-orbs",
+  "github_url": "https://github.com/Jakubantalik/Libraries.dev",
+  "category": "Motion & Visual Effects",
+  "visual_description": "Multi-layered organic glowing orbs indicating active AI/heuristic processing",
+  "interaction_type": "Pointer / Continuous Ambient / CSS Animation",
+  "technology": "React, Tailwind CSS, Canvas / SVG Shaders",
+  "dependencies": [
+    "react",
+    "framer-motion",
+    "clsx"
+  ],
+  "source_code_availability": "Full source acquired (TypeScript + Specs)",
+  "license": "MIT License (Jakub Antalik / Libraries.dev)",
+  "relevance_to_miora": "Multi-layered organic glowing orbs indicating active AI/heuristic processing",
+  "suggested_section": "Decision Protection Engine"
+}

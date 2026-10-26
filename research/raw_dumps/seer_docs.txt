@@ -1,0 +1,178 @@
+
+
+
+
+
+
+Documentation
+
+
+
+
+
+
+
+
+seer.js
+
+Effects
+Customize
+Docs
+Support
+
+
+
+
+
+Documentation
+Add Seer.js to your website
+
+            No login, no build step, no frameworks. Pick a background, drop in a few lines,
+            done.
+          
+Four steps. No build tooling required.
+
+
+
+
+
+01
+
+Pick an effect
+Browse the catalogue, open one in the editor, and copy the snippet it generates, it always matches exactly what you see.
+
+
+
+Browse effects
+Open the editor
+
+
+
+
+
+
+02
+
+Load the library
+Two ways to include it. Pick whichever fits your page.
+
+
+
+
+Option A ‣ Full bundle
+
+                One self-contained file (~500 KB) with three.js bundled in. Works offline and
+                needs no extra scripts.
+              
+
+
+HTML
+Copy
+
+<script src="seer.min.js"></script>
+Scroll horizontally to view long lines.
+
+
+
+Option B ‣ Effect only
+
+                Tiny file (~7 KB per effect) that pulls three.js from a CDN. The three.js tag
+                must come first.
+              
+
+
+HTML
+Copy
+
+<script src="https://cdn.jsdelivr.net/npm/[email protected]/build/three.min.js"></script>
+<script src="seer.horizon.min.js"></script>
+Scroll horizontally to view long lines.
+
+
+                Download the file from the editor and place it next to your page, or upload it to
+                your own host/CDN and point the src at it.
+              
+
+
+
+
+
+
+
+03
+
+Create your background
+Add a full-screen div and start the effect. That's it.
+
+
+
+
+HTML
+Copy
+
+<style>
+  #bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+  .seer-content { position: relative; z-index: 1; }
+</style>
+
+<div id="bg" aria-hidden="true"></div>
+
+<script src="seer.min.js"></script>
+<script>
+  Seer.Horizon({
+    el: document.getElementById('bg'),
+    color: '#cabdff',
+    backgroundColor: null
+  })
+</script>
+Scroll horizontally to view long lines.
+
+
+              The canvas is transparent by default, so your page's own background shows through
+              behind the effect. Pass a backgroundColor hex to make the canvas opaque.
+            
+
+              Paste the snippet anywhere in <body>. The background uses a negative
+            layer (z-index: -1) so it renders behind your existing content with no
+            wrapping required. For extra certainty you can wrap content in
+            class="seer-content". If you want the background only in one section
+            instead of the whole page, drop the div in that section and give it an explicit height.
+          
+
+
+
+
+
+04
+
+Tweak it
+Every effect accepts the same core options plus a few of its own.
+
+
+
+elThe element (or CSS selector) the background renders into. Required.
+colorAccent color, e.g. '#cabdff'.
+backgroundColorCanvas background. Defaults to null (fully transparent). Set a hex color for an opaque canvas.
+mouseControlsReact to the mouse. Default true.
+touchControlsReact to touch. Default true.
+
+
+            Each effect has extra options too (density, wave height, speed…). Open it in the
+            editor to explore them and copy a snippet with your exact settings.
+          
+
+
+
+
+Seer.js · Built with three.js · MIT licensed
+
+
+
+
+
+
+Support on Ko-fi
+
+
+
+

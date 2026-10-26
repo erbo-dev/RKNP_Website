@@ -1,0 +1,21 @@
+{
+  "name": "animated-svg-branch-connector",
+  "source": "Morphin",
+  "url": "https://morphin.dev/",
+  "registry_url": "https://registry.morphin.dev/items/animated-svg-branch-connector.json",
+  "category": "Interactive Motion UI",
+  "visual_description": "Hierarchical tree branch connectors for neural cascading decision gates",
+  "interaction_type": "Scroll / Pointer / Hover / Gesture",
+  "technology": "React, Framer Motion, GSAP, Tailwind CSS",
+  "dependencies": [
+    "framer-motion",
+    "next-useragent",
+    "usehooks-ts",
+    "tailwind-merge",
+    "clsx"
+  ],
+  "source_code_availability": "Full source acquired (TypeScript + React)",
+  "license": "Public Registry (Morphin Dev License / MIT Compatible)",
+  "relevance_to_miora": "Hierarchical tree branch connectors for neural cascading decision gates",
+  "suggested_section": "How MIORA Works"
+}

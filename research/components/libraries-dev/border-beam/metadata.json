@@ -1,0 +1,18 @@
+{
+  "name": "Libraries.dev Border Beam",
+  "source": "Libraries.dev",
+  "url": "https://libraries.dev/beam",
+  "github_url": "https://github.com/Jakubantalik/Libraries.dev",
+  "category": "Motion & Visual Effects",
+  "visual_description": "Luminous animated border beam tracing the perimeter of cards or containers",
+  "interaction_type": "Continuous Ambient / CSS & SVG Motion",
+  "technology": "React, Tailwind CSS, SVG",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "source_code_availability": "Full spec and implementation acquired",
+  "license": "MIT License",
+  "relevance_to_miora": "Highlighting the 4 decision cascade verification gates in Section 04",
+  "suggested_section": "How MIORA Works / Gate Cards"
+}

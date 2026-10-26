@@ -1,0 +1,345 @@
+[
+  {
+    "name": "React Bits Ghost Fibers",
+    "source": "React Bits",
+    "url": "https://www.reactbits.dev/backgrounds/ghost-fibers",
+    "github_url": "https://github.com/DavidHDev/react-bits/tree/main/src/ts-tailwind/Backgrounds/GhostFibers/GhostFibers.tsx",
+    "category": "Backgrounds & WebGL",
+    "visual_description": "Flowing luminous neural fiber strands responding to pointer and time",
+    "interaction_type": "Pointer / Scroll / Shader Motion",
+    "technology": "React, Three.js / OGL / Tailwind CSS",
+    "dependencies": [
+      "three",
+      "ogl",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + Tailwind)",
+    "license": "MIT License (DavidHDev/react-bits)",
+    "relevance_to_miora": "Ideal for neural signal visualization (Flowing luminous neural fiber strands responding to pointer and time)",
+    "suggested_section": "Hero & The Problem"
+  },
+  {
+    "name": "React Bits Threads",
+    "source": "React Bits",
+    "url": "https://www.reactbits.dev/backgrounds/threads",
+    "github_url": "https://github.com/DavidHDev/react-bits/tree/main/src/ts-tailwind/Backgrounds/Threads/Threads.tsx",
+    "category": "Backgrounds & WebGL",
+    "visual_description": "Dynamic undulating 3D harmonic threads mimicking EEG signal channels",
+    "interaction_type": "Pointer / Scroll / Shader Motion",
+    "technology": "React, Three.js / OGL / Tailwind CSS",
+    "dependencies": [
+      "three",
+      "ogl",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + Tailwind)",
+    "license": "MIT License (DavidHDev/react-bits)",
+    "relevance_to_miora": "Ideal for neural signal visualization (Dynamic undulating 3D harmonic threads mimicking EEG signal channels)",
+    "suggested_section": "Hero & The Problem"
+  },
+  {
+    "name": "React Bits Orb",
+    "source": "React Bits",
+    "url": "https://www.reactbits.dev/backgrounds/orb",
+    "github_url": "https://github.com/DavidHDev/react-bits/tree/main/src/ts-tailwind/Backgrounds/Orb/Orb.tsx",
+    "category": "Backgrounds & WebGL",
+    "visual_description": "Luminous reactive WebGL shader orb pulsing with intent and activation states",
+    "interaction_type": "Pointer / Scroll / Shader Motion",
+    "technology": "React, Three.js / OGL / Tailwind CSS",
+    "dependencies": [
+      "three",
+      "ogl",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + Tailwind)",
+    "license": "MIT License (DavidHDev/react-bits)",
+    "relevance_to_miora": "Ideal for neural signal visualization (Luminous reactive WebGL shader orb pulsing with intent and activation states)",
+    "suggested_section": "Background Surface"
+  },
+  {
+    "name": "React Bits Particles",
+    "source": "React Bits",
+    "url": "https://www.reactbits.dev/backgrounds/particles",
+    "github_url": "https://github.com/DavidHDev/react-bits/tree/main/src/ts-tailwind/Backgrounds/Particles/Particles.tsx",
+    "category": "Backgrounds & WebGL",
+    "visual_description": "Drifting interactive neural particle cloud with velocity and gravity reaction",
+    "interaction_type": "Pointer / Scroll / Shader Motion",
+    "technology": "React, Three.js / OGL / Tailwind CSS",
+    "dependencies": [
+      "three",
+      "ogl",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + Tailwind)",
+    "license": "MIT License (DavidHDev/react-bits)",
+    "relevance_to_miora": "Ideal for neural signal visualization (Drifting interactive neural particle cloud with velocity and gravity reaction)",
+    "suggested_section": "Background Surface"
+  },
+  {
+    "name": "React Bits Liquid Ether",
+    "source": "React Bits",
+    "url": "https://www.reactbits.dev/backgrounds/liquid-ether",
+    "github_url": "https://github.com/DavidHDev/react-bits/tree/main/src/ts-tailwind/Backgrounds/LiquidEther/LiquidEther.tsx",
+    "category": "Backgrounds & WebGL",
+    "visual_description": "Fluid distortion simulation representing EMG muscle artifact interference",
+    "interaction_type": "Pointer / Scroll / Shader Motion",
+    "technology": "React, Three.js / OGL / Tailwind CSS",
+    "dependencies": [
+      "three",
+      "ogl",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + Tailwind)",
+    "license": "MIT License (DavidHDev/react-bits)",
+    "relevance_to_miora": "Ideal for neural signal visualization (Fluid distortion simulation representing EMG muscle artifact interference)",
+    "suggested_section": "Hero & The Problem"
+  },
+  {
+    "name": "React Bits Color Bends",
+    "source": "React Bits",
+    "url": "https://www.reactbits.dev/backgrounds/color-bends",
+    "github_url": "https://github.com/DavidHDev/react-bits/tree/main/src/ts-tailwind/Backgrounds/ColorBends/ColorBends.tsx",
+    "category": "Backgrounds & WebGL",
+    "visual_description": "Curving spectral gradient waves for neural decision boundaries",
+    "interaction_type": "Pointer / Scroll / Shader Motion",
+    "technology": "React, Three.js / OGL / Tailwind CSS",
+    "dependencies": [
+      "three",
+      "ogl",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + Tailwind)",
+    "license": "MIT License (DavidHDev/react-bits)",
+    "relevance_to_miora": "Ideal for neural signal visualization (Curving spectral gradient waves for neural decision boundaries)",
+    "suggested_section": "Background Surface"
+  },
+  {
+    "name": "animated-svg-branch-connector",
+    "source": "Morphin",
+    "url": "https://morphin.dev/",
+    "registry_url": "https://registry.morphin.dev/items/animated-svg-branch-connector.json",
+    "category": "Interactive Motion UI",
+    "visual_description": "Hierarchical tree branch connectors for neural cascading decision gates",
+    "interaction_type": "Scroll / Pointer / Hover / Gesture",
+    "technology": "React, Framer Motion, GSAP, Tailwind CSS",
+    "dependencies": [
+      "framer-motion",
+      "next-useragent",
+      "usehooks-ts",
+      "tailwind-merge",
+      "clsx"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + React)",
+    "license": "Public Registry (Morphin Dev License / MIT Compatible)",
+    "relevance_to_miora": "Hierarchical tree branch connectors for neural cascading decision gates",
+    "suggested_section": "How MIORA Works"
+  },
+  {
+    "name": "viscose-carousel-interactive-portfolio-gallery",
+    "source": "Morphin",
+    "url": "https://morphin.dev/",
+    "registry_url": "https://registry.morphin.dev/items/viscose-carousel-interactive-portfolio-gallery.json",
+    "category": "Interactive Motion UI",
+    "visual_description": "Three.js gooey ring carousel with GSAP motion for experiment cards",
+    "interaction_type": "Scroll / Pointer / Hover / Gesture",
+    "technology": "React, Framer Motion, GSAP, Tailwind CSS",
+    "dependencies": [
+      "three",
+      "gsap",
+      "lil-gui"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + React)",
+    "license": "Public Registry (Morphin Dev License / MIT Compatible)",
+    "relevance_to_miora": "Three.js gooey ring carousel with GSAP motion for experiment cards",
+    "suggested_section": "Scientific Results / Gallery"
+  },
+  {
+    "name": "animated-dashboard-performance-chart",
+    "source": "Morphin",
+    "url": "https://morphin.dev/",
+    "registry_url": "https://registry.morphin.dev/items/animated-dashboard-performance-chart.json",
+    "category": "Interactive Motion UI",
+    "visual_description": "Performance metrics trend chart with tabs and interactive hover",
+    "interaction_type": "Scroll / Pointer / Hover / Gesture",
+    "technology": "React, Framer Motion, GSAP, Tailwind CSS",
+    "dependencies": [
+      "framer-motion",
+      "lucide-react",
+      "@base-ui/react",
+      "class-variance-authority",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + React)",
+    "license": "Public Registry (Morphin Dev License / MIT Compatible)",
+    "relevance_to_miora": "Performance metrics trend chart with tabs and interactive hover",
+    "suggested_section": "Scientific Results"
+  },
+  {
+    "name": "Libraries.dev Thinking Orbs",
+    "source": "Libraries.dev",
+    "url": "https://libraries.dev/thinking-orbs",
+    "github_url": "https://github.com/Jakubantalik/Libraries.dev",
+    "category": "Motion & Visual Effects",
+    "visual_description": "Multi-layered organic glowing orbs indicating active AI/heuristic processing",
+    "interaction_type": "Pointer / Continuous Ambient / CSS Animation",
+    "technology": "React, Tailwind CSS, Canvas / SVG Shaders",
+    "dependencies": [
+      "react",
+      "framer-motion",
+      "clsx"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + Specs)",
+    "license": "MIT License (Jakub Antalik / Libraries.dev)",
+    "relevance_to_miora": "Multi-layered organic glowing orbs indicating active AI/heuristic processing",
+    "suggested_section": "Decision Protection Engine"
+  },
+  {
+    "name": "Libraries.dev Liquid Gooey",
+    "source": "Libraries.dev",
+    "url": "https://libraries.dev/liquid-gooey",
+    "github_url": "https://github.com/Jakubantalik/Libraries.dev",
+    "category": "Motion & Visual Effects",
+    "visual_description": "Organic SVG gooey filter simulation with fluid coalescing physics",
+    "interaction_type": "Pointer / Continuous Ambient / CSS Animation",
+    "technology": "React, Tailwind CSS, Canvas / SVG Shaders",
+    "dependencies": [
+      "react",
+      "framer-motion",
+      "clsx"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + Specs)",
+    "license": "MIT License (Jakub Antalik / Libraries.dev)",
+    "relevance_to_miora": "Organic SVG gooey filter simulation with fluid coalescing physics",
+    "suggested_section": "Signal Interference / Noise"
+  },
+  {
+    "name": "Libraries.dev Voice Glow",
+    "source": "Libraries.dev",
+    "url": "https://libraries.dev/voice-glow",
+    "github_url": "https://github.com/Jakubantalik/Libraries.dev",
+    "category": "Motion & Visual Effects",
+    "visual_description": "Acoustic / EMG frequency waveform reactive glow aura",
+    "interaction_type": "Pointer / Continuous Ambient / CSS Animation",
+    "technology": "React, Tailwind CSS, Canvas / SVG Shaders",
+    "dependencies": [
+      "react",
+      "framer-motion",
+      "clsx"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + Specs)",
+    "license": "MIT License (Jakub Antalik / Libraries.dev)",
+    "relevance_to_miora": "Acoustic / EMG frequency waveform reactive glow aura",
+    "suggested_section": "Signal Monitoring / Audio"
+  },
+  {
+    "name": "Libraries.dev Bot Avatars",
+    "source": "Libraries.dev",
+    "url": "https://libraries.dev/bot-avatars",
+    "github_url": "https://github.com/Jakubantalik/Libraries.dev",
+    "category": "Motion & Visual Effects",
+    "visual_description": "Generative high-tech avatar shapes with procedural geometry",
+    "interaction_type": "Pointer / Continuous Ambient / CSS Animation",
+    "technology": "React, Tailwind CSS, Canvas / SVG Shaders",
+    "dependencies": [
+      "react",
+      "framer-motion",
+      "clsx"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + Specs)",
+    "license": "MIT License (Jakub Antalik / Libraries.dev)",
+    "relevance_to_miora": "Generative high-tech avatar shapes with procedural geometry",
+    "suggested_section": "Team / Methodology"
+  },
+  {
+    "name": "Libraries.dev Liquid Metal",
+    "source": "Libraries.dev",
+    "url": "https://libraries.dev/metal",
+    "github_url": "https://github.com/Jakubantalik/Libraries.dev",
+    "category": "Motion & Visual Effects",
+    "visual_description": "Photorealistic liquid metal chromatic shader reflections",
+    "interaction_type": "Pointer / Continuous Ambient / CSS Animation",
+    "technology": "React, Tailwind CSS, Canvas / SVG Shaders",
+    "dependencies": [
+      "react",
+      "framer-motion",
+      "clsx"
+    ],
+    "source_code_availability": "Full source acquired (TypeScript + Specs)",
+    "license": "MIT License (Jakub Antalik / Libraries.dev)",
+    "relevance_to_miora": "Photorealistic liquid metal chromatic shader reflections",
+    "suggested_section": "Hero Visual Polish"
+  },
+  {
+    "name": "Seer.js Waves",
+    "source": "Seer.js",
+    "url": "https://seer-js.com/customize.html?effect=waves",
+    "category": "3D WebGL Backgrounds",
+    "visual_description": "3D undulating wavy grid surface that dynamically rises and swells under cursor",
+    "interaction_type": "Pointer & Gyroscope 3D Reactive",
+    "technology": "Three.js, WebGL Shaders",
+    "dependencies": [
+      "three"
+    ],
+    "source_code_availability": "Full minified standalone engine & shader bundle acquired",
+    "license": "Publicly distributed by seer-js.com",
+    "relevance_to_miora": "3D undulating wavy grid surface that dynamically rises and swells under cursor",
+    "suggested_section": "The Problem / Signal Disturbance"
+  },
+  {
+    "name": "Seer.js Harmonic",
+    "source": "Seer.js",
+    "url": "https://seer-js.com/customize.html?effect=harmonic",
+    "category": "3D WebGL Backgrounds",
+    "visual_description": "Harmonic oscillation surface displaying multi-sine waves mirroring EEG frequencies",
+    "interaction_type": "Pointer & Gyroscope 3D Reactive",
+    "technology": "Three.js, WebGL Shaders",
+    "dependencies": [
+      "three"
+    ],
+    "source_code_availability": "Full minified standalone engine & shader bundle acquired",
+    "license": "Publicly distributed by seer-js.com",
+    "relevance_to_miora": "Harmonic oscillation surface displaying multi-sine waves mirroring EEG frequencies",
+    "suggested_section": "The Problem / EEG Waveform"
+  },
+  {
+    "name": "Seer.js Grid",
+    "source": "Seer.js",
+    "url": "https://seer-js.com/customize.html?effect=grid",
+    "category": "3D WebGL Backgrounds",
+    "visual_description": "Precision constellation coordinate grid with interactive nodal links",
+    "interaction_type": "Pointer & Gyroscope 3D Reactive",
+    "technology": "Three.js, WebGL Shaders",
+    "dependencies": [
+      "three"
+    ],
+    "source_code_availability": "Full minified standalone engine & shader bundle acquired",
+    "license": "Publicly distributed by seer-js.com",
+    "relevance_to_miora": "Precision constellation coordinate grid with interactive nodal links",
+    "suggested_section": "Decision Matrix"
+  },
+  {
+    "name": "ShaderGradient",
+    "source": "ShaderGradient",
+    "url": "https://shadergradient.co/",
+    "category": "3D Mesh Gradient Shaders",
+    "visual_description": "High-fidelity moving 3D color field with organic wave distortion and soft depth of field",
+    "interaction_type": "Pointer / Continuous Ambient WebGL Motion",
+    "technology": "React Three Fiber, Three.js, GLSL",
+    "dependencies": [
+      "shadergradient",
+      "three",
+      "@react-three/fiber"
+    ],
+    "source_code_availability": "Available via NPM (npm i shadergradient)",
+    "license": "MIT / Open NPM Package",
+    "relevance_to_miora": "Cinematic ambient backdrop for hero transition and technical depth",
+    "suggested_section": "Hero & Section Transitions"
+  }
+]

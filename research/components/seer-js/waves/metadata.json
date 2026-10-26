@@ -1,0 +1,16 @@
+{
+  "name": "Seer.js Waves",
+  "source": "Seer.js",
+  "url": "https://seer-js.com/customize.html?effect=waves",
+  "category": "3D WebGL Backgrounds",
+  "visual_description": "3D undulating wavy grid surface that dynamically rises and swells under cursor",
+  "interaction_type": "Pointer & Gyroscope 3D Reactive",
+  "technology": "Three.js, WebGL Shaders",
+  "dependencies": [
+    "three"
+  ],
+  "source_code_availability": "Full minified standalone engine & shader bundle acquired",
+  "license": "Publicly distributed by seer-js.com",
+  "relevance_to_miora": "3D undulating wavy grid surface that dynamically rises and swells under cursor",
+  "suggested_section": "The Problem / Signal Disturbance"
+}

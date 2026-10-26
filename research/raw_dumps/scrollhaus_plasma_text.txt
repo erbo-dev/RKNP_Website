@@ -1,0 +1,44 @@
+3D templates / Glass & chrome
+
+Plasma Orb: an interactive 3D cursor template
+
+A plasma ball whose crackling bolts reach for the cursor wherever it touches the glass.
+
+Try it: Touch the glass · click to discharge. Open the live Plasma Orb full screen.
+
+Where the Plasma Orb works best
+
+Energy, electronics, AI and science brands, and dramatic product reveals.
+
+How it is built
+
+Jagged polylines are regenerated twenty-four times a second; with the cursor on the glass, most bolts bend to meet it, just like a fingertip on a plasma ball. The whole effect is plain three.js in one module script. It renders only while it is on screen and caps the pixel ratio on high-density displays to protect performance.
+
+Add it to your website
+Add a Code, Embed or Custom HTML block where the effect should sit (Webflow, Framer, WordPress, GoHighLevel, Shopify or plain HTML).
+Paste the snippet. It is one element and one script; three.js loads from a CDN.
+Edit the colours and words in the settings block, then publish.
+Frequently asked questions
+Is the Plasma Orb template free?
+
+Anyone can open it live and try the interaction. Copying the code is included with a Scrollhaus plan.
+
+Does it work on mobile?
+
+Yes. On touch screens it runs a gentle automatic motion so the scene is never still, and taps trigger the click interaction.
+
+Do I need Spline or three.js experience?
+
+No. It is one HTML element and one module script. Colours, text and images live in a settings block at the top.
+
+More glass & chrome 3D templates
+Glass Lens Headline: A clear glass ring floats over a bold headline and bends the type wherever the cursor drags it.
+Neon Tube: A glowing neon tube on a brick wall that bends toward the cursor and flickers on click.
+Prism Light Split: The cursor is a light source: its beam hits a glass prism and splits into a rainbow fan.
+Layered Waves: Glossy colour ribbons rolling like waves; the cursor lifts the ones beneath it and a click sends a swell.
+Shattering Crystal: An iridescent crystal ball whose facets lift away and spin wherever the cursor touches, then knit back together.
+Liquid Chrome Blob: An oil-slick chrome blob that keeps flowing and stretches its surface out to reach for the cursor.
+
+See all 75 interactive 3D website templates
+
+Website library · Creative · Prompts · 3D templates · Web templates · UI components · Backgrounds · Effects · Journal · MCP · Affiliates · Pricing · Why Scrollhaus · About · Terms · Privacy · Refunds · Licence · Cookies

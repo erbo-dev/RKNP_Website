@@ -1,0 +1,16 @@
+{
+  "name": "Seer.js Harmonic",
+  "source": "Seer.js",
+  "url": "https://seer-js.com/customize.html?effect=harmonic",
+  "category": "3D WebGL Backgrounds",
+  "visual_description": "Harmonic oscillation surface displaying multi-sine waves mirroring EEG frequencies",
+  "interaction_type": "Pointer & Gyroscope 3D Reactive",
+  "technology": "Three.js, WebGL Shaders",
+  "dependencies": [
+    "three"
+  ],
+  "source_code_availability": "Full minified standalone engine & shader bundle acquired",
+  "license": "Publicly distributed by seer-js.com",
+  "relevance_to_miora": "Harmonic oscillation surface displaying multi-sine waves mirroring EEG frequencies",
+  "suggested_section": "The Problem / EEG Waveform"
+}

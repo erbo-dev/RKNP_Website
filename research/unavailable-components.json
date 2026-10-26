@@ -1,0 +1,368 @@
+[
+  {
+    "source": "Bencho",
+    "component": "Network Graph",
+    "url": "https://bencho.dev/blocks/action-node",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Line Sphere",
+    "url": "https://bencho.dev/blocks/drag-ball",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Dot Swarm",
+    "url": "https://bencho.dev/blocks/particles",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Heart Rate",
+    "url": "https://bencho.dev/blocks/slosh",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Heat Map",
+    "url": "https://bencho.dev/blocks/heat-word",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Eye Tracker",
+    "url": "https://bencho.dev/blocks/eye-tracker",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Stacked Bars",
+    "url": "https://bencho.dev/blocks/stacked-bars",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Rolling Counter",
+    "url": "https://bencho.dev/blocks/rolling-counter",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Magnetic Dots",
+    "url": "https://bencho.dev/blocks/magnet-select",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Dot Globe",
+    "url": "https://bencho.dev/blocks/drag-ball",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Image Compare",
+    "url": "https://bencho.dev/blocks/image-compare",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Action Node",
+    "url": "https://bencho.dev/blocks/action-node",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Step Player",
+    "url": "https://bencho.dev/blocks/step-player",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Shimmer Text",
+    "url": "https://bencho.dev/blocks/signature",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Progressive Blur",
+    "url": "https://bencho.dev/blocks/glass-bubble",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Glass Bubble",
+    "url": "https://bencho.dev/blocks/glass-bubble",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Orbit Cards",
+    "url": "https://bencho.dev/blocks/card-swap",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Bencho",
+    "component": "Metaballs",
+    "url": "https://bencho.dev/blocks/slosh",
+    "reason": "PRO / paid subscription required ($99/yr). Code is locked behind auth wall.",
+    "attempted_methods": [
+      "Official website inspection (bencho.dev)",
+      "DOM and script payload analysis",
+      "Registry endpoint inspection",
+      "GitHub open source search"
+    ],
+    "required_from_user": "User Bencho PRO account export / source code if proprietary implementation is preferred, or authorization to build custom native React/Three.js equivalents.",
+    "priority": "high"
+  },
+  {
+    "source": "Scrollhaus",
+    "component": "Plasma Orb",
+    "url": "https://scrollhaus.ai/templates/3d/plasma-orb/",
+    "reason": "PRO / commercial paid subscription required. Cloudflare bot protection and paywall.",
+    "attempted_methods": [
+      "Official template inspection (scrollhaus.ai/templates/3d)",
+      "DOM script analysis",
+      "Public code download endpoint check"
+    ],
+    "required_from_user": "Purchased template zip/code from Scrollhaus, or approval to use custom Three.js shader implementations.",
+    "priority": "medium"
+  },
+  {
+    "source": "Scrollhaus",
+    "component": "Layered Waves",
+    "url": "https://scrollhaus.ai/templates/3d/layered-waves/",
+    "reason": "PRO / commercial paid subscription required. Cloudflare bot protection and paywall.",
+    "attempted_methods": [
+      "Official template inspection (scrollhaus.ai/templates/3d)",
+      "DOM script analysis",
+      "Public code download endpoint check"
+    ],
+    "required_from_user": "Purchased template zip/code from Scrollhaus, or approval to use custom Three.js shader implementations.",
+    "priority": "medium"
+  },
+  {
+    "source": "Scrollhaus",
+    "component": "Glass Lens Headline",
+    "url": "https://scrollhaus.ai/templates/3d/glass-lens/",
+    "reason": "PRO / commercial paid subscription required. Cloudflare bot protection and paywall.",
+    "attempted_methods": [
+      "Official template inspection (scrollhaus.ai/templates/3d)",
+      "DOM script analysis",
+      "Public code download endpoint check"
+    ],
+    "required_from_user": "Purchased template zip/code from Scrollhaus, or approval to use custom Three.js shader implementations.",
+    "priority": "medium"
+  },
+  {
+    "source": "Scrollhaus",
+    "component": "Neon Tube",
+    "url": "https://scrollhaus.ai/templates/3d/neon-tube/",
+    "reason": "PRO / commercial paid subscription required. Cloudflare bot protection and paywall.",
+    "attempted_methods": [
+      "Official template inspection (scrollhaus.ai/templates/3d)",
+      "DOM script analysis",
+      "Public code download endpoint check"
+    ],
+    "required_from_user": "Purchased template zip/code from Scrollhaus, or approval to use custom Three.js shader implementations.",
+    "priority": "medium"
+  },
+  {
+    "source": "Scrollhaus",
+    "component": "Shattering Crystal",
+    "url": "https://scrollhaus.ai/templates/3d/crystal-shards/",
+    "reason": "PRO / commercial paid subscription required. Cloudflare bot protection and paywall.",
+    "attempted_methods": [
+      "Official template inspection (scrollhaus.ai/templates/3d)",
+      "DOM script analysis",
+      "Public code download endpoint check"
+    ],
+    "required_from_user": "Purchased template zip/code from Scrollhaus, or approval to use custom Three.js shader implementations.",
+    "priority": "medium"
+  },
+  {
+    "source": "Scrollhaus",
+    "component": "Liquid Chrome Blob",
+    "url": "https://scrollhaus.ai/templates/3d/liquid-blob/",
+    "reason": "PRO / commercial paid subscription required. Cloudflare bot protection and paywall.",
+    "attempted_methods": [
+      "Official template inspection (scrollhaus.ai/templates/3d)",
+      "DOM script analysis",
+      "Public code download endpoint check"
+    ],
+    "required_from_user": "Purchased template zip/code from Scrollhaus, or approval to use custom Three.js shader implementations.",
+    "priority": "medium"
+  },
+  {
+    "source": "Unicorn Studio",
+    "component": "Unicorn Studio Embedded Scenes",
+    "url": "https://www.unicorn.studio/",
+    "reason": "Cloud-hosted proprietary editor; embedding requires private project ID / paid plan.",
+    "attempted_methods": [
+      "Official documentation and pricing inspection",
+      "NPM package registry search (@unicorn.studio)",
+      "Public project export check"
+    ],
+    "required_from_user": "Project ID or JSON export file from user Unicorn Studio account.",
+    "priority": "medium"
+  },
+  {
+    "source": "Spline Community",
+    "component": "Interactive 3D Brain Scenes",
+    "url": "https://community.spline.design/",
+    "reason": "Spline export requires user account with remix rights / paid export license for production standalone code.",
+    "attempted_methods": [
+      "Community search inspection",
+      "Public splinecode URL probe"
+    ],
+    "required_from_user": "Public/remixed .splinecode URL or exported asset from user Spline account.",
+    "priority": "high"
+  },
+  {
+    "source": "GitHub / StarKnightt",
+    "component": "brain-explorer",
+    "url": "https://github.com/StarKnightt/brain-explorer",
+    "reason": "License: None. Under copyright law, repository without an open-source license cannot have code copied directly.",
+    "attempted_methods": [
+      "GitHub repository API and license check"
+    ],
+    "required_from_user": "Permitted only as architectural/aesthetic reference, or explicit author permission required for direct copying.",
+    "priority": "medium"
+  }
+]

@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="en-US"><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>morphin-registry</title>
+<meta name="generator" content="Jekyll v3.10.0">
+<meta property="og:title" content="morphin-registry">
+<meta property="og:locale" content="en_US">
+<link rel="canonical" href="https://registry.morphin.dev/">
+<meta property="og:url" content="http://registry.morphin.dev/">
+<meta property="og:site_name" content="morphin-registry">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="morphin-registry">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","headline":"morphin-registry","name":"morphin-registry","url":"http://registry.morphin.dev/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <style class="anchorjs"></style><link rel="stylesheet" href="/assets/css/style.css?v=bb022929fab786debee9b9efe107eddf7097afd8">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://registry.morphin.dev/">morphin-registry</a></h1>
+      
+
+      <div align="center">
+  <p>
+    <img src="./morphin-dropdown.gif" alt="Morphin dropdown preview">
+  </p>
+  <h1>Morphin Registry</h1>
+  <p><strong>The component registry behind the Morphin CLI.</strong></p>
+  <p>
+    A curated collection of installable React UI components, demos, and supporting assets
+    published as JSON manifests and file payloads for Morphin consumers.
+  </p>
+  <p>
+    <a href="https://registry.morphin.dev"><strong>Registry</strong></a>
+    ·
+    <a href="./registry.json"><strong>Catalog</strong></a>
+    ·
+    <a href="./items/animated-svg-branch-connector.json"><strong>Example Item</strong></a>
+  </p>
+  <p>
+    <img alt="Registry" src="https://img.shields.io/badge/type-component_registry-111111?style=flat-square">
+    <img alt="React" src="https://img.shields.io/badge/stack-React%20%2B%20TypeScript-111111?style=flat-square">
+    <img alt="Tailwind CSS" src="https://img.shields.io/badge/styling-Tailwind_CSS-111111?style=flat-square">
+    <img alt="Published" src="https://img.shields.io/badge/domain-registry.morphin.dev-111111?style=flat-square">
+  </p>
+</div>
+
+<h2 id="overview">Overview<a class="anchorjs-link " href="#overview" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>This repository is the source of truth for the Morphin component registry.</p>
+
+<p>It does not contain the CLI itself. Instead, it stores the manifests and file payloads the CLI consumes when a user installs a component from the registry.</p>
+
+<p>Current shape of the registry:</p>
+
+<ul>
+  <li>31 published items</li>
+  <li>all entries are <code class="language-plaintext highlighter-rouge">component</code> manifests</li>
+  <li>most packages target React + TypeScript + Tailwind CSS</li>
+  <li>the most common runtime dependencies are <code class="language-plaintext highlighter-rouge">framer-motion</code>, <code class="language-plaintext highlighter-rouge">clsx</code>, and <code class="language-plaintext highlighter-rouge">tailwind-merge</code></li>
+</ul>
+
+<h2 id="what-lives-here">What Lives Here<a class="anchorjs-link " href="#what-lives-here" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Every registry item is described in two places:</p>
+
+<ol>
+  <li><a href="/registry.json"><code class="language-plaintext highlighter-rouge">registry.json</code></a> is the top-level catalog.</li>
+  <li><a href="./items"><code class="language-plaintext highlighter-rouge">items/</code></a> contains one manifest per component.</li>
+</ol>
+
+<p>The installable source files themselves live under <a href="./files"><code class="language-plaintext highlighter-rouge">files/</code></a>.</p>
+
+<p>Typical examples:</p>
+
+<ul>
+  <li><a href="/registry.json"><code class="language-plaintext highlighter-rouge">registry.json</code></a> lists available items and their descriptions.</li>
+  <li><a href="/items/animated-svg-branch-connector.json"><code class="language-plaintext highlighter-rouge">items/animated-svg-branch-connector.json</code></a> defines one installable component.</li>
+  <li><a href="/files/components/animated-svg-branch-connector/svg-branches.tsx"><code class="language-plaintext highlighter-rouge">files/components/animated-svg-branch-connector/svg-branches.tsx</code></a> is one of the source payload files referenced by that manifest.</li>
+</ul>
+
+<h2 id="registry-structure">Registry Structure<a class="anchorjs-link " href="#registry-structure" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
+├── CNAME
+├── registry.json
+├── items/
+│   └── &lt;slug&gt;.json
+└── files/
+    ├── components/
+    ├── lib/
+    ├── hooks/
+    ├── providers/
+    ├── public/
+    └── types/
+</code></pre></div></div>
+
+<p>There is one implementation detail worth noting:</p>
+
+<ul>
+  <li>manifest <code class="language-plaintext highlighter-rouge">files[].path</code> values are registry paths such as <code class="language-plaintext highlighter-rouge">components/...</code></li>
+  <li>the repository stores the actual payloads under <code class="language-plaintext highlighter-rouge">files/...</code></li>
+</ul>
+
+<p>In other words, the manifest path describes the published registry asset path, not the literal path inside this Git repository.</p>
+
+<h2 id="item-contract">Item Contract<a class="anchorjs-link " href="#item-contract" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Each manifest follows the same general contract:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"component-slug"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"component"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"files"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"components/component-slug/example.tsx"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"components/example.tsx"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"framer-motion"</span><span class="p">,</span><span class="w"> </span><span class="s2">"clsx"</span><span class="p">,</span><span class="w"> </span><span class="s2">"tailwind-merge"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Field meanings:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">name</code>: unique registry slug</li>
+  <li><code class="language-plaintext highlighter-rouge">type</code>: currently <code class="language-plaintext highlighter-rouge">component</code></li>
+  <li><code class="language-plaintext highlighter-rouge">files</code>: published source files and where they should be written in the consumer project</li>
+  <li><code class="language-plaintext highlighter-rouge">dependencies</code>: packages the consumer needs installed</li>
+</ul>
+
+<h2 id="adding-a-new-component">Adding A New Component<a class="anchorjs-link " href="#adding-a-new-component" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>To publish a new item to the registry:</p>
+
+<ol>
+  <li>Add the installable source files under <a href="./files"><code class="language-plaintext highlighter-rouge">files/</code></a>.</li>
+  <li>Create a new manifest in <a href="./items"><code class="language-plaintext highlighter-rouge">items/</code></a> describing those files and dependencies.</li>
+  <li>Register the item in <a href="/registry.json"><code class="language-plaintext highlighter-rouge">registry.json</code></a> with its name, type, manifest path, and description.</li>
+  <li>Publish the updated static registry to <code class="language-plaintext highlighter-rouge">registry.morphin.dev</code>.</li>
+</ol>
+
+<p>Use an existing item as the template if you want the safest starting point:</p>
+
+<ul>
+  <li><a href="/items/animated-svg-branch-connector.json"><code class="language-plaintext highlighter-rouge">items/animated-svg-branch-connector.json</code></a></li>
+  <li><a href="/items/transaction-flow-in-one-button.json"><code class="language-plaintext highlighter-rouge">items/transaction-flow-in-one-button.json</code></a></li>
+  <li><a href="/items/scroll-scramble-section.json"><code class="language-plaintext highlighter-rouge">items/scroll-scramble-section.json</code></a></li>
+</ul>
+
+<h2 id="design-of-the-registry">Design Of The Registry<a class="anchorjs-link " href="#design-of-the-registry" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>This registry is optimized for animated, installation-ready UI blocks rather than generic package distribution.</p>
+
+<p>Most items ship as:</p>
+
+<ul>
+  <li>TSX components</li>
+  <li>local utility files</li>
+  <li>demo files</li>
+  <li>occasional hooks, providers, types, and public assets</li>
+</ul>
+
+<p>That makes the repository easy to inspect, easy to diff, and straightforward for a CLI to consume as raw source code.</p>
+
+<h2 id="contributing">Contributing<a class="anchorjs-link " href="#contributing" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>If you are contributing new registry entries, keep these rules consistent:</p>
+
+<ul>
+  <li>use a unique kebab-case slug</li>
+  <li>keep manifest paths and targets explicit</li>
+  <li>only declare dependencies the installed item actually needs</li>
+  <li>include every required local file in the manifest</li>
+  <li>update <a href="/registry.json"><code class="language-plaintext highlighter-rouge">registry.json</code></a> in the same change as the new item</li>
+</ul>
+
+<h2 id="links">Links<a class="anchorjs-link " href="#links" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<ul>
+  <li>Registry domain: <code class="language-plaintext highlighter-rouge">https://registry.morphin.dev</code></li>
+  <li>Repository: <code class="language-plaintext highlighter-rouge">https://github.com/sikkeep/morphin-registry</code></li>
+  <li>Catalog: <a href="/registry.json"><code class="language-plaintext highlighter-rouge">registry.json</code></a></li>
+</ul>
+
+<h2 id="acknowledgements">Acknowledgements<a class="anchorjs-link " href="#acknowledgements" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>The presentation style of this README is inspired by the Magic UI project:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">https://github.com/magicuidesign/magicui</code></li>
+</ul>
+
+<h2 id="license">License<a class="anchorjs-link " href="#license" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Licensed under the <a href="/LICENSE">MIT License</a>. Free for personal and commercial use.</p>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/sikkeep/morphin-registry/edit/main/README.md">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;03203069e85e42ffb52cbeb5326a82d4&quot;,&quot;r&quot;:1,&quot;spa&quot;:2}" crossorigin="anonymous"></script>
+
+
+</body></html>

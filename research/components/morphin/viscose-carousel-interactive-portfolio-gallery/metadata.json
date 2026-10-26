@@ -1,0 +1,19 @@
+{
+  "name": "viscose-carousel-interactive-portfolio-gallery",
+  "source": "Morphin",
+  "url": "https://morphin.dev/",
+  "registry_url": "https://registry.morphin.dev/items/viscose-carousel-interactive-portfolio-gallery.json",
+  "category": "Interactive Motion UI",
+  "visual_description": "Three.js gooey ring carousel with GSAP motion for experiment cards",
+  "interaction_type": "Scroll / Pointer / Hover / Gesture",
+  "technology": "React, Framer Motion, GSAP, Tailwind CSS",
+  "dependencies": [
+    "three",
+    "gsap",
+    "lil-gui"
+  ],
+  "source_code_availability": "Full source acquired (TypeScript + React)",
+  "license": "Public Registry (Morphin Dev License / MIT Compatible)",
+  "relevance_to_miora": "Three.js gooey ring carousel with GSAP motion for experiment cards",
+  "suggested_section": "Scientific Results / Gallery"
+}

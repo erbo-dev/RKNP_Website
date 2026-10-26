@@ -1,0 +1,18 @@
+{
+  "name": "ShaderGradient",
+  "source": "ShaderGradient",
+  "url": "https://shadergradient.co/",
+  "category": "3D Mesh Gradient Shaders",
+  "visual_description": "High-fidelity moving 3D color field with organic wave distortion and soft depth of field",
+  "interaction_type": "Pointer / Continuous Ambient WebGL Motion",
+  "technology": "React Three Fiber, Three.js, GLSL",
+  "dependencies": [
+    "shadergradient",
+    "three",
+    "@react-three/fiber"
+  ],
+  "source_code_availability": "Available via NPM (npm i shadergradient)",
+  "license": "MIT / Open NPM Package",
+  "relevance_to_miora": "Cinematic ambient backdrop for hero transition and technical depth",
+  "suggested_section": "Hero & Section Transitions"
+}
