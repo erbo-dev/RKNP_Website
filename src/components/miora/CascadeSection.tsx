@@ -128,26 +128,6 @@ export default function CascadeSection() {
             );
           })}
         </div>
-
-        {/* Fallback Principle Banner */}
-        <div className="p-6 sm:p-8 rounded-2xl border border-brand-accent/30 bg-brand-accent/5 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-brand-accent/15 border border-brand-accent/40 flex items-center justify-center text-brand-accent shrink-0">
-              <Check size={24} />
-            </div>
-            <div>
-              <div className="text-white font-medium text-base sm:text-lg mb-1">
-                Қауіпсіздік кепілі: Егер шарттар орындалмаса не болады?
-              </div>
-              <p className="text-xs sm:text-sm text-[#9ba3af]">
-                Егер 4 шлюздің біреуі болсын сәтсіз өтсе, бастапқы декодердің командасы қаз-қалпында сақталады. Бұл қате түзетулер қаупін (HARM) 4.7%-дан 3.9%-ға дейін азайтты.
-              </p>
-            </div>
-          </div>
-          <div className="font-mono text-xs px-4 py-2 rounded-lg bg-black border border-white/15 text-white whitespace-nowrap">
-            DEFAULT: PRESERVE BASELINE
-          </div>
-        </div>
       </div>
     </section>
   );

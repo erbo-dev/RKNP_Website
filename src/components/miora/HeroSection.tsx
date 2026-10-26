@@ -16,13 +16,12 @@ export default function HeroSection() {
           loop
           muted
           playsInline
-          className="w-full h-full object-cover opacity-35 scale-105 filter grayscale contrast-125 brightness-75 transition-opacity duration-1000"
+          className="w-full h-full object-cover opacity-65 scale-100 filter grayscale contrast-110 brightness-95 transition-opacity duration-1000"
           src="/videos/hero_bg.mp4"
         />
-        {/* Deep surgical dark gradient overlays - eliminates any warm or sepia cast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050608] via-transparent to-[#050608]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050608] via-transparent to-[#050608]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_15%,_#050608_85%)]" />
+        {/* Deep surgical dark gradient overlays - eliminates any warm cast while keeping video cinematic */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050608]/90 via-transparent to-[#050608]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#050608_90%)]" />
       </div>
 
       {/* Modern Architectural Corner Crosshairs (+) */}
@@ -51,7 +50,7 @@ export default function HeroSection() {
 
       {/* 3. Central Monumental Editorial Statement */}
       <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center">
-        <h1 className="font-sans text-5xl sm:text-7xl lg:text-8xl font-medium tracking-[-0.04em] text-white leading-[1.03] mb-6 max-w-5xl">
+        <h1 className="font-sans text-5xl sm:text-7xl lg:text-8xl xl:text-[90px] font-medium tracking-[-0.04em] leading-[1.02] mb-6 max-w-5xl bg-clip-text text-transparent bg-gradient-to-b from-white via-neutral-100 to-neutral-400">
           The brain-computer interface that protects intent.
         </h1>
 
