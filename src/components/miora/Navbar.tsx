@@ -12,7 +12,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { id: "challenge", label: "Мәселе", href: "#challenge" },
   { id: "reveal", label: "Технология", href: "#reveal" },
-  { id: "cortex", label: "3D Cortex", href: "#cortex" },
+  { id: "cortex", label: "3D Сканер", href: "#cortex" },
   { id: "cascade", label: "4 Шлюз", href: "#cascade" },
   { id: "demo", label: "Симулятор", href: "#demo" },
   { id: "specs", label: "Спецификация", href: "#specs" },

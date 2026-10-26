@@ -171,7 +171,7 @@ export default function InteractiveDemo() {
                       : "border-white/10 bg-[#050608] text-[#757575]"
                   }`}
                 >
-                  <div className="font-bold">Қатысушы S1</div>
+                  <div className="font-bold">Профиль A (Стандартты)</div>
                   <div className="text-[10px] text-brand-secondary">Сарапшы рұқсат етілген</div>
                 </button>
 
@@ -183,8 +183,8 @@ export default function InteractiveDemo() {
                       : "border-white/10 bg-[#050608] text-[#757575]"
                   }`}
                 >
-                  <div className="font-bold">Қатысушы S4</div>
-                  <div className="text-[10px] text-brand-accent">Сарапшы тиімсіз (Шектелген)</div>
+                  <div className="font-bold">Профиль B (Сезімтал)</div>
+                  <div className="text-[10px] text-brand-accent">Сарапшы шектелген (Қауіпсіздік)</div>
                 </button>
               </div>
             </div>
