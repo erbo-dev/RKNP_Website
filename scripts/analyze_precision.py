@@ -28,3 +28,4 @@ for s in soup.find_all(['section', 'header', 'footer']):
 print(f"Total main blocks: {len(meaningful_sections)}")
 for i, m in enumerate(meaningful_sections):
     print(f"[{i+1}] <{m['tag']}> id='{m['id']}' class='{m['classes'][:40]}' | Heading: '{m['heading']}'")
+

@@ -28,3 +28,4 @@ for s in sections:
 
 with open('research/raw_dumps/precision_subsections.json', 'w', encoding='utf-8') as f:
     json.dump(sections, f, indent=2)
+

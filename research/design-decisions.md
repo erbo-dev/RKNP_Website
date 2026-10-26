@@ -88,3 +88,4 @@ flowchart TD
 - **Headings & Brand**: `Space Grotesk` / `Geist Sans` with negative letter-spacing (`tracking-tight`).
 - **Quotes & Emphasized Truths**: `Instrument Serif` / `Playfair Display` italic.
 - **Data, Gates, Status Readouts**: `JetBrains Mono` / `Geist Mono` (`tracking-wider text-xs uppercase`).
+

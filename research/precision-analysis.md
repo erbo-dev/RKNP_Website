@@ -136,3 +136,4 @@ graph TD
 - **3D Canvas**: Centered with scaled camera FOV and touch drag rotate enabled.
 - **Data Grids**: Desktop 3-4 column grid converts into clean vertical card stacks with border separators.
 - **Sticky Elements**: Header collapses into a clean mobile overlay drawer with accessible button tap targets (minimum 44x44px).
+

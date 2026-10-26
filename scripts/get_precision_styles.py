@@ -17,3 +17,4 @@ for s in styles:
         for line in s.text.split('\n'):
             if 'font-family' in line or 'src:' in line:
                 print("   ", line.strip()[:80])
+

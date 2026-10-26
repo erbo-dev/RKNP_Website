@@ -33,3 +33,4 @@ print("\nFonts detected:", fonts)
 vars_found = set(re.findall(r'--[a-zA-Z0-9_-]+:\s*[^;\}]+', all_css))
 print(f"\nCSS variables count: {len(vars_found)}")
 print("Sample CSS variables:", list(vars_found)[:25])
+

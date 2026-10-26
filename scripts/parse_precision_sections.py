@@ -30,3 +30,4 @@ for el in elements:
 
 with open('research/raw_dumps/precision_detailed_sections.json', 'w', encoding='utf-8') as f:
     json.dump(elements, f, indent=2)
+
