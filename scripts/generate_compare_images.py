@@ -66,3 +66,4 @@ img_after = create_eeg_image(is_protected=True)
 img_after.save('public/images/eeg_miora_protected.jpg', quality=95)
 
 print("Generated comparison images successfully!")
+

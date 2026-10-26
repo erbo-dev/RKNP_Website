@@ -184,3 +184,4 @@ export function Compare({
 
 export const ImageCompare = Compare;
 export default ImageCompare;
+

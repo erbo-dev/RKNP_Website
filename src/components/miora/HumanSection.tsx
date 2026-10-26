@@ -5,7 +5,7 @@ import { Heart, Activity, ShieldCheck } from "lucide-react";
 
 export default function HumanSection() {
   return (
-    <section className="py-32 px-6 md:px-12 bg-[#050608] border-b border-white/10">
+    <section id="human" className="py-32 px-6 md:px-12 bg-[#050608] border-b border-white/10">
       <div className="max-w-7xl mx-auto">
         {/* Section Kicker */}
         <div className="text-center max-w-4xl mx-auto mb-16">
@@ -77,3 +77,4 @@ export default function HumanSection() {
     </section>
   );
 }
+
