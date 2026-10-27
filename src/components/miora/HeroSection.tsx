@@ -50,12 +50,16 @@ export default function HeroSection() {
 
       {/* 3. Central Monumental Editorial Statement */}
       <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center">
-        <h1 className="font-sans text-5xl sm:text-7xl lg:text-8xl xl:text-[90px] font-medium tracking-[-0.04em] leading-[1.02] mb-6 max-w-5xl bg-clip-text text-transparent bg-gradient-to-b from-white via-neutral-100 to-neutral-400">
-          The brain-computer interface that protects intent.
+        <h1 className="font-sans text-5xl sm:text-7xl lg:text-8xl xl:text-[92px] font-light tracking-[-0.035em] leading-[0.98] mb-6 max-w-5xl text-white">
+          The brain–computer interface that{" "}
+          <span className="font-serif italic text-white/95 font-normal tracking-normal">
+            protects intent
+          </span>
+          .
         </h1>
 
-        <div className="text-lg sm:text-2xl text-neutral-200 font-light tracking-tight max-w-2xl mb-5">
-          Protecting the signal. Preserving human intent.
+        <div className="font-serif italic text-xl sm:text-2xl md:text-3xl text-neutral-200 font-normal tracking-tight max-w-2xl mb-5">
+          “Protecting the signal. Preserving human intent.”
         </div>
 
         <p className="text-sm sm:text-base text-neutral-400 max-w-2xl leading-relaxed font-normal mb-10">
@@ -79,23 +83,28 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* 4. Elegant Minimal Corner Decors (Replacing the clunky bottom strip completely) */}
-      <div className="absolute bottom-8 left-8 sm:left-12 z-10 hidden md:flex items-center gap-3 text-[11px] font-mono text-neutral-500 tracking-wider">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="text-neutral-400">RESEARCH PROTOCOL: OFFLINE-V18</span>
-        <span className="text-white/10">|</span>
-        <span className="text-neutral-500">SAMPLING: 250HZ // 4-GATE CASCADE</span>
-      </div>
-
-      <a
-        href="#challenge"
-        className="absolute bottom-8 right-8 sm:right-12 z-10 hidden md:flex items-center gap-3 text-[11px] font-mono tracking-widest text-neutral-400 hover:text-white transition-colors group"
-      >
-        <span>EXPLORE ARCHITECTURE</span>
-        <div className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1 group-hover:border-white/40 transition-colors">
-          <div className="w-1 h-2 rounded-full bg-[#00e5ff] animate-bounce" />
+      {/* 4. Surgical Swiss Technical Telemetry Rail */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/[0.08] bg-[#050608]/80 backdrop-blur-md px-6 md:px-12 py-3.5 hidden md:flex items-center justify-between text-[11px] font-mono tracking-wider text-neutral-400">
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="text-white">PROTOCOL // OFFLINE-V18</span>
+          </div>
+          <span className="text-white/10">|</span>
+          <div>СИГНАЛ: <span className="text-neutral-300">250 HZ (4-CH EEG)</span></div>
+          <span className="text-white/10">|</span>
+          <div>ҚОРҒАНЫС: <span className="text-emerald-400">4-GATE CASCADED FILTER</span></div>
         </div>
-      </a>
+
+        <div className="flex items-center gap-6">
+          <div className="text-neutral-400">НИЕТТІҢ САҚТАЛУЫ: <span className="text-white font-medium">100%</span></div>
+          <span className="text-white/10">|</span>
+          <a href="#challenge" className="flex items-center gap-2 text-cyan-400 hover:text-white transition-colors group">
+            <span>АРХИТЕКТУРАНЫ ЗЕРТТЕУ</span>
+            <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
+        </div>
+      </div>
     </section>
   );
 }

@@ -489,11 +489,14 @@ export default function NeuralCortex3D() {
             <Radio size={14} className="animate-pulse" />
             <span>03 // Интерактивті Нейро-Диагностикалық Сканер</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-normal text-white tracking-tight leading-tight mb-4">
-            Қозғалыс ниеті мен EMG шуын модельдеу
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-[1.08] mb-4">
+            Қозғалыс ниеті мен EMG шуын{" "}
+            <span className="font-serif italic text-white/95 font-normal">
+              модельдеу
+            </span>
           </h2>
-          <p className="text-sm sm:text-base text-neutral-300 font-light max-w-2xl mx-auto">
-            Бұл жай ғана 3D ми емес — бұл MIORA-ның мидың қай бөлігінен ниетті оқитынын, шайнау кедергісінің қалай ластайтынын және каскадтың сигналды қалай қорғайтынын тікелей симуляциялайтын интерактивті диагностикалық станциясы.
+          <p className="text-sm sm:text-base text-neutral-400 font-light max-w-2xl mx-auto leading-relaxed">
+            Бұл жай ғана 3D модель емес — бұл MIORA-ның ми қыртысынан ниетті қалай оқитынын, шайнау кедергісінің қалай ластайтынын және 4-шлюзді каскадтың сигналды қалай қорғайтынын тікелей көрсететін хирургиялық деңгейдегі диагностикалық станциясы.
           </p>
         </div>
 
@@ -683,59 +686,53 @@ export default function NeuralCortex3D() {
           </div>
         </div>
 
-        {/* 3 Step Interactive Explanation Cards Below the 3D Workbench */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+        {/* Continuous Swiss Architectural Telemetry Dock */}
+        <div className="grid grid-cols-1 md:grid-cols-3 border-y border-white/[0.08] divide-y md:divide-y-0 md:divide-x divide-white/[0.08] mt-12">
           <div 
             onClick={() => handleModeChange("intent")}
-            className={`p-6 rounded-2xl border cursor-pointer transition-all ${
-              activeMode === "intent"
-                ? "border-cyan-400/60 bg-cyan-950/20 shadow-[0_8px_30px_rgba(0,229,255,0.15)]"
-                : "border-white/10 bg-[#080d14]/60 hover:border-white/25"
+            className={`p-8 sm:p-10 cursor-pointer transition-colors duration-300 ${
+              activeMode === "intent" ? "bg-cyan-950/20" : "hover:bg-white/[0.02]"
             }`}
           >
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-4">
               <span className="font-mono text-xs text-cyan-400">01 // ТАЗА НИЕТТІ ҰСТАУ</span>
               <Activity size={16} className="text-cyan-400" />
             </div>
-            <h3 className="text-base font-medium text-white mb-2">Моторлық қыртыс ырғағы</h3>
-            <p className="text-xs text-neutral-400 leading-relaxed font-light">
-              Адам сол қолын немесе оң қолын қозғауды ойлағанда, C3/Cz/C4 арналарында 8-12 Гц жиілікті Mu-ырғағы өзгереді. MIORA бұл сигналды нақты ниет ретінде тіркейді.
+            <h3 className="text-lg font-normal text-white mb-2">Моторлық қыртыс ырғағы</h3>
+            <p className="text-sm text-neutral-400 leading-relaxed font-light">
+              Адам сол немесе оң қолын қозғауды елестеткенде, C3/Cz/C4 арналарында 8-12 Гц жиілікті Mu-ырғағы қалыптасады. MIORA бұл сигналды нақты қозғалыс ниеті деп қабылдайды.
             </p>
           </div>
 
           <div 
             onClick={() => handleModeChange("noise")}
-            className={`p-6 rounded-2xl border cursor-pointer transition-all ${
-              activeMode === "noise"
-                ? "border-rose-400/60 bg-rose-950/20 shadow-[0_8px_30px_rgba(244,63,94,0.15)]"
-                : "border-white/10 bg-[#080d14]/60 hover:border-white/25"
+            className={`p-8 sm:p-10 cursor-pointer transition-colors duration-300 ${
+              activeMode === "noise" ? "bg-rose-950/20" : "hover:bg-white/[0.02]"
             }`}
           >
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-4">
               <span className="font-mono text-xs text-rose-400">02 // БҰЛШЫҚЕТ КЕДЕРГІСІ</span>
               <AlertTriangle size={16} className="text-rose-400" />
             </div>
-            <h3 className="text-base font-medium text-white mb-2">Шайнау кезіндегі EMG шуы</h3>
-            <p className="text-xs text-neutral-400 leading-relaxed font-light">
-              Шайнау, жұтыну немесе тістену кезінде самай бұлшықеттері ЭЭГ сигналынан 10 есе қуатты электрлік импульс туғызады. Қарапайым BCI мұны қате команда деп қабылдап, бұрыс қимыл жасайды.
+            <h3 className="text-lg font-normal text-white mb-2">Шайнау кезіндегі EMG шуы</h3>
+            <p className="text-sm text-neutral-400 leading-relaxed font-light">
+              Шайнау, жұтыну немесе тістену кезінде самай бұлшықеттері ЭЭГ толқындарынан ондаған есе қуатты электрлік импульс туғызып, қарапайым алгоритмдерді қателікке ұшыратады.
             </p>
           </div>
 
           <div 
             onClick={() => handleModeChange("cascade")}
-            className={`p-6 rounded-2xl border cursor-pointer transition-all ${
-              activeMode === "cascade"
-                ? "border-emerald-400/60 bg-emerald-950/20 shadow-[0_8px_30px_rgba(0,230,118,0.15)]"
-                : "border-white/10 bg-[#080d14]/60 hover:border-white/25"
+            className={`p-8 sm:p-10 cursor-pointer transition-colors duration-300 ${
+              activeMode === "cascade" ? "bg-emerald-950/20" : "hover:bg-white/[0.02]"
             }`}
           >
-            <div className="flex items-center justify-between mb-3">
-              <span className="font-mono text-xs text-emerald-400">03 // 4 ШЛЮЗДІ ҚОРҒАНЫС</span>
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-mono text-xs text-emerald-400">03 // 4-ШЛЮЗДІ ҚОРҒАНЫС</span>
               <ShieldCheck size={16} className="text-emerald-400" />
             </div>
-            <h3 className="text-base font-medium text-white mb-2">Команданың 100% сақталуы</h3>
-            <p className="text-xs text-neutral-400 leading-relaxed font-light">
-              MIORA каскады шайнау шуын бірден айырып, сарапшының 4 тексеру шлюзінен өткізеді. Егер сенімділік жеткіліксіз болса — базалық шешімді сақтап, қате бұйрыққа тыйым салады.
+            <h3 className="text-lg font-normal text-white mb-2">Команданың 100% сақталуы</h3>
+            <p className="text-sm text-neutral-400 leading-relaxed font-light">
+              MIORA каскады артефактіні бірден айырып, 4 тексеру шлюзінен өткізеді. Сенімділік жеткіліксіз болса — бастапқы шешім сақталып, бұрыс қимылға жол берілмейді.
             </p>
           </div>
         </div>

@@ -119,17 +119,28 @@ def run_tests():
             try:
                 page.locator("#demo").scroll_into_view_if_needed()
                 time.sleep(0.5)
-                chewing_btn = page.locator("#demo button:has-text('Шайнау жоқ'), #demo button:has-text('Шайнау шуы бар')").first
+                chewing_btn = page.locator("#demo button:has-text('ШАЙНАУ'), #demo button:has-text('ТЫНЫШТЫҚ')").first
                 if chewing_btn.count():
                     chewing_btn.click()
                     time.sleep(0.4)
-                prof_b = page.locator("#demo button:has-text('Профиль B')").first
+                    chewing_btn.click()
+                    time.sleep(0.4)
+                prof_b = page.locator("#demo button:has-text('Жаңа қолданушы')").first
                 if prof_b.count():
                     prof_b.click()
                     time.sleep(0.4)
             except Exception as e:
                 demo_ok = False
             all_passed &= log_test("4-Gate Interactive Simulation Workbench", demo_ok)
+
+            # Capture photographic visual evidence
+            artifact_dir = r"C:\Users\erbos\.gemini\antigravity\brain\6e93a0da-3703-40e9-ada6-eabceb7d2ca0"
+            for sec_id in ["hero", "challenge", "cortex", "cascade", "demo", "specs", "research", "team"]:
+                elem = page.locator(f"#{sec_id}")
+                if elem.count():
+                    elem.scroll_into_view_if_needed()
+                    time.sleep(0.3)
+                    elem.screenshot(path=f"{artifact_dir}\\{sec_id}_v2.png")
 
             # Mobile (375x812)
             mob_page = browser.new_page(viewport={"width": 375, "height": 812})

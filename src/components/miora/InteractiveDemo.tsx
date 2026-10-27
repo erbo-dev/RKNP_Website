@@ -1,52 +1,50 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { Play, Pause, RefreshCw, CheckCircle2, XCircle, ShieldCheck, Activity, AlertCircle, Info } from "lucide-react";
+import { Play, Pause, RefreshCw, CheckCircle2, XCircle, ShieldCheck, Activity, Sliders, Zap } from "lucide-react";
 
 export default function InteractiveDemo() {
   // Simulator State
   const [chewingActive, setChewingActive] = useState(true);
   const [noiseLevel, setNoiseLevel] = useState(70);
-  const [userProfile, setUserProfile] = useState<"S1" | "S4">("S1"); // S1: expert authorized, S4: expert not authorized
+  const [userProfile, setUserProfile] = useState<"calibrated" | "uncalibrated">("calibrated");
   const [selectedIntent, setSelectedIntent] = useState<"left" | "right" | "rest">("left");
   const [isRunning, setIsRunning] = useState(true);
 
   // Intent descriptions in Kazakh
   const intentLabels = {
-    left: "Сол қол қимылы (Left Hand)",
-    right: "Оң қол қимылы (Right Hand)",
+    left: "Сол қол қозғалысы (Left Hand)",
+    right: "Оң қол қозғалысы (Right Hand)",
     rest: "Тыныштық күйі (Rest State)",
   };
 
-  // Determine baseline decoder prediction (prone to noise distortion)
+  // Determine baseline decoder prediction (corrupted under EMG noise)
   const baselinePrediction = useMemo(() => {
-    if (!chewingActive || noiseLevel < 30) {
-      return { command: selectedIntent, confidence: 88, isCorrect: true };
+    if (!chewingActive || noiseLevel < 35) {
+      return { command: selectedIntent, confidence: 89, isCorrect: true };
     }
-    // High noise causes misclassification
+    // High noise causes false command
     const corrupted = selectedIntent === "left" ? "right" : "rest";
     return {
       command: corrupted,
-      confidence: Math.max(52, 85 - noiseLevel * 0.4),
+      confidence: Math.max(54, Math.round(86 - noiseLevel * 0.4)),
       isCorrect: false,
     };
   }, [chewingActive, noiseLevel, selectedIntent]);
 
   // Determine auxiliary expert suggestion
   const expertPrediction = useMemo(() => {
-    // If user is S1, expert is well-calibrated and proposes correct intent
-    if (userProfile === "S1") {
-      return { command: selectedIntent, confidence: 91, deltaMargin: 24 };
+    if (userProfile === "calibrated") {
+      return { command: selectedIntent, confidence: 92, deltaMargin: 26 };
     }
-    // If S4, expert has poor generalization
-    return { command: "right", confidence: 55, deltaMargin: 5 };
+    return { command: "right", confidence: 58, deltaMargin: 6 };
   }, [userProfile, selectedIntent]);
 
   // 4 Gate Checks logic
-  const gate1Passed = userProfile === "S1"; // Authorized for S1, not for S4
-  const gate2Passed = chewingActive && noiseLevel >= 35; // Noise threshold
-  const gate3Passed = baselinePrediction.command !== expertPrediction.command; // Disagreement
-  const gate4Passed = expertPrediction.deltaMargin >= 15; // Confidence margin threshold
+  const gate1Passed = userProfile === "calibrated";
+  const gate2Passed = chewingActive && noiseLevel >= 35;
+  const gate3Passed = baselinePrediction.command !== expertPrediction.command;
+  const gate4Passed = expertPrediction.deltaMargin >= 15;
 
   const allGatesPassed = gate1Passed && gate2Passed && gate3Passed && gate4Passed;
 
@@ -61,25 +59,23 @@ export default function InteractiveDemo() {
     if (!isRunning) return;
     const interval = setInterval(() => {
       setWaveOffset((prev) => (prev + 3) % 400);
-    }, 50);
+    }, 40);
     return () => clearInterval(interval);
   }, [isRunning]);
 
   const generateSimWave = () => {
     const points: string[] = [];
-    const width = 600;
-    const height = 100;
+    const width = 640;
+    const height = 90;
     const mid = height / 2;
 
     for (let x = 0; x <= width; x += 4) {
       const t = x + waveOffset;
-      // Pure signal component
-      let y = mid + Math.sin(t * 0.05) * 18 + Math.cos(t * 0.02) * 8;
+      let y = mid + Math.sin(t * 0.05) * 16 + Math.cos(t * 0.02) * 8;
 
       if (chewingActive) {
-        // High frequency EMG bursts
         const noiseFactor = noiseLevel / 100;
-        y += (Math.sin(t * 0.5) * 14 + (Math.random() - 0.5) * 26) * noiseFactor;
+        y += (Math.sin(t * 0.45) * 12 + (Math.random() - 0.5) * 24) * noiseFactor;
       }
 
       points.push(`${x === 0 ? "M" : "L"} ${x} ${y.toFixed(1)}`);
@@ -89,279 +85,327 @@ export default function InteractiveDemo() {
   };
 
   return (
-    <section id="demo" className="py-32 px-6 md:px-12 max-w-7xl mx-auto border-b border-white/10">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
-        <div>
-          <div className="font-mono text-xs tracking-[0.25em] text-brand-secondary uppercase mb-3 flex items-center gap-2">
-            <Activity size={14} />
-            <span>05 // Функционалды симулятор</span>
+    <section id="demo" className="py-28 px-6 md:px-12 bg-[#050608] border-b border-white/[0.08]">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16">
+          <div className="max-w-3xl">
+            <div className="font-mono text-xs tracking-[0.25em] text-cyan-400 uppercase mb-4 flex items-center gap-2">
+              <Activity size={14} className="animate-pulse" />
+              <span>05 // Тікелей симулятор</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-[1.08] mb-4">
+              4-Шлюздің жұмысын{" "}
+              <span className="font-serif italic text-white/95 font-normal">
+                өзіңіз сынап көріңіз
+              </span>
+              .
+            </h2>
+            <p className="text-base text-neutral-400 font-light leading-relaxed">
+              Шайнау кедергісін қосып көріңіз немесе шудың күшін өзгертіңіз. Жүйенің әр қадамын және адам ниетінің қалай қорғалатынын нақты уақытта бақылаңыз.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-normal text-white tracking-tight">
-            MIORA Қорғаныс каскадының интерактивті демосы
-          </h2>
+
+          <div className="px-4 py-2 rounded-full border border-white/10 bg-white/[0.02] text-[11px] font-mono text-neutral-400 flex items-center gap-2 shrink-0">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+            <span>REAL-TIME NEURAL STREAM</span>
+          </div>
         </div>
 
-        <div className="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.02] text-[11px] font-mono text-[#757575] flex items-center gap-2">
-          <Info size={13} className="text-brand-secondary" />
-          <span>Көрнекі мысал (Deterministic Research Simulation)</span>
-        </div>
-      </div>
-
-      {/* Simulator Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Controls Column (4 cols) */}
-        <div className="lg:col-span-5 p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#0c0e12] flex flex-col justify-between space-y-6">
-          <div>
-            <h3 className="font-mono text-xs uppercase tracking-wider text-white mb-6 border-b border-white/10 pb-3">
-              Параметрлерді басқару
-            </h3>
-
-            {/* 1. Chewing toggle */}
-            <div className="mb-6">
-              <label className="text-xs font-mono text-[#9ba3af] block mb-2">
-                1. Шайнау артефактісі (EMG Noise Injection)
-              </label>
-              <button
-                onClick={() => setChewingActive(!chewingActive)}
-                className={`w-full py-3 px-4 rounded-xl border font-mono text-xs tracking-wider transition-all flex items-center justify-between ${
-                  chewingActive
-                    ? "border-brand-accent/50 bg-brand-accent/10 text-brand-accent font-semibold"
-                    : "border-white/10 bg-[#050608] text-[#757575]"
-                }`}
-              >
-                <span>Жақ белсенділігі: {chewingActive ? "ҚОСУЛЫ (ШАЙНАУ БАР)" : "ӨШІРУЛІ (ТАЗА)"}</span>
-                <span className={`w-3 h-3 rounded-full ${chewingActive ? "bg-brand-accent animate-ping" : "bg-[#49555c]"}`} />
-              </button>
-            </div>
-
-            {/* 2. Noise slider */}
-            <div className="mb-6">
-              <div className="flex justify-between text-xs font-mono mb-2">
-                <span className="text-[#9ba3af]">2. ЭМГ Шуының қуаты (Power)</span>
-                <span className="text-white font-bold">{noiseLevel}%</span>
+        {/* Monolithic Console Master Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 border border-white/[0.08] bg-[#07090d]/90 backdrop-blur-xl">
+          {/* Controls Column (5 cols) */}
+          <div className="lg:col-span-5 p-8 sm:p-10 border-b lg:border-b-0 lg:border-r border-white/[0.08] flex flex-col justify-between space-y-8">
+            <div className="space-y-8">
+              <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+                <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-white uppercase">
+                  <Sliders size={14} className="text-cyan-400" />
+                  <span>Басқару панелі</span>
+                </div>
+                <span className="text-[10px] font-mono text-neutral-500">INPUT CONTROLS</span>
               </div>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                disabled={!chewingActive}
-                value={noiseLevel}
-                onChange={(e) => setNoiseLevel(Number(e.target.value))}
-                className="w-full accent-brand-secondary cursor-pointer disabled:opacity-30"
-              />
-              <div className="flex justify-between font-mono text-[10px] text-[#757575] mt-1">
-                <span>0% (Таза сигнал)</span>
-                <span>Шек: 35%</span>
-                <span>100% (Максималды)</span>
-              </div>
-            </div>
 
-            {/* 3. User profile selection */}
-            <div className="mb-6">
-              <label className="text-xs font-mono text-[#9ba3af] block mb-2">
-                3. Пайдаланушы бейіні (Personalization)
-              </label>
-              <div className="grid grid-cols-2 gap-3">
+              {/* 1. Chewing toggle */}
+              <div>
+                <label className="text-xs font-mono text-neutral-400 block mb-2.5">
+                  1. Шайнау қимылы (EMG Noise)
+                </label>
                 <button
-                  onClick={() => setUserProfile("S1")}
-                  className={`p-3 rounded-xl border text-xs font-mono text-left transition-all ${
-                    userProfile === "S1"
-                      ? "border-brand-secondary bg-brand-secondary/10 text-white"
-                      : "border-white/10 bg-[#050608] text-[#757575]"
+                  type="button"
+                  onClick={() => setChewingActive(!chewingActive)}
+                  className={`w-full py-3.5 px-4 rounded-xl border font-mono text-xs tracking-wider transition-all flex items-center justify-between ${
+                    chewingActive
+                      ? "border-rose-500/50 bg-rose-950/20 text-rose-300 font-medium shadow-[0_0_20px_rgba(244,63,94,0.15)]"
+                      : "border-white/10 bg-[#050608] text-neutral-400 hover:border-white/20"
                   }`}
                 >
-                  <div className="font-bold">Профиль A (Стандартты)</div>
-                  <div className="text-[10px] text-brand-secondary">Сарапшы рұқсат етілген</div>
-                </button>
-
-                <button
-                  onClick={() => setUserProfile("S4")}
-                  className={`p-3 rounded-xl border text-xs font-mono text-left transition-all ${
-                    userProfile === "S4"
-                      ? "border-brand-secondary bg-brand-secondary/10 text-white"
-                      : "border-white/10 bg-[#050608] text-[#757575]"
-                  }`}
-                >
-                  <div className="font-bold">Профиль B (Сезімтал)</div>
-                  <div className="text-[10px] text-brand-accent">Сарапшы шектелген (Қауіпсіздік)</div>
+                  <span className="flex items-center gap-2">
+                    <span
+                      className={`w-2 h-2 rounded-full ${
+                        chewingActive ? "bg-rose-400 animate-pulse" : "bg-neutral-600"
+                      }`}
+                    />
+                    <span>{chewingActive ? "ШАЙНАУ БЕЛСЕНДІ (КЕДЕРГІ БАР)" : "ТЫНЫШТЫҚ (ТАЗА ЭЭГ)"}</span>
+                  </span>
+                  <span className="text-[10px] opacity-75">{chewingActive ? "ON" : "OFF"}</span>
                 </button>
               </div>
-            </div>
 
-            {/* 4. Intended motor command */}
-            <div>
-              <label className="text-xs font-mono text-[#9ba3af] block mb-2">
-                4. Нақты ми ниеті (Ground Truth Intent)
-              </label>
-              <div className="space-y-2">
-                {(["left", "right", "rest"] as const).map((intent) => (
+              {/* 2. Noise slider */}
+              <div>
+                <div className="flex justify-between text-xs font-mono mb-2">
+                  <span className="text-neutral-400">2. Шудың қуаттылығы</span>
+                  <span className="text-white font-medium">{noiseLevel}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  disabled={!chewingActive}
+                  value={noiseLevel}
+                  onChange={(e) => setNoiseLevel(Number(e.target.value))}
+                  className="w-full accent-cyan-400 cursor-pointer disabled:opacity-30 h-1.5 bg-white/10 rounded-lg appearance-none"
+                />
+                <div className="flex justify-between font-mono text-[10px] text-neutral-500 mt-2">
+                  <span>0% (Таза)</span>
+                  <span className="text-neutral-400">Шек: 35%</span>
+                  <span>100% (Макс)</span>
+                </div>
+              </div>
+
+              {/* 3. User profile selection */}
+              <div>
+                <label className="text-xs font-mono text-neutral-400 block mb-2.5">
+                  3. Қолданушының бейімделуі
+                </label>
+                <div className="grid grid-cols-2 gap-3">
                   <button
-                    key={intent}
-                    onClick={() => setSelectedIntent(intent)}
-                    className={`w-full py-2.5 px-4 rounded-lg border text-xs font-mono text-left transition-all ${
-                      selectedIntent === intent
-                        ? "border-white text-white bg-white/10 font-medium"
-                        : "border-white/5 bg-[#050608] text-[#757575] hover:text-white"
+                    type="button"
+                    onClick={() => setUserProfile("calibrated")}
+                    className={`p-3.5 rounded-xl border text-xs font-mono text-left transition-all ${
+                      userProfile === "calibrated"
+                        ? "border-cyan-500/50 bg-cyan-950/20 text-white"
+                        : "border-white/10 bg-[#050608] text-neutral-500 hover:border-white/20"
                     }`}
                   >
-                    {intentLabels[intent]}
+                    <div className="font-medium text-white mb-0.5">Калибрленген</div>
+                    <div className="text-[10px] text-cyan-400">Сүзгі рұқсат етілген</div>
                   </button>
-                ))}
+
+                  <button
+                    type="button"
+                    onClick={() => setUserProfile("uncalibrated")}
+                    className={`p-3.5 rounded-xl border text-xs font-mono text-left transition-all ${
+                      userProfile === "uncalibrated"
+                        ? "border-cyan-500/50 bg-cyan-950/20 text-white"
+                        : "border-white/10 bg-[#050608] text-neutral-500 hover:border-white/20"
+                    }`}
+                  >
+                    <div className="font-medium text-white mb-0.5">Жаңа қолданушы</div>
+                    <div className="text-[10px] text-amber-400">Сақтық режимі</div>
+                  </button>
+                </div>
+              </div>
+
+              {/* 4. Intended motor command */}
+              <div>
+                <label className="text-xs font-mono text-neutral-400 block mb-2.5">
+                  4. Адамның нақты ми ниеті
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {(["left", "right", "rest"] as const).map((intent) => (
+                    <button
+                      key={intent}
+                      type="button"
+                      onClick={() => setSelectedIntent(intent)}
+                      className={`py-2.5 px-3 rounded-lg border text-xs font-mono text-center transition-all ${
+                        selectedIntent === intent
+                          ? "border-white bg-white text-black font-semibold shadow-sm"
+                          : "border-white/10 bg-[#050608] text-neutral-400 hover:text-white hover:border-white/20"
+                      }`}
+                    >
+                      {intent === "left" ? "Сол қол" : intent === "right" ? "Оң қол" : "Тыныштық"}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="pt-4 border-t border-white/10 flex justify-between items-center text-xs font-mono text-[#757575]">
-            <button
-              onClick={() => {
-                setChewingActive(true);
-                setNoiseLevel(70);
-                setUserProfile("S1");
-                setSelectedIntent("left");
-              }}
-              className="flex items-center gap-1.5 hover:text-white"
-            >
-              <RefreshCw size={12} />
-              <span>Бастапқы күйге қайтару</span>
-            </button>
-            <span>REAL-TIME PIPELINE</span>
-          </div>
-        </div>
-
-        {/* Display & 4 Gates Column (7 cols) */}
-        <div className="lg:col-span-7 space-y-6">
-          {/* Waveform monitor */}
-          <div className="p-6 rounded-2xl border border-white/10 bg-[#050608]">
-            <div className="flex justify-between items-center mb-3 text-xs font-mono">
-              <span className="text-[#9ba3af] flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-brand-secondary animate-pulse" />
-                ЭЭГ ОСЦИЛЛОГРАММАСЫ (CH_01: 250 Hz)
-              </span>
+            <div className="pt-6 border-t border-white/[0.08] flex justify-between items-center text-xs font-mono text-neutral-500">
               <button
-                onClick={() => setIsRunning(!isRunning)}
-                className="text-[#757575] hover:text-white"
+                type="button"
+                onClick={() => {
+                  setChewingActive(true);
+                  setNoiseLevel(70);
+                  setUserProfile("calibrated");
+                  setSelectedIntent("left");
+                }}
+                className="flex items-center gap-1.5 text-neutral-400 hover:text-white transition-colors"
               >
-                {isRunning ? <Pause size={14} /> : <Play size={14} />}
+                <RefreshCw size={12} />
+                <span>Бастапқы күйге қайтару</span>
               </button>
-            </div>
-
-            <div className="h-28 w-full bg-[#0c0e12] rounded-xl border border-white/5 flex items-center overflow-hidden px-2">
-              <svg viewBox="0 0 600 100" className="w-full h-full stroke-brand-secondary fill-none">
-                <path d={generateSimWave()} strokeWidth="2" strokeLinecap="round" />
-              </svg>
+              <span className="text-[10px]">SAMPLING: 250 HZ</span>
             </div>
           </div>
 
-          {/* Decoders comparison */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-5 rounded-xl border border-white/10 bg-[#0c0e12]">
-              <div className="text-[10px] font-mono text-[#757575] uppercase mb-1">
-                Базалық декодер болжамы
-              </div>
-              <div className="text-lg font-medium text-white mb-1">
-                {intentLabels[baselinePrediction.command as keyof typeof intentLabels]}
-              </div>
-              <div className="text-xs font-mono text-[#9ba3af]">
-                Сенімділік: {baselinePrediction.confidence.toFixed(0)}%
-              </div>
-            </div>
-
-            <div className="p-5 rounded-xl border border-white/10 bg-[#0c0e12]">
-              <div className="text-[10px] font-mono text-[#757575] uppercase mb-1">
-                Қосымша сарапшы ұсынысы
-              </div>
-              <div className="text-lg font-medium text-brand-secondary mb-1">
-                {intentLabels[expertPrediction.command as keyof typeof intentLabels]}
-              </div>
-              <div className="text-xs font-mono text-[#9ba3af]">
-                Сенімділік: {expertPrediction.confidence}% (Маржа: +{expertPrediction.deltaMargin}%)
-              </div>
-            </div>
-          </div>
-
-          {/* 4 Gates Real-Time Audit */}
-          <div className="p-6 rounded-2xl border border-white/10 bg-[#0c0e12]">
-            <div className="font-mono text-xs uppercase tracking-wider text-white mb-4">
-              4 Қорғаныс шлюзінің нақты уақыттағы жағдайы:
-            </div>
-
-            <div className="space-y-3 font-mono text-xs">
-              {/* Gate 1 */}
-              <div className="p-3 rounded-lg border border-white/5 bg-[#050608] flex items-center justify-between">
-                <span className="text-[#9ba3af]">
-                  Шлюз 1: Жеке авторландыру ({userProfile === "S1" ? "Пайдалы" : "Тиімсіз"})
+          {/* Telemetry & 4 Gates Column (7 cols) */}
+          <div className="lg:col-span-7 p-8 sm:p-10 flex flex-col justify-between space-y-8">
+            {/* Oscilloscope Visualizer */}
+            <div className="p-6 rounded-xl border border-white/[0.08] bg-[#050608] relative overflow-hidden">
+              <div className="flex justify-between items-center mb-3 text-xs font-mono">
+                <span className="text-neutral-400 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                  <span>LIVE EEG OSCILLOSCOPE (C3/C4 250 HZ)</span>
                 </span>
-                <span className={`flex items-center gap-1 font-semibold ${gate1Passed ? "text-brand-success" : "text-[#757575]"}`}>
-                  {gate1Passed ? <CheckCircle2 size={14} /> : <XCircle size={14} />}
-                  {gate1Passed ? "PASS" : "BLOCKED"}
+                <button
+                  type="button"
+                  onClick={() => setIsRunning(!isRunning)}
+                  className="text-neutral-500 hover:text-white transition-colors"
+                >
+                  {isRunning ? <Pause size={13} /> : <Play size={13} />}
+                </button>
+              </div>
+
+              {/* Waveform Canvas */}
+              <div className="h-24 w-full bg-[#080a0e] rounded-lg border border-white/[0.05] flex items-center overflow-hidden px-2 relative">
+                {/* Background grid reticles */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:24px_24px]" />
+                <svg viewBox="0 0 640 90" className="w-full h-full stroke-cyan-400 fill-none relative z-10">
+                  <path d={generateSimWave()} strokeWidth="1.8" strokeLinecap="round" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Decoders Dual Readout */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-5 rounded-xl border border-white/[0.08] bg-[#050608]">
+                <div className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-2">
+                  Базалық декодер болжамы
+                </div>
+                <div className="text-base sm:text-lg font-medium text-white mb-1">
+                  {intentLabels[baselinePrediction.command as keyof typeof intentLabels]}
+                </div>
+                <div className="text-xs font-mono text-neutral-400">
+                  Сенімділік: <span className="text-white">{baselinePrediction.confidence}%</span>
+                </div>
+              </div>
+
+              <div className="p-5 rounded-xl border border-white/[0.08] bg-[#050608]">
+                <div className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                  <Zap size={12} />
+                  <span>Қосымша сарапшы ұсынысы</span>
+                </div>
+                <div className="text-base sm:text-lg font-medium text-white mb-1">
+                  {intentLabels[expertPrediction.command as keyof typeof intentLabels]}
+                </div>
+                <div className="text-xs font-mono text-neutral-400">
+                  Сенімділік: <span className="text-cyan-300">{expertPrediction.confidence}%</span> (+{expertPrediction.deltaMargin}% маржа)
+                </div>
+              </div>
+            </div>
+
+            {/* 4 Gates Live Status Table */}
+            <div className="space-y-2.5">
+              <div className="text-xs font-mono tracking-widest text-neutral-400 uppercase mb-3 flex items-center justify-between">
+                <span>4 Шлюздің тікелей шешімі:</span>
+                <span className="text-[10px] text-neutral-500">CASCADE AUDIT</span>
+              </div>
+
+              {/* Gate 1 */}
+              <div className="p-3.5 rounded-lg border border-white/[0.06] bg-[#050608] flex items-center justify-between font-mono text-xs">
+                <span className="text-neutral-400">
+                  Шлюз 1: Жеке пайда ({userProfile === "calibrated" ? "Расталған" : "Тексерілмеген"})
+                </span>
+                <span
+                  className={`flex items-center gap-1.5 font-medium ${
+                    gate1Passed ? "text-emerald-400" : "text-neutral-500"
+                  }`}
+                >
+                  {gate1Passed ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
+                  <span>{gate1Passed ? "ӨТТІ (PASS)" : "ТОҚТАТЫЛДЫ"}</span>
                 </span>
               </div>
 
               {/* Gate 2 */}
-              <div className="p-3 rounded-lg border border-white/5 bg-[#050608] flex items-center justify-between">
-                <span className="text-[#9ba3af]">
+              <div className="p-3.5 rounded-lg border border-white/[0.06] bg-[#050608] flex items-center justify-between font-mono text-xs">
+                <span className="text-neutral-400">
                   Шлюз 2: Шу шегі (&gt; 35% тіркелді: {chewingActive ? `${noiseLevel}%` : "0%"})
                 </span>
-                <span className={`flex items-center gap-1 font-semibold ${gate2Passed ? "text-brand-success" : "text-[#757575]"}`}>
-                  {gate2Passed ? <CheckCircle2 size={14} /> : <XCircle size={14} />}
-                  {gate2Passed ? "PASS" : "BLOCKED"}
+                <span
+                  className={`flex items-center gap-1.5 font-medium ${
+                    gate2Passed ? "text-emerald-400" : "text-neutral-500"
+                  }`}
+                >
+                  {gate2Passed ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
+                  <span>{gate2Passed ? "ӨТТІ (PASS)" : "ТОҚТАТЫЛДЫ"}</span>
                 </span>
               </div>
 
               {/* Gate 3 */}
-              <div className="p-3 rounded-lg border border-white/5 bg-[#050608] flex items-center justify-between">
-                <span className="text-[#9ba3af]">
-                  Шлюз 3: Декодерлердің сәйкессіздігі ({baselinePrediction.command !== expertPrediction.command ? "Әртүрлі" : "Бірдей"})
+              <div className="p-3.5 rounded-lg border border-white/[0.06] bg-[#050608] flex items-center justify-between font-mono text-xs">
+                <span className="text-neutral-400">
+                  Шлюз 3: Декодерлер қайшылығы ({baselinePrediction.command !== expertPrediction.command ? "Әртүрлі" : "Бірдей"})
                 </span>
-                <span className={`flex items-center gap-1 font-semibold ${gate3Passed ? "text-brand-success" : "text-[#757575]"}`}>
-                  {gate3Passed ? <CheckCircle2 size={14} /> : <XCircle size={14} />}
-                  {gate3Passed ? "PASS" : "BLOCKED"}
+                <span
+                  className={`flex items-center gap-1.5 font-medium ${
+                    gate3Passed ? "text-emerald-400" : "text-neutral-500"
+                  }`}
+                >
+                  {gate3Passed ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
+                  <span>{gate3Passed ? "ӨТТІ (PASS)" : "ТОҚТАТЫЛДЫ"}</span>
                 </span>
               </div>
 
               {/* Gate 4 */}
-              <div className="p-3 rounded-lg border border-white/5 bg-[#050608] flex items-center justify-between">
-                <span className="text-[#9ba3af]">
-                  Шлюз 4: Сенімділік маржасы (Δ ≥ 15%: {expertPrediction.deltaMargin}%)
+              <div className="p-3.5 rounded-lg border border-white/[0.06] bg-[#050608] flex items-center justify-between font-mono text-xs">
+                <span className="text-neutral-400">
+                  Шлюз 4: Сенімділік маржасы ({expertPrediction.deltaMargin}% &ge; 15%)
                 </span>
-                <span className={`flex items-center gap-1 font-semibold ${gate4Passed ? "text-brand-success" : "text-[#757575]"}`}>
-                  {gate4Passed ? <CheckCircle2 size={14} /> : <XCircle size={14} />}
-                  {gate4Passed ? "PASS" : "BLOCKED"}
+                <span
+                  className={`flex items-center gap-1.5 font-medium ${
+                    gate4Passed ? "text-emerald-400" : "text-neutral-500"
+                  }`}
+                >
+                  {gate4Passed ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
+                  <span>{gate4Passed ? "ӨТТІ (PASS)" : "ТОҚТАТЫЛДЫ"}</span>
                 </span>
               </div>
             </div>
-          </div>
 
-          {/* Final Output Banner */}
-          <div
-            className={`p-6 rounded-2xl border transition-all ${
-              isProtectedOverride
-                ? "border-brand-success/50 bg-brand-success/10"
-                : "border-white/20 bg-white/[0.03]"
-            }`}
-          >
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <div className="text-[11px] font-mono text-[#9ba3af] uppercase mb-1">
-                  Қорытынды қабылданған команда:
+            {/* Monolithic Final Protected Output Display */}
+            <div
+              className={`p-6 rounded-xl border transition-all ${
+                isProtectedOverride
+                  ? "border-emerald-500/40 bg-emerald-950/20 shadow-[0_0_30px_rgba(16,185,129,0.1)]"
+                  : "border-white/10 bg-white/[0.02]"
+              }`}
+            >
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <div className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest mb-1.5">
+                    Қорытынды қабылданған команда:
+                  </div>
+                  <div className="text-xl sm:text-2xl font-light text-white flex items-center gap-3">
+                    <ShieldCheck
+                      size={24}
+                      className={isProtectedOverride ? "text-emerald-400" : "text-neutral-400"}
+                    />
+                    <span>{intentLabels[finalCommand as keyof typeof intentLabels]}</span>
+                  </div>
                 </div>
-                <div className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-                  <ShieldCheck size={24} className={isProtectedOverride ? "text-brand-success" : "text-[#9ba3af]"} />
-                  <span>{intentLabels[finalCommand as keyof typeof intentLabels]}</span>
-                </div>
-              </div>
 
-              <div className="text-right">
-                <div className="font-mono text-xs font-bold text-white uppercase">
-                  {isProtectedOverride
-                    ? "ҚОРҒАЛҒАН ТҮЗЕТУ ЕНГІЗІЛДІ"
-                    : "БАЗАЛЫҚ КОМАНДА САҚТАЛДЫ"}
-                </div>
-                <div className="font-mono text-[11px] text-[#757575]">
-                  {isProtectedOverride
-                    ? "4 Шлюз түгел өтті → Сарапшы қолданылды"
-                    : "Шарт толық емес → Түзету шектелді"}
+                <div className="sm:text-right">
+                  <div className="font-mono text-xs font-semibold text-white uppercase tracking-wider">
+                    {isProtectedOverride
+                      ? "ҚОРҒАЛҒАН ТҮЗЕТУ ЕНГІЗІЛДІ"
+                      : "БАЗАЛЫҚ КОМАНДА САҚТАЛДЫ"}
+                  </div>
+                  <div className="font-mono text-[11px] text-neutral-400 mt-0.5">
+                    {isProtectedOverride
+                      ? "4 Шлюз түгел өтті → Сарапшы қолданылды"
+                      : "Күдік туды → Алғашқы шешім сақталды"}
+                  </div>
                 </div>
               </div>
             </div>

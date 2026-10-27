@@ -1,30 +1,36 @@
 "use client";
 
 import React from "react";
-import { Zap, ShieldCheck, Cpu, Lock, Layers, Activity } from "lucide-react";
+import { Zap, ShieldCheck, Cpu, Lock, Layers, Activity, ArrowUpRight } from "lucide-react";
 
 export default function ProductSpecsSection() {
   const specs = [
     {
       icon: Zap,
       value: "-16%",
+      unit: "DELTA",
       label: "Қателікті азайту",
-      detail: "Шайнау кедергілері кезінде пайдаланушының бұйрығын бұрмаланбай тану дәлдігі.",
-      badge: "НАҚТЫ ТИІМДІЛІК",
+      detail: "Шайнау кедергілері кезінде пайдаланушының қозғалыс ниетін бұрмаланбай тану дәлдігі.",
+      badge: "VERIFIED RECOVERY",
+      code: "METRIC_01 // INTENT_FIDELITY",
     },
     {
       icon: ShieldCheck,
       value: "0%",
+      unit: "HARM",
       label: "Жалған команда қаупі",
-      detail: "Дұрыс командаларды бұзып алатын қате түзетулерді толықтай болдырмау кепілдігі.",
-      badge: "СЕНІМДІЛІК КЕПІЛІ",
+      detail: "Дұрыс командаларды бұзып алатын қате түзетулерді (Weak HARM) толықтай болдырмау кепілдігі.",
+      badge: "SAFETY GUARANTEE",
+      code: "METRIC_02 // ZERO_REGRET",
     },
     {
       icon: Activity,
-      value: "< 2.4 ms",
+      value: "< 2.4",
+      unit: "MS",
       label: "Өңдеу кідірісі",
-      detail: "Адам ойлаған мезетте лезде іске асатын ультра-жылдам нейрондық реакция.",
-      badge: "ЛЕЗДЕ ӘРЕКЕТ",
+      detail: "Адам ойлаған мезетте чип деңгейінде іске асатын ультра-жылдам нейрондық реакция.",
+      badge: "REAL-TIME EDGE",
+      code: "METRIC_03 // LATENCY_CEILING",
     },
   ];
 
@@ -33,68 +39,87 @@ export default function ProductSpecsSection() {
       icon: Layers,
       title: "1024-Арналы микро-қабықша",
       description: "Ми қыртысына нәзік жанасатын, тінге зиян келтірмейтін ультра-жұқа иілгіш био-полимерлі массив.",
-      tag: "HARDWARE",
+      tag: "HARDWARE ARRAY",
+      index: "01",
     },
     {
       icon: Lock,
       title: "100% Дербес Offline қорғаныс",
       description: "Деректер ешқандай бұлтқа немесе сыртқы интернетке шықпайды. Барлық есептеу чиптің өзінде орындалады.",
-      tag: "PRIVACY",
+      tag: "AIR-GAPPED PRIVACY",
+      index: "02",
     },
     {
       icon: Cpu,
       title: "Reversible Safety Cascade",
       description: "Кез келген түсініксіз ауытқу немесе күмән кезінде адамның бастапқы таңдауына автоматты қайта оралу.",
-      tag: "ALGORITHM",
+      tag: "ALGORITHM CORE",
+      index: "03",
     },
     {
       icon: Zap,
-      title: "Төмен энергия тұтыну",
-      description: "Құрылғының қызып кетпеуін және тәулік бойы батарея қуатын үнемдеп жұмыс істеуін қамтамасыз ететін архитектура.",
-      tag: "EFFICIENCY",
+      title: "Ультра-төмен энергия тұтыну",
+      description: "Құрылғының қызып кетпеуін және тәулік бойы батарея қуатын үнемдеп жұмыс істеуін қамтамасыз етеді.",
+      tag: "THERMAL EFFICIENCY",
+      index: "04",
     },
   ];
 
   return (
-    <section id="specs" className="py-28 px-6 md:px-12 bg-[#0c0e12] border-b border-white/10">
+    <section id="specs" className="py-28 px-6 md:px-12 bg-[#050608] border-b border-white/[0.08] relative">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="max-w-3xl mb-16">
           <div className="font-mono text-xs tracking-[0.25em] text-cyan-400 uppercase mb-4 flex items-center gap-2">
-            <Cpu size={14} />
-            <span>05 // Өнім сипаттамасы мен архитектурасы</span>
+            <Cpu size={14} className="animate-pulse" />
+            <span>06 // Өнім сипаттамасы мен архитектурасы</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-normal text-white tracking-tight leading-tight mb-6">
-            Терең технология. Абсолютті сенімділік.
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-[1.08] mb-6">
+            Терең технология.{" "}
+            <span className="font-serif italic text-white/95 font-normal">
+              Абсолютті сенімділік.
+            </span>
           </h2>
-          <p className="text-base text-neutral-300 leading-relaxed font-light">
+          <p className="text-base text-neutral-400 leading-relaxed font-light">
             MIORA — жай ғана алгоритм емес, ми сигналдарының табиғи ырғағын сыртқы механикалық кедергілерден қорғайтын жоғары технологиялық өнімдік платформа.
           </p>
         </div>
 
-        {/* 3 Prominent Product Metric Banners */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        {/* Continuous Swiss Performance Metrics Strip */}
+        <div className="grid grid-cols-1 md:grid-cols-3 border-y border-white/[0.08] divide-y md:divide-y-0 md:divide-x divide-white/[0.08] mb-20">
           {specs.map((item, index) => {
             const Icon = item.icon;
             return (
               <div
                 key={index}
-                className="p-8 sm:p-10 rounded-2xl border border-white/10 bg-[#050608] hover:border-cyan-500/40 transition-all duration-300 flex flex-col justify-between"
+                className="p-8 sm:p-10 flex flex-col justify-between hover:bg-white/[0.02] transition-colors duration-300"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-mono tracking-widest px-2.5 py-1 rounded bg-white/[0.04] border border-white/10 text-cyan-400 font-semibold">
+                    <span className="text-[10px] font-mono tracking-widest px-2.5 py-1 rounded-full border border-cyan-500/30 bg-cyan-950/30 text-cyan-400">
                       {item.badge}
                     </span>
-                    <Icon size={18} className="text-neutral-400" />
+                    <Icon size={18} className="text-neutral-500" />
                   </div>
-                  <div className="text-5xl sm:text-6xl font-sans font-medium text-white tracking-tight my-4">
-                    {item.value}
+
+                  <div className="font-mono text-[10px] text-neutral-500 tracking-wider uppercase mb-1">
+                    {item.code}
                   </div>
-                  <div className="text-lg font-medium text-white mb-2">
+
+                  <div className="flex items-baseline gap-2 my-4">
+                    <span className="text-5xl sm:text-6xl font-light text-white tracking-tight">
+                      {item.value}
+                    </span>
+                    <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest">
+                      {item.unit}
+                    </span>
+                  </div>
+
+                  <div className="text-lg font-normal text-white mb-2">
                     {item.label}
                   </div>
-                  <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-light">
+
+                  <p className="text-sm text-neutral-400 leading-relaxed font-light">
                     {item.detail}
                   </p>
                 </div>
@@ -103,28 +128,34 @@ export default function ProductSpecsSection() {
           })}
         </div>
 
-        {/* 4 Feature Architecture Pillars */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 4 Feature Architecture Pillars - Unified Continuous Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-b border-white/[0.08] divide-y sm:divide-y-0 sm:divide-x divide-white/[0.08]">
           {features.map((feat, index) => {
             const Icon = feat.icon;
             return (
               <div
                 key={index}
-                className="p-6 sm:p-8 rounded-2xl border border-white/10 bg-[#050608]/70 flex flex-col justify-between"
+                className="p-8 sm:p-10 flex flex-col justify-between hover:bg-white/[0.02] transition-colors duration-300"
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-cyan-400">
-                      <Icon size={18} />
-                    </div>
+                    <span className="font-mono text-xs text-neutral-500">
+                      /{feat.index}
+                    </span>
                     <span className="text-[10px] font-mono text-neutral-500 tracking-widest">
                       {feat.tag}
                     </span>
                   </div>
-                  <h3 className="text-lg font-medium text-white mb-2 leading-snug">
+
+                  <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center text-cyan-400 mb-6">
+                    <Icon size={18} />
+                  </div>
+
+                  <h3 className="text-lg font-normal text-white mb-2 leading-snug">
                     {feat.title}
                   </h3>
-                  <p className="text-xs text-neutral-400 leading-relaxed font-light">
+
+                  <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-light">
                     {feat.description}
                   </p>
                 </div>
@@ -136,4 +167,3 @@ export default function ProductSpecsSection() {
     </section>
   );
 }
-

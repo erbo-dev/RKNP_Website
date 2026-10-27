@@ -13,14 +13,17 @@ export default function IntroducingSection() {
           <span>02 // Технологиялық серпіліс</span>
         </div>
 
-        <h2 className="text-3xl sm:text-5xl md:text-6xl font-normal text-white max-w-4xl tracking-tight leading-[1.08] mb-16">
-          MIORA сигналды себепсіз өзгертпейді. Ол адамның бастапқы ниетін қорғайды.
+        <h2 className="text-3xl sm:text-5xl md:text-6xl font-light text-white max-w-4xl tracking-tight leading-[1.08] mb-16">
+          MIORA сигналды себепсіз өзгертпейді.{" "}
+          <span className="font-serif italic text-white/95 font-normal">
+            Ол адамның бастапқы ниетін қорғайды.
+          </span>
         </h2>
 
         {/* Dual column: Dark 3D Neural Architecture Video + Modern Decision Flow Visualizer */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left: Dark 3D Neural Topology Video */}
-          <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#050608] group">
+          <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-[#050608] group shadow-[0_20px_60px_rgba(0,0,0,0.7)]">
             <video
               autoPlay
               loop
@@ -47,12 +50,12 @@ export default function IntroducingSection() {
                 Дәстүрлі BCI сүзгілері сигналды үнемі агрессивті тазалауға немесе кез келген ауытқу кезінде команданы бірден қайта жазуға тырысады. Бұл жиі дұрыс командалардың өзін бұзып, қауіпті жалған түзетулерге (Weak HARM) соқтырады.
               </p>
               <p>
-                <strong className="text-white font-medium">MIORA каскадының принципі:</strong> Егер қосымша эксперт белгіленген 4 қатаң критерийдің бәрін толық қанағаттандырмаса, жүйе базалық шешімді өзгеріссіз сақтайды.
+                <strong className="text-white font-medium">MIORA каскадының принципі:</strong> Егер қосымша сарапшы белгіленген 4 қатаң критерийдің бәрін толық қанағаттандырмаса, жүйе базалық шешімді өзгеріссіз сақтайды.
               </p>
             </div>
 
             {/* High-Tech Decision Verification Pipeline Visualizer */}
-            <div className="p-6 rounded-2xl border border-white/10 bg-[#050608]/90 backdrop-blur-md">
+            <div className="p-6 rounded-2xl border border-white/[0.08] bg-[#050608]/90 backdrop-blur-md">
               <div className="font-mono text-xs text-neutral-400 uppercase tracking-widest mb-4 flex items-center justify-between">
                 <span className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
@@ -98,45 +101,38 @@ export default function IntroducingSection() {
           </div>
         </div>
 
-        {/* 4-Gate Feature Matrix */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-20 pt-16 border-t border-white/10">
-          <div className="p-6 rounded-xl border border-white/10 bg-[#050608]/60">
-            <div className="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-3">
-              Gate 01
+        {/* 3 Core Engineering Pillars (Replacing the redundant 4 gate cards) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-white/[0.08] mt-24 pt-12 divide-y md:divide-y-0 md:divide-x divide-white/[0.08]">
+          <div className="pr-0 md:pr-10 pb-8 md:pb-0">
+            <div className="font-mono text-[11px] text-cyan-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+              <span>PILLAR 01 // PRINCIPLE</span>
             </div>
-            <h3 className="text-lg font-normal text-white mb-2">User Benefit Gate</h3>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              Қосымша сарапшы осы нақты қолданушының оқыту деректерінде қателікті азайтқаны математикалық түрде расталған.
+            <h3 className="text-xl font-normal text-white mb-2">Нөлдік өкініш қағидасы</h3>
+            <p className="text-sm text-neutral-400 leading-relaxed font-light">
+              «Зиян келтірмеу» принципі: егер жасанды интеллект 100% сенімді болмаса, команданы күшпен қайта жазуға тыйым салынады. Адамның алғашқы шешімі қаз-қалпында сақталады.
             </p>
           </div>
 
-          <div className="p-6 rounded-xl border border-white/10 bg-[#050608]/60">
-            <div className="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-3">
-              Gate 02
+          <div className="px-0 md:px-10 py-8 md:py-0">
+            <div className="font-mono text-[11px] text-cyan-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+              <span>PILLAR 02 // PERSONALIZATION</span>
             </div>
-            <h3 className="text-lg font-normal text-white mb-2">Noise Energy Gate</h3>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              Жоғары жиілікті бұлшықет белсенділігі (40–100 Гц) белгіленген шектен асқан жағдайда ғана сүзгі іске қосылады.
+            <h3 className="text-xl font-normal text-white mb-2">Жеке анатомияға бейімделу</h3>
+            <p className="text-sm text-neutral-400 leading-relaxed font-light">
+              Әр адамның бас сүйегінің қалыңдығы мен самай бұлшықеттерінің белсенділігі қайталанбас. Сүзгі параметрлері әр қолданушының нақты физиологиясына дербес бейімделеді.
             </p>
           </div>
 
-          <div className="p-6 rounded-xl border border-white/10 bg-[#050608]/60">
-            <div className="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-3">
-              Gate 03
+          <div className="pl-0 md:pl-10 pt-8 md:pt-0">
+            <div className="font-mono text-[11px] text-cyan-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+              <span>PILLAR 03 // LATENCY</span>
             </div>
-            <h3 className="text-lg font-normal text-white mb-2">Disagreement Gate</h3>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              Базалық декодер мен сарапшы модель арасында нақты қайшылық болғанда ғана өзгерту процесі басталады.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-xl border border-white/10 bg-[#050608]/60">
-            <div className="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-3">
-              Gate 04
-            </div>
-            <h3 className="text-lg font-normal text-white mb-2">Confidence Margin</h3>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              Сарапшы шешімінің сенімділігі базалық болжамнан айқын басым болғанда ғана команда түзетіледі.
+            <h3 className="text-xl font-normal text-white mb-2">Ультра-төмен кідіріс (&lt; 2.4 мс)</h3>
+            <p className="text-sm text-neutral-400 leading-relaxed font-light">
+              Каскадты шешім қабылдау логикасы аппараттық деңгейде 2.4 миллисекунд ішінде есептеледі, пайдаланушы қозғалысты кідіріссіз басқарады.
             </p>
           </div>
         </div>
