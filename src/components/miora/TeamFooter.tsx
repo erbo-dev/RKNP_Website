@@ -127,17 +127,20 @@ export default function TeamFooter() {
           <a href="#hero" className="hover:text-white transition-colors">
             Басты бет
           </a>
-          <a href="#problem" className="hover:text-white transition-colors">
+          <a href="#challenge" className="hover:text-white transition-colors">
             ЭМГ Кедергісі
+          </a>
+          <a href="#cortex" className="hover:text-white transition-colors">
+            3D Сканер
           </a>
           <a href="#cascade" className="hover:text-white transition-colors">
             4 Шлюз
           </a>
           <a href="#demo" className="hover:text-white transition-colors">
-            Демо
+            Симулятор
           </a>
-          <a href="#results" className="hover:text-white transition-colors">
-            Нәтижелер (V18)
+          <a href="#specs" className="hover:text-white transition-colors">
+            Спецификация
           </a>
           <a href="#research" className="hover:text-white transition-colors">
             Әдіснама

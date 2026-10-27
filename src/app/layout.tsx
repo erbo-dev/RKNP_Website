@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   description: "Protecting the signal. Preserving the intent. An experimental decision-protection layer for more reliable brain–computer interfaces.",
   keywords: ["MIORA", "BCI", "Brain-Computer Interface", "EEG", "EMG artifact", "Reliable AI", "Decision Protection Layer"],
   authors: [{ name: "Bekarys Qydyrbek" }, { name: "Erbosyn Shaimardan" }],
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

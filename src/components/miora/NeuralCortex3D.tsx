@@ -60,6 +60,7 @@ const LOBE_DETAILS: Record<string, LobeInfo> = {
 export default function NeuralCortex3D() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
+  const [webglSupported, setWebglSupported] = useState(true);
   const [activeMode, setActiveMode] = useState<DiagnosticMode>("intent");
   const [activeLobeKey, setActiveLobeKey] = useState<string>("motor");
   const [telemetryGain, setTelemetryGain] = useState("+24.8 dB (Clean Sinusoidal)");
@@ -357,6 +358,16 @@ export default function NeuralCortex3D() {
     };
     dom.addEventListener("wheel", onWheel, { passive: false });
 
+    // Context lost / restored resilience
+    const onContextLost = (e: Event) => {
+      e.preventDefault();
+      cancelAnimationFrame(animId);
+    };
+    dom.addEventListener("webglcontextlost", onContextLost, false);
+
+    // Reduced motion media query
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     // 7. Animation Loop with Smooth Camera Transitions
     let animId: number;
     const clock = new THREE.Clock();
@@ -370,8 +381,8 @@ export default function NeuralCortex3D() {
       currentLookAtRef.current.lerp(targetLookAtRef.current, 0.05);
       camera.lookAt(currentLookAtRef.current);
 
-      // Gentle auto-rotation when not dragging
-      if (!isDragging) {
+      // Gentle auto-rotation when not dragging (respecting reduced motion)
+      if (!isDragging && !prefersReducedMotion) {
         brainGroup.rotation.y += 0.0025;
         velocity.x *= 0.95;
         velocity.y *= 0.95;
@@ -391,7 +402,9 @@ export default function NeuralCortex3D() {
       }
 
       // Rotate background sparks slowly
-      sparks.rotation.y = time * 0.03;
+      if (!prefersReducedMotion) {
+        sparks.rotation.y = time * 0.03;
+      }
 
       renderer.render(scene, camera);
     };
@@ -414,10 +427,20 @@ export default function NeuralCortex3D() {
       dom.removeEventListener("pointerdown", onPointerDown);
       dom.removeEventListener("wheel", onWheel);
       dom.removeEventListener("click", onCanvasClick);
+      dom.removeEventListener("webglcontextlost", onContextLost);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("resize", onResize);
 
+      brainMaterialsRef.current.forEach((mat) => mat.dispose());
+      electrodeSpheres.forEach((sph) => {
+        sph.geometry.dispose();
+        if (Array.isArray(sph.material)) {
+          sph.material.forEach((m) => m.dispose());
+        } else {
+          sph.material.dispose();
+        }
+      });
       sparkGeometry.dispose();
       sparkMaterial.dispose();
       renderer.dispose();

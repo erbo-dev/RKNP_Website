@@ -184,6 +184,15 @@ export default function HeroBrain3D() {
 
     window.addEventListener("resize", handleResize);
 
+    // Context loss resilience
+    const onContextLost = (e: Event) => {
+      e.preventDefault();
+      cancelAnimationFrame(animationFrameId);
+    };
+    renderer.domElement.addEventListener("webglcontextlost", onContextLost, false);
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     // 8. Animation Loop
     let animationFrameId: number;
     let clock = new THREE.Clock();
@@ -192,22 +201,24 @@ export default function HeroBrain3D() {
       animationFrameId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
-      // Smooth idle rotation + mouse lerp
-      brainGroup.rotation.y += (targetRotationY + elapsedTime * 0.12 - brainGroup.rotation.y) * 0.05;
-      brainGroup.rotation.x += (targetRotationX - brainGroup.rotation.x) * 0.05;
+      // Smooth idle rotation + mouse lerp (respecting reduced motion)
+      if (!prefersReducedMotion) {
+        brainGroup.rotation.y += (targetRotationY + elapsedTime * 0.12 - brainGroup.rotation.y) * 0.05;
+        brainGroup.rotation.x += (targetRotationX - brainGroup.rotation.x) * 0.05;
 
-      // Pulse ring vertical oscillation (mimicking EEG scanning band)
-      scanRing.position.y = Math.sin(elapsedTime * 1.5) * 1.1;
-      scanRing.scale.setScalar(1 + Math.sin(elapsedTime * 3.0) * 0.05);
+        // Pulse ring vertical oscillation (mimicking EEG scanning band)
+        scanRing.position.y = Math.sin(elapsedTime * 1.5) * 1.1;
+        scanRing.scale.setScalar(1 + Math.sin(elapsedTime * 3.0) * 0.05);
 
-      // Subtle breathing motion for particles
-      const posAttr = brainGeometry.attributes.position as THREE.BufferAttribute;
-      for (let i = 0; i < particleCount; i += 6) {
-        const base = basePositions[i];
-        const pulse = 1.0 + Math.sin(elapsedTime * 2.5 + base.z * 2.0) * 0.035;
-        posAttr.setXYZ(i, base.x * pulse, base.y * pulse, base.z * pulse);
+        // Subtle breathing motion for particles
+        const posAttr = brainGeometry.attributes.position as THREE.BufferAttribute;
+        for (let i = 0; i < particleCount; i += 6) {
+          const base = basePositions[i];
+          const pulse = 1.0 + Math.sin(elapsedTime * 2.5 + base.z * 2.0) * 0.035;
+          posAttr.setXYZ(i, base.x * pulse, base.y * pulse, base.z * pulse);
+        }
+        posAttr.needsUpdate = true;
       }
-      posAttr.needsUpdate = true;
 
       renderer.render(scene, camera);
     };
@@ -217,6 +228,7 @@ export default function HeroBrain3D() {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
+      renderer.domElement.removeEventListener("webglcontextlost", onContextLost);
       cancelAnimationFrame(animationFrameId);
       if (container && renderer.domElement) {
         container.removeChild(renderer.domElement);
@@ -228,6 +240,7 @@ export default function HeroBrain3D() {
       lineMaterial.dispose();
       ringGeo.dispose();
       ringMat.dispose();
+      particleTexture.dispose();
     };
   }, []);
 
