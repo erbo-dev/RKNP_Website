@@ -25,13 +25,13 @@ export default function HeroSection() {
           loop
           muted
           playsInline
-          className="w-full h-full object-cover object-[center_30%] sm:object-center opacity-65 sm:opacity-50 scale-100 filter grayscale contrast-115 brightness-95 sm:brightness-90 transition-opacity duration-1000"
+          className="w-full h-full object-cover object-[center_30%] sm:object-center opacity-85 scale-100 filter grayscale contrast-110 brightness-100 transition-opacity duration-1000"
           src="/videos/hero_bg.mp4"
         />
-        {/* Soft radial dampener behind central text zone + vertical vignettes */}
-        <div className="absolute inset-0 bg-[#050608]/30 sm:bg-[#050608]/50" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,#050608_30%,transparent_100%)]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050608]/80 via-transparent to-[#050608]" />
+        {/* Keep the footage visible; shade the edges instead of obscuring its center. */}
+        <div className="absolute inset-0 bg-[#050608]/10" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(5,6,8,0.65)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050608]/60 via-transparent to-[#050608]/85" />
       </div>
 
       {/* Modern Architectural Corner Crosshairs (+) */}
@@ -62,7 +62,7 @@ export default function HeroSection() {
       <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center">
         <h1
           id="hero-heading"
-          className="font-sans text-5xl sm:text-7xl lg:text-8xl xl:text-[92px] font-light tracking-[-0.035em] leading-[0.98] mb-6 text-white"
+          className="font-sans text-5xl sm:text-7xl lg:text-8xl xl:text-[92px] font-light tracking-[-0.035em] leading-[0.98] mb-6 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]"
         >
           <span>{t.hero.titleRegular}</span>
           <span className="font-serif italic text-white/95 font-normal tracking-normal block sm:inline">
@@ -70,7 +70,7 @@ export default function HeroSection() {
           </span>
         </h1>
 
-        <p className="text-sm sm:text-base md:text-lg text-neutral-300 max-w-xl leading-relaxed font-normal mb-8">
+        <p className="text-sm sm:text-base md:text-lg text-neutral-200 max-w-xl leading-relaxed font-normal mb-8 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
           {t.hero.description}
         </p>
 
