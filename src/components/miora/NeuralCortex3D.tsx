@@ -102,6 +102,9 @@ export default function NeuralCortex3D() {
   const auraLightRef = useRef<THREE.PointLight | null>(null);
   const brainMaterialsRef = useRef<THREE.MeshPhysicalMaterial[]>([]);
   const sparkPointsRef = useRef<THREE.Points | null>(null);
+  const calloutBadgeRef = useRef<HTMLDivElement>(null);
+  const calloutLineRef = useRef<SVGLineElement>(null);
+  const calloutDotRef = useRef<SVGCircleElement>(null);
 
   // Derived Physical Metrics
   const telemetry = useMemo(() => {
@@ -151,9 +154,9 @@ export default function NeuralCortex3D() {
     const optimalDistance = Math.max(distX, distY) * paddingFactor;
 
     const presetDirs: Record<CameraPreset, THREE.Vector3> = {
-      motor: new THREE.Vector3(0, 1.25, 0.98).normalize(),
-      temporal: new THREE.Vector3(1.18, 0.27, 1.0).normalize(),
-      front: new THREE.Vector3(0, 0.2, 1.4).normalize(),
+      motor: new THREE.Vector3(0, 1.35, 0.85).normalize(),
+      temporal: new THREE.Vector3(1.65, 0.25, 0.15).normalize(),
+      front: new THREE.Vector3(0, 0.22, 1.45).normalize(),
     };
     const lookAts: Record<CameraPreset, THREE.Vector3> = {
       motor: new THREE.Vector3(0, 0.5, 0),
@@ -538,6 +541,53 @@ export default function NeuralCortex3D() {
       if (!prefersReduced && sparkPointsRef.current) {
         sparkPointsRef.current.rotation.y = time * 0.025;
       }
+
+      // Dynamic 3D Spatial Callout Projection onto 2D Viewport Overlay
+      if (calloutBadgeRef.current && electrodeMeshesRef.current.length > 0 && container) {
+        const targetId = activeLobeKey === "temporal" ? "T4" : activeLobeKey === "motor" ? "C4" : "Fz";
+        const targetMesh = electrodeMeshesRef.current.find((m) => m.userData.id === targetId) || electrodeMeshesRef.current[0];
+        if (targetMesh) {
+          const worldPos = new THREE.Vector3();
+          targetMesh.getWorldPosition(worldPos);
+
+          const toCam = new THREE.Vector3().subVectors(camera.position, worldPos).normalize();
+          const normalApprox = worldPos.clone().normalize();
+          const isFacing = normalApprox.dot(toCam) > -0.2;
+
+          worldPos.project(camera);
+
+          const cw = container.clientWidth;
+          const ch = container.clientHeight;
+          const sx = ((worldPos.x + 1) * cw) / 2;
+          const sy = ((-worldPos.y + 1) * ch) / 2;
+
+          if (isFacing && worldPos.z < 1 && sx >= 30 && sx <= cw - 120 && sy >= 30 && sy <= ch - 40 && cw >= 540) {
+            const bx = Math.min(cw - 180, sx + 40);
+            const by = Math.max(30, sy - 20);
+
+            calloutBadgeRef.current.style.display = "flex";
+            calloutBadgeRef.current.style.transform = `translate3d(${Math.round(bx)}px, ${Math.round(by)}px, 0)`;
+
+            if (calloutLineRef.current) {
+              calloutLineRef.current.setAttribute("x1", `${Math.round(sx)}`);
+              calloutLineRef.current.setAttribute("y1", `${Math.round(sy)}`);
+              calloutLineRef.current.setAttribute("x2", `${Math.round(bx)}`);
+              calloutLineRef.current.setAttribute("y2", `${Math.round(by + 12)}`);
+              calloutLineRef.current.style.display = "block";
+            }
+            if (calloutDotRef.current) {
+              calloutDotRef.current.setAttribute("cx", `${Math.round(sx)}`);
+              calloutDotRef.current.setAttribute("cy", `${Math.round(sy)}`);
+              calloutDotRef.current.style.display = "block";
+            }
+          } else {
+            calloutBadgeRef.current.style.display = "none";
+            if (calloutLineRef.current) calloutLineRef.current.style.display = "none";
+            if (calloutDotRef.current) calloutDotRef.current.style.display = "none";
+          }
+        }
+      }
+
       renderer.render(scene, camera);
     };
 
@@ -714,12 +764,42 @@ export default function NeuralCortex3D() {
       sampleTime += 0.055;
 
       if (displayMode === "oscilloscope") {
-        // Draw 4-Channel Electrophysiological Traces
+        const isMotorLobe = activeLobeKey === "motor";
+        const isTemporalLobe = activeLobeKey === "temporal";
+        const isCascadeActive = activeMode === "cascade";
+
+        // Draw 4-Channel Electrophysiological Traces with Active Lobe Focus
         const channels = [
-          { name: "C3 (Сол қыртыс · Оң қол)", color: "#38bdf8", baseAmp: motorIntent === "right" ? 5 : 24, isContralateral: motorIntent === "right" },
-          { name: "C4 (Оң қыртыс · Сол қол)", color: "#00e5ff", baseAmp: motorIntent === "left" ? 5 : 24, isContralateral: motorIntent === "left" },
-          { name: "T3/T4 (Самай EMG арнасы)", color: emgLevel > 0 ? "#f43f5e" : "#64748b", isEmg: true },
-          { name: "MIORA СҮЗГІЛЕНГЕН НИЕТ", color: protectionTier === "miora" ? "#10b981" : "#e11d48", isOutput: true },
+          {
+            name: "C3 (Сол қыртыс · Оң қол)",
+            color: isMotorLobe ? "#38bdf8" : "#0284c7",
+            baseAmp: motorIntent === "right" ? 5 : 24,
+            isContralateral: motorIntent === "right",
+            lineWidth: isMotorLobe ? 2.2 : 1.3,
+            isEmphasized: isMotorLobe,
+          },
+          {
+            name: "C4 (Оң қыртыс · Сол қол)",
+            color: isMotorLobe ? "#00e5ff" : "#06b6d4",
+            baseAmp: motorIntent === "left" ? 5 : 24,
+            isContralateral: motorIntent === "left",
+            lineWidth: isMotorLobe ? 2.2 : 1.3,
+            isEmphasized: isMotorLobe,
+          },
+          {
+            name: "T3/T4 (Самай EMG арнасы)",
+            color: isTemporalLobe ? "#f43f5e" : emgLevel > 0 ? "#e11d48" : "#64748b",
+            isEmg: true,
+            lineWidth: isTemporalLobe ? 2.4 : 1.3,
+            isEmphasized: isTemporalLobe,
+          },
+          {
+            name: "MIORA СҮЗГІЛЕНГЕН НИЕТ",
+            color: protectionTier === "miora" ? "#10b981" : "#f43f5e",
+            isOutput: true,
+            lineWidth: isCascadeActive ? 2.4 : 1.6,
+            isEmphasized: isCascadeActive,
+          },
         ];
 
         const rowHeight = h / channels.length;
@@ -736,7 +816,9 @@ export default function NeuralCortex3D() {
           ctx.stroke();
 
           // Channel Label & Status
-          ctx.font = "11px ui-monospace, SFMono-Regular, Menlo, monospace";
+          ctx.font = ch.isEmphasized
+            ? "bold 11px ui-monospace, SFMono-Regular, Menlo, monospace"
+            : "11px ui-monospace, SFMono-Regular, Menlo, monospace";
           ctx.fillStyle = ch.color;
           ctx.fillText(ch.name, 12, idx * rowHeight + 17);
 
@@ -766,10 +848,10 @@ export default function NeuralCortex3D() {
             }
           }
 
-          // Trace Synthesis - Precise 1.5-1.8px crisp line matching simulator workbench
+          // Trace Synthesis with Scoped Channel Emphasis
           ctx.beginPath();
           ctx.strokeStyle = ch.color;
-          ctx.lineWidth = ch.isOutput ? 1.8 : 1.5;
+          ctx.lineWidth = ch.lineWidth;
           ctx.lineJoin = "round";
           ctx.lineCap = "round";
 
@@ -1046,6 +1128,20 @@ export default function NeuralCortex3D() {
 
               {/* Three.js Mount Container */}
               <div ref={containerRef} className="w-full h-full min-h-[480px] lg:min-h-[580px] cursor-grab active:cursor-grabbing" />
+
+              {/* 3D Projected Spatial Callout Leader Overlay */}
+              <svg className="absolute inset-0 pointer-events-none w-full h-full z-10 overflow-hidden">
+                <line ref={calloutLineRef} stroke="rgba(0, 229, 255, 0.45)" strokeWidth="1.2" strokeDasharray="3,3" style={{ display: "none" }} />
+                <circle ref={calloutDotRef} r="3.5" fill="#00e5ff" style={{ display: "none" }} />
+              </svg>
+              <div
+                ref={calloutBadgeRef}
+                className="absolute top-0 left-0 z-10 pointer-events-none hidden items-center gap-1.5 px-2.5 py-1 rounded-lg border border-cyan-500/40 bg-[#05080f]/90 backdrop-blur-md shadow-lg font-mono text-[10px]"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                <span className="text-white font-medium">{currentLobe.nameKz.split(" ")[0]}</span>
+                <span className="text-cyan-300">({currentLobe.electrodes.split(" ")[0]})</span>
+              </div>
 
               {/* Floating Camera Presets */}
               <div className="absolute top-4 right-4 z-20 flex items-center gap-1 p-1 rounded-full border border-white/10 bg-[#050608]/85 backdrop-blur-md text-xs font-sans">

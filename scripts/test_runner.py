@@ -142,9 +142,27 @@ def run_tests():
             anchors_ok = len(missing_targets) == 0
             all_passed &= log_test("Live Rendered DOM Anchor Targets", anchors_ok, f"All {len(rendered_anchors)} links valid" if anchors_ok else f"Broken anchors: {missing_targets}")
 
-            # 3.4 Desktop Layout Overflow Check
+            # 3.4 Desktop Layout Overflow Checks (1440px, 1920px, 1280px)
             desktop_overflow = page.evaluate("() => document.documentElement.scrollWidth > window.innerWidth")
             all_passed &= log_test("Desktop Responsive Layout (1440px No Horizontal Overflow)", not desktop_overflow)
+
+            page.set_viewport_size({"width": 1920, "height": 1080})
+            time.sleep(0.3)
+            overflow_1920 = page.evaluate("() => document.documentElement.scrollWidth > window.innerWidth")
+            all_passed &= log_test("Widescreen Responsive Layout (1920px No Horizontal Overflow)", not overflow_1920)
+
+            page.set_viewport_size({"width": 1280, "height": 800})
+            time.sleep(0.3)
+            overflow_1280 = page.evaluate("() => document.documentElement.scrollWidth > window.innerWidth")
+            all_passed &= log_test("Compact Desktop Layout (1280px No Horizontal Overflow)", not overflow_1280)
+
+            page.set_viewport_size({"width": 1440, "height": 900})
+            time.sleep(0.3)
+
+            # 3.4b Circuit Schematic Track & Bypass Arc in #cascade
+            has_circuit_line = page.locator("#cascade svg line").count() > 0
+            has_bypass_path = page.locator("#cascade svg path").count() > 0
+            all_passed &= log_test("Cascade Circuit Track & Bypass Arc Presence", has_circuit_line and has_bypass_path, "SVG route and bypass arc verified")
 
             # 3.5 Strict 3D Neural Cortex Workbench Interactive Testing
             cortex_ok = True

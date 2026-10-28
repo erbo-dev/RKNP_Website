@@ -18,6 +18,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { computeMioraDecision } from "@/lib/miora/simulation";
+import { getCompactGateStatuses } from "@/lib/miora/gateFlowController";
 import {
   PRESET_SCENARIOS,
   DEFAULT_SIMULATION_STATE,
@@ -407,88 +408,49 @@ export default function InteractiveDemo() {
 
           </div>
 
-          {/* Docked 4-Gate Decision Cascade Status Row */}
-          <div className="px-5 py-4 border-b border-white/10 bg-[#050608]/90">
-            <div className="flex items-center justify-between text-xs font-sans text-neutral-300 mb-2.5">
-              <span className="font-semibold uppercase tracking-wider text-[11px]">
-                {lang === "kk" ? "4-Шлюздік шешім қабылдау каскады:" : "4-Gate Decision Cascade Status:"}
+          {/* Compact 4-Gate Telemetry Ribbon (Sleek Simulator Bar) */}
+          <div className="py-3.5 px-5 sm:px-7 border-b border-white/10 bg-[#050608]/90 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="text-[10px] text-neutral-400 uppercase tracking-widest font-semibold flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                <span>{lang === "kk" ? "ШЛЮЗДЕР КАСКАДЫ:" : "4-GATE CASCADE:"}</span>
               </span>
-              <span className="text-[11px] font-mono text-neutral-400">
-                {allGatesPassed
-                  ? lang === "kk"
-                    ? "4/4 ШАРТ ТОЛЫҚ ОРЫНДАЛДЫ"
-                    : "ALL 4 GATES PASSED (ARMED)"
-                  : lang === "kk"
-                  ? "БАСТАПҚЫ ШЕШІМ САҚТАЛДЫ (FAIL-SAFE)"
-                  : "BASELINE HELD (FAIL-SAFE)"}
-              </span>
+
+              {getCompactGateStatuses(simulationResult, protectionMode === "baseline_bypass").map((g) => (
+                <div
+                  key={g.id}
+                  className={`px-2.5 py-1 rounded-md border text-[11px] flex items-center gap-1.5 transition-all ${
+                    protectionMode === "baseline_bypass"
+                      ? "border-white/10 bg-white/[0.02] text-neutral-500"
+                      : g.passed
+                      ? "border-emerald-500/40 bg-emerald-950/30 text-emerald-300 font-semibold shadow-[0_0_8px_rgba(16,185,129,0.15)]"
+                      : "border-white/10 bg-white/[0.02] text-neutral-400"
+                  }`}
+                >
+                  <span className="text-neutral-500 font-bold">{g.id}:</span>
+                  <span className="font-sans font-medium">{lang === "kk" ? g.labelKz : g.labelEn}</span>
+                  <span
+                    className={`text-[9px] px-1 py-0.2 rounded font-bold ${
+                      protectionMode === "baseline_bypass"
+                        ? "bg-white/10 text-neutral-400"
+                        : g.passed
+                        ? "bg-emerald-500/20 text-emerald-300"
+                        : "bg-white/5 text-neutral-400"
+                    }`}
+                  >
+                    {g.statusText}
+                  </span>
+                </div>
+              ))}
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[11px]">
-              {/* Gate 1 */}
-              <div
-                className={`p-2.5 rounded-lg border flex items-center justify-between ${
-                  gate1.passed
-                    ? "border-emerald-500/40 bg-emerald-950/20 text-emerald-300"
-                    : "border-white/10 bg-white/[0.02] text-neutral-400"
-                }`}
-              >
-                <div className="truncate pr-1">
-                  <span className="text-neutral-500 font-semibold">G1:</span> {lang === "kk" ? "Жеке пайда" : "Individual Fit"}
-                </div>
-                <span className="font-semibold text-[10px]">
-                  {gate1.passed ? "PASS" : "HELD"}
-                </span>
-              </div>
-
-              {/* Gate 2 */}
-              <div
-                className={`p-2.5 rounded-lg border flex items-center justify-between ${
-                  gate2.passed
-                    ? "border-emerald-500/40 bg-emerald-950/20 text-emerald-300"
-                    : "border-white/10 bg-white/[0.02] text-neutral-400"
-                }`}
-              >
-                <div className="truncate pr-1">
-                  <span className="text-neutral-500 font-semibold">G2:</span> {lang === "kk" ? "Шу шегі" : "Noise Floor"}
-                </div>
-                <span className="font-semibold text-[10px]">
-                  {gate2.passed ? "PASS" : "HELD"}
-                </span>
-              </div>
-
-              {/* Gate 3 */}
-              <div
-                className={`p-2.5 rounded-lg border flex items-center justify-between ${
-                  gate3.passed
-                    ? "border-emerald-500/40 bg-emerald-950/20 text-emerald-300"
-                    : "border-white/10 bg-white/[0.02] text-neutral-400"
-                }`}
-              >
-                <div className="truncate pr-1">
-                  <span className="text-neutral-500 font-semibold">G3:</span> {lang === "kk" ? "Қайшылық" : "Disagreement"}
-                </div>
-                <span className="font-semibold text-[10px]">
-                  {gate3.passed ? "PASS" : "HELD"}
-                </span>
-              </div>
-
-              {/* Gate 4 */}
-              <div
-                className={`p-2.5 rounded-lg border flex items-center justify-between ${
-                  gate4.passed
-                    ? "border-emerald-500/40 bg-emerald-950/20 text-emerald-300"
-                    : "border-white/10 bg-white/[0.02] text-neutral-400"
-                }`}
-              >
-                <div className="truncate pr-1">
-                  <span className="text-neutral-500 font-semibold">G4:</span> {lang === "kk" ? "Маржа (Δ)" : "Margin (Δ)"}
-                </div>
-                <span className="font-semibold text-[10px]">
-                  {gate4.passed ? "PASS" : "HELD"}
-                </span>
-              </div>
-            </div>
+            <a
+              href="#cascade"
+              className="text-[11px] text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1 group font-sans font-medium"
+            >
+              <span>{lang === "kk" ? "Шлюздер архитектурасы толығырақ" : "Explore Full 4-Gate Route"}</span>
+              <span className="group-hover:translate-x-0.5 transition-transform font-mono">→</span>
+            </a>
           </div>
 
           {/* Collapsible Advanced Manual Workbench Drawer */}
