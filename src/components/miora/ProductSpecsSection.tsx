@@ -1,87 +1,144 @@
 "use client";
 
 import React from "react";
-import { Zap, ShieldCheck, Cpu, Lock, Layers, Activity, ArrowUpRight } from "lucide-react";
+import { Zap, ShieldCheck, Cpu, Lock, Layers, Activity } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function ProductSpecsSection() {
-  const specs = [
+  const { lang, t } = useLanguage();
+
+  const specs = lang === "kk" ? [
     {
       icon: Zap,
-      value: "-16%",
-      unit: "DELTA",
-      label: "Қателікті азайту",
-      detail: "Шайнау кедергілері кезінде пайдаланушының қозғалыс ниетін бұрмаланбай тану дәлдігі.",
-      badge: "VERIFIED RECOVERY",
+      value: "-6.1",
+      unit: "P.P.",
+      label: "Қателікті азайту (Error Reduction)",
+      detail: "Шайнау кедергісі кезінде орташа декодер қателігі 38.5%-дан 32.4%-ға дейін төмендеді (~16% салыстырмалы жақсару).",
+      badge: "VERIFIED RESULT",
       code: "METRIC_01 // INTENT_FIDELITY",
     },
     {
       icon: ShieldCheck,
-      value: "0%",
+      value: "3.9%",
       unit: "HARM",
-      label: "Жалған команда қаупі",
-      detail: "Дұрыс командаларды бұзып алатын қате түзетулерді (Weak HARM) толықтай болдырмау кепілдігі.",
-      badge: "SAFETY GUARANTEE",
-      code: "METRIC_02 // ZERO_REGRET",
+      label: "Қате түзету деңгейі (Weak HARM)",
+      detail: "Базалық жүйенің 4.7% қате түзету деңгейі MIORA каскады арқылы 3.9%-ға дейін азайтылды (-0.8 п.п. зиянды төмендету).",
+      badge: "SAFETY BARRIER",
+      code: "METRIC_02 // HARM_REDUCTION",
     },
     {
       icon: Activity,
-      value: "< 2.4",
+      value: "< 3",
       unit: "MS",
-      label: "Өңдеу кідірісі",
-      detail: "Адам ойлаған мезетте чип деңгейінде іске асатын ультра-жылдам нейрондық реакция.",
-      badge: "REAL-TIME EDGE",
+      label: "Алгоритмдік кідіріс (Compute Overhead)",
+      detail: "Каскадты шлюздердің шешім қабылдауы әр 250 Гц сигнал терезесінде 3 миллисекундтан аз уақытта есептеледі.",
+      badge: "EDGE EFFICIENCY",
+      code: "METRIC_03 // LATENCY_CEILING",
+    },
+  ] : [
+    {
+      icon: Zap,
+      value: "-6.1",
+      unit: "P.P.",
+      label: "Mean Error Rate Reduction",
+      detail: "Under semi-synthetic chewing EMG contamination, average error rate dropped from 38.5% to 32.4% (~15.8% relative reduction).",
+      badge: "VERIFIED RESULT",
+      code: "METRIC_01 // INTENT_FIDELITY",
+    },
+    {
+      icon: ShieldCheck,
+      value: "3.9%",
+      unit: "HARM",
+      label: "Weak HARM Rate (Down from 4.7%)",
+      detail: "Preserving baseline commands on gate rejection prevented unnecessary overrides, reducing false interventions by 0.8 percentage points.",
+      badge: "SAFETY BARRIER",
+      code: "METRIC_02 // HARM_REDUCTION",
+    },
+    {
+      icon: Activity,
+      value: "< 3",
+      unit: "MS",
+      label: "Algorithmic Compute Overhead",
+      detail: "The 4-gate verification cascade computes in under 3 milliseconds per 250 Hz window, introducing negligible computational latency.",
+      badge: "EDGE EFFICIENCY",
       code: "METRIC_03 // LATENCY_CEILING",
     },
   ];
 
-  const features = [
+  const features = lang === "kk" ? [
     {
       icon: Layers,
-      title: "1024-Арналы микро-қабықша",
-      description: "Ми қыртысына нәзік жанасатын, тінге зиян келтірмейтін ультра-жұқа иілгіш био-полимерлі массив.",
-      tag: "HARDWARE ARRAY",
+      title: "4-Арналы сенсомоторлық монтаж",
+      description: "Моторлық қыртыс (C3, Cz, C4) пен самай каналын бақылайтын 250 S/s, 24-bit ADC сандық архитектурасы.",
+      tag: "V18 PROTOCOL",
       index: "01",
     },
     {
       icon: Lock,
-      title: "100% Дербес Offline қорғаныс",
-      description: "Деректер ешқандай бұлтқа немесе сыртқы интернетке шықпайды. Барлық есептеу чиптің өзінде орындалады.",
+      title: "100% Дербес Offline өңдеу",
+      description: "Барлық математикалық есептеулер оқшауланған ортада орындалады, сыртқы бұлтқа немесе желіге тәуелсіз.",
       tag: "AIR-GAPPED PRIVACY",
       index: "02",
     },
     {
       icon: Cpu,
       title: "Reversible Safety Cascade",
-      description: "Кез келген түсініксіз ауытқу немесе күмән кезінде адамның бастапқы таңдауына автоматты қайта оралу.",
+      description: "Кез келген белгісіздік кезінде адамның алғашқы ниетін сақтайтын қатаң 4 деңгейлі математикалық сүзгі.",
       tag: "ALGORITHM CORE",
       index: "03",
     },
     {
       icon: Zap,
-      title: "Ультра-төмен энергия тұтыну",
-      description: "Құрылғының қызып кетпеуін және тәулік бойы батарея қуатын үнемдеп жұмыс істеуін қамтамасыз етеді.",
-      tag: "THERMAL EFFICIENCY",
+      title: "MIORA-2 Болашақ аппараттық жоспар",
+      description: "Келесі буын нақты уақыттағы импланттар үшін 1024 арналы микро-қабықша мен < 2.4 мс аппараттық кідіріс мақсатталған.",
+      tag: "FUTURE ROADMAP",
+      index: "04",
+    },
+  ] : [
+    {
+      icon: Layers,
+      title: "4-Channel Sensorimotor Montage",
+      description: "Precision 250 S/s, 24-bit ADC acquisition centered on primary motor channels (C3, Cz, C4) and temporal reference.",
+      tag: "V18 PROTOCOL",
+      index: "01",
+    },
+    {
+      icon: Lock,
+      title: "100% On-Device Offline Processing",
+      description: "All DSP filtering and matrix operations compute locally in an air-gapped pipeline without external cloud dependencies.",
+      tag: "AIR-GAPPED PRIVACY",
+      index: "02",
+    },
+    {
+      icon: Cpu,
+      title: "Reversible Safety Cascade",
+      description: "Strict 4-tier mathematical validation that safely defaults to baseline preservation whenever doubt arises.",
+      tag: "ALGORITHM CORE",
+      index: "03",
+    },
+    {
+      icon: Zap,
+      title: "MIORA-2 Next-Gen Hardware Roadmap",
+      description: "Future engineering trajectory targeting a 1024-channel micro-mesh and sub-2.4ms hardware latency for real-time neuro-prosthetics.",
+      tag: "FUTURE ROADMAP",
       index: "04",
     },
   ];
 
   return (
-    <section id="specs" className="py-28 px-6 md:px-12 bg-[#050608] border-b border-white/[0.08] relative">
+    <section id="specs" aria-labelledby="specs-heading" className="py-28 px-6 md:px-12 bg-[#050608] border-b border-white/[0.08] relative">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="max-w-3xl mb-16">
           <div className="font-mono text-xs tracking-[0.25em] text-cyan-400 uppercase mb-4 flex items-center gap-2">
             <Cpu size={14} className="animate-pulse" />
-            <span>06 // Өнім сипаттамасы мен архитектурасы</span>
+            <span>{t.specs.kicker}</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-[1.08] mb-6">
-            Терең технология.{" "}
-            <span className="font-serif italic text-white/95 font-normal">
-              Абсолютті сенімділік.
-            </span>
+          <h2 id="specs-heading" className="text-3xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-[1.08] mb-6">
+            {t.specs.headline} {t.specs.headlineEmphasis}.
           </h2>
           <p className="text-base text-neutral-400 leading-relaxed font-light">
-            MIORA — жай ғана алгоритм емес, ми сигналдарының табиғи ырғағын сыртқы механикалық кедергілерден қорғайтын жоғары технологиялық өнімдік платформа.
+            {t.specs.description}
           </p>
         </div>
 
@@ -142,7 +199,7 @@ export default function ProductSpecsSection() {
                     <span className="font-mono text-xs text-neutral-500">
                       /{feat.index}
                     </span>
-                    <span className="text-[10px] font-mono text-neutral-500 tracking-widest">
+                    <span className="text-[10px] font-mono text-neutral-400 tracking-widest">
                       {feat.tag}
                     </span>
                   </div>
@@ -151,11 +208,11 @@ export default function ProductSpecsSection() {
                     <Icon size={18} />
                   </div>
 
-                  <h3 className="text-lg font-normal text-white mb-2 leading-snug">
+                  <h3 className="text-lg font-normal text-white mb-2">
                     {feat.title}
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-light">
+                  <p className="text-sm text-neutral-400 leading-relaxed font-light">
                     {feat.description}
                   </p>
                 </div>

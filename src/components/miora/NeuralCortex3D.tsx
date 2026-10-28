@@ -76,6 +76,8 @@ export default function NeuralCortex3D() {
   
   // High-Fidelity Diagnostic State
   const [loading, setLoading] = useState(true);
+  const [webglError, setWebglError] = useState(false);
+  const [webglRetryKey, setWebglRetryKey] = useState(0);
   const [activeMode, setActiveMode] = useState<DiagnosticMode>("intent");
   const [activeLobeKey, setActiveLobeKey] = useState<string>("motor");
   const [cameraPreset, setCameraPreset] = useState<CameraPreset>("motor");
@@ -91,6 +93,8 @@ export default function NeuralCortex3D() {
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const brainPivotRef = useRef<THREE.Group | null>(null);
+  const brainRadiusRef = useRef<number>(7.5);
+  const cameraPresetRef = useRef<CameraPreset>("motor");
   const targetCamPosRef = useRef<THREE.Vector3>(new THREE.Vector3(0, 14, 11));
   const targetLookAtRef = useRef<THREE.Vector3>(new THREE.Vector3(0, 2, 0));
   const currentLookAtRef = useRef<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
@@ -126,23 +130,60 @@ export default function NeuralCortex3D() {
     return { snrDb, statusText, confidence, decoderState };
   }, [emgLevel, protectionTier]);
 
+  // Geometric Camera Framing Calculation (adapts to aspect ratio to prevent clipping)
+  const updateCameraFraming = useCallback((w: number, h: number) => {
+    const camera = cameraRef.current;
+    if (!camera) return;
+    const aspect = Math.max(0.1, w / (h || 1));
+    camera.aspect = aspect;
+    camera.updateProjectionMatrix();
+
+    const fovY = (camera.fov * Math.PI) / 180;
+    const fovX = 2 * Math.atan(Math.tan(fovY / 2) * aspect);
+    const radius = brainRadiusRef.current;
+    const distY = radius / Math.sin(fovY / 2);
+    const distX = radius / Math.sin(fovX / 2);
+
+    // Responsive framing factor: desktop (w >= 768) uses 0.98 (~27% larger perceived brain),
+    // mobile uses 1.15 to prevent any screen border collision.
+    const isDesktop = w >= 768;
+    const paddingFactor = isDesktop ? 0.98 : 1.15;
+    const optimalDistance = Math.max(distX, distY) * paddingFactor;
+
+    const presetDirs: Record<CameraPreset, THREE.Vector3> = {
+      motor: new THREE.Vector3(0, 1.25, 0.98).normalize(),
+      temporal: new THREE.Vector3(1.18, 0.27, 1.0).normalize(),
+      front: new THREE.Vector3(0, 0.2, 1.4).normalize(),
+    };
+    const lookAts: Record<CameraPreset, THREE.Vector3> = {
+      motor: new THREE.Vector3(0, 0.5, 0),
+      temporal: new THREE.Vector3(0, 0.2, 0),
+      front: new THREE.Vector3(0, 0.2, 0),
+    };
+
+    const dir = presetDirs[cameraPresetRef.current] || presetDirs.motor;
+    const targetLook = lookAts[cameraPresetRef.current] || lookAts.motor;
+    targetLookAtRef.current.copy(targetLook);
+    targetCamPosRef.current.copy(dir).multiplyScalar(optimalDistance).add(targetLook);
+  }, []);
+
   // Smooth Camera Orientation Preset Switcher
   const setViewPreset = useCallback((preset: CameraPreset) => {
     setCameraPreset(preset);
+    cameraPresetRef.current = preset;
     if (preset === "motor") {
-      targetCamPosRef.current.set(0, 14, 11);
-      targetLookAtRef.current.set(0, 2, 0);
       setActiveLobeKey("motor");
     } else if (preset === "temporal") {
-      targetCamPosRef.current.set(13, 3, 11);
-      targetLookAtRef.current.set(0, -0.5, 0);
       setActiveLobeKey("temporal");
     } else {
-      targetCamPosRef.current.set(0, 3, 18);
-      targetLookAtRef.current.set(0, 0, 0);
       setActiveLobeKey("frontal");
     }
-  }, []);
+
+    const container = containerRef.current;
+    if (container) {
+      updateCameraFraming(container.clientWidth, container.clientHeight || 580);
+    }
+  }, [updateCameraFraming]);
 
   // Standard Diagnostic Mode Handler
   const handleModeChange = useCallback((mode: DiagnosticMode) => {
@@ -170,6 +211,8 @@ export default function NeuralCortex3D() {
     const container = containerRef.current;
     if (!container) return;
 
+    let isMounted = true;
+
     const scene = new THREE.Scene();
     sceneRef.current = scene;
     scene.fog = new THREE.FogExp2(0x050608, 0.014);
@@ -181,32 +224,51 @@ export default function NeuralCortex3D() {
     camera.position.set(0, 14, 11);
     cameraRef.current = camera;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
-    container.appendChild(renderer.domElement);
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.35;
+      container.appendChild(renderer.domElement);
+    } catch (err) {
+      console.warn("WebGL initialization failed, falling back to 2D topological schematic:", err);
+      if (isMounted) {
+        setWebglError(true);
+        setLoading(false);
+      }
+      return;
+    }
 
-    // Dynamic High-Precision Lighting
-    const ambientLight = new THREE.AmbientLight(0x0a1628, 2.8);
+    // Controlled 4-Point High-Fidelity Scientific Lighting
+    // 1. Balanced ambient for readable base contrast in shadow crevices
+    const ambientLight = new THREE.AmbientLight(0x1a2230, 1.5);
     scene.add(ambientLight);
 
-    const cyanLight = new THREE.PointLight(0x00e5ff, 5.5, 60);
-    cyanLight.position.set(10, 16, 15);
-    scene.add(cyanLight);
+    // 2. Key Light (Top-Right-Front): Softened to 2.2 to eliminate harsh specular burn
+    const keyLight = new THREE.DirectionalLight(0xf8fafc, 2.2);
+    keyLight.position.set(12, 18, 14);
+    scene.add(keyLight);
 
-    const emeraldLight = new THREE.PointLight(0x00e676, 4.0, 60);
-    emeraldLight.position.set(-14, -6, -10);
-    scene.add(emeraldLight);
+    // 3. Fill Light (Opposite Low-Left): Prevents deep shadows from becoming pure black
+    const fillLight = new THREE.DirectionalLight(0x94a3b8, 1.3);
+    fillLight.position.set(-14, -6, 6);
+    scene.add(fillLight);
 
-    const dynamicAuraLight = new THREE.PointLight(0x00e5ff, 6.0, 45);
-    dynamicAuraLight.position.set(0, 4, 8);
+    // 4. Rim / Contour Light (Top-Back): Softened to 1.4 for delicate anatomical silhouette
+    const rimLight = new THREE.DirectionalLight(0xdbeafe, 1.4);
+    rimLight.position.set(-6, 16, -14);
+    scene.add(rimLight);
+
+    // 5. Localized Point Light: Focused neural signal accent near C3/Cz/C4 electrodes
+    const dynamicAuraLight = new THREE.PointLight(0x00e5ff, 1.8, 30, 1.4);
+    dynamicAuraLight.position.set(0, 4, 7);
     scene.add(dynamicAuraLight);
     auraLightRef.current = dynamicAuraLight;
 
-    // Synaptic Neural Sparks Particle Cloud
-    const sparkCount = 420;
+    // Subtle Synaptic Sparks Particle Cloud (Subdued background nodes, out of cortex focus)
+    const sparkCount = 64;
     const sparkGeometry = new THREE.BufferGeometry();
     const sparkPositions = new Float32Array(sparkCount * 3);
     const sparkColors = new Float32Array(sparkCount * 3);
@@ -214,24 +276,25 @@ export default function NeuralCortex3D() {
     for (let i = 0; i < sparkCount; i++) {
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
-      const rad = 7.5 + Math.random() * 5.0;
+      // Place sparks safely outside the cortex body (11.0 to 17.5 radius)
+      const rad = 11.0 + Math.random() * 6.5;
 
       sparkPositions[i * 3] = rad * Math.sin(phi) * Math.cos(theta);
       sparkPositions[i * 3 + 1] = rad * Math.sin(phi) * Math.sin(theta) + 0.5;
       sparkPositions[i * 3 + 2] = rad * Math.cos(phi);
 
-      sparkColors[i * 3] = 0.0;
-      sparkColors[i * 3 + 1] = 0.9;
-      sparkColors[i * 3 + 2] = 1.0;
+      sparkColors[i * 3] = 0.2;
+      sparkColors[i * 3 + 1] = 0.8;
+      sparkColors[i * 3 + 2] = 0.95;
     }
     sparkGeometry.setAttribute("position", new THREE.BufferAttribute(sparkPositions, 3));
     sparkGeometry.setAttribute("color", new THREE.BufferAttribute(sparkColors, 3));
 
     const sparkMaterial = new THREE.PointsMaterial({
-      size: 0.14,
+      size: 0.08,
       vertexColors: true,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.35,
       blending: THREE.AdditiveBlending,
     });
     const sparks = new THREE.Points(sparkGeometry, sparkMaterial);
@@ -285,6 +348,7 @@ export default function NeuralCortex3D() {
     loader.load(
       "/brain.glb",
       (gltf) => {
+        if (!isMounted) return;
         const model = gltf.scene;
         const meshes: THREE.Mesh[] = [];
         model.traverse((child) => {
@@ -296,13 +360,13 @@ export default function NeuralCortex3D() {
         const mats: THREE.MeshPhysicalMaterial[] = [];
         meshes.forEach((mesh) => {
           const mat = new THREE.MeshPhysicalMaterial({
-            color: new THREE.Color(0x041828),
-            emissive: new THREE.Color(0x00e5ff),
-            emissiveIntensity: 0.24,
-            roughness: 0.16,
-            metalness: 0.88,
-            clearcoat: 1.0,
-            clearcoatRoughness: 0.08,
+            color: new THREE.Color(0x48515f), // refined medium slate-graphite with visible gyri folds
+            roughness: 0.68, // matte scientific organic tissue feel, eliminating harsh plastic sheen
+            metalness: 0.06, // non-metallic dielectric tissue for natural diffuse light capture
+            clearcoat: 0.0, // remove artificial lacquered plastic gloss
+            clearcoatRoughness: 0.8,
+            emissive: new THREE.Color(0x000000),
+            emissiveIntensity: 0.0,
           });
           mesh.material = mat;
           mats.push(mat);
@@ -326,14 +390,25 @@ export default function NeuralCortex3D() {
         pivot.rotation.z = Math.PI;
 
         brainGroup.add(pivot);
+
+        // Recalculate accurate bounding sphere for framing
+        const fullBox = new THREE.Box3().setFromObject(brainGroup);
+        const sphere = fullBox.getBoundingSphere(new THREE.Sphere());
+        brainRadiusRef.current = Math.max(sphere.radius, 7.5);
+
+        // Update framing with calculated radius
+        updateCameraFraming(container.clientWidth, container.clientHeight || 580);
         setLoading(false);
       },
       undefined,
       (error) => {
         console.error("Error loading brain GLB model:", error);
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     );
+
+    // Initial camera framing
+    updateCameraFraming(width, height);
 
     // Raycaster for Interactive Electrode Inspection
     const raycaster = new THREE.Raycaster();
@@ -359,7 +434,7 @@ export default function NeuralCortex3D() {
     const dom = renderer.domElement;
     dom.addEventListener("click", onCanvasClick);
 
-    // Interactive Drag Controls
+    // Interactive Drag Controls (preserves user-oriented angle)
     let isDragging = false;
     let prevMouse = { x: 0, y: 0 };
     let velocity = { x: 0, y: 0 };
@@ -396,16 +471,43 @@ export default function NeuralCortex3D() {
       targetCamPosRef.current.z = THREE.MathUtils.clamp(
         targetCamPosRef.current.z + e.deltaY * 0.015,
         9,
-        25
+        45
       );
     };
     dom.addEventListener("wheel", onWheel, { passive: false });
 
-    // Animation Loop
-    let animId: number;
+    // Accessibility: Support prefers-reduced-motion
+    const mediaQuery = typeof window !== "undefined" ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
+    let prefersReduced = mediaQuery ? mediaQuery.matches : false;
+    const onMediaChange = (e: MediaQueryListEvent) => {
+      prefersReduced = e.matches;
+    };
+    if (mediaQuery) {
+      mediaQuery.addEventListener("change", onMediaChange);
+    }
+
+    // Lifecycle: Complete rAF stop/resume on offscreen and background tabs
+    let isVisible = true;
+    let isTabVisible = typeof document !== "undefined" ? !document.hidden : true;
+    let isLoopRunning = false;
+    let animId: number = 0;
     const clock = new THREE.Clock();
 
+    const startLoop = () => {
+      if (isLoopRunning || !isVisible || !isTabVisible) return;
+      isLoopRunning = true;
+      clock.getDelta(); // flush delta jump
+      animate();
+    };
+
+    const stopLoop = () => {
+      if (!isLoopRunning) return;
+      isLoopRunning = false;
+      cancelAnimationFrame(animId);
+    };
+
     const animate = () => {
+      if (!isLoopRunning) return;
       animId = requestAnimationFrame(animate);
       const time = clock.getElapsedTime();
 
@@ -414,7 +516,7 @@ export default function NeuralCortex3D() {
       currentLookAtRef.current.lerp(targetLookAtRef.current, 0.05);
       camera.lookAt(currentLookAtRef.current);
 
-      if (!isDragging) {
+      if (!isDragging && !prefersReduced) {
         brainGroup.rotation.y += 0.0022;
         velocity.x *= 0.95;
         velocity.y *= 0.95;
@@ -430,33 +532,77 @@ export default function NeuralCortex3D() {
 
       if (auraLightRef.current) {
         const pulse = 1 + Math.sin(time * 3.5) * 0.25;
-        auraLightRef.current.intensity = 5.2 * pulse;
+        auraLightRef.current.intensity = 4.2 * pulse;
       }
 
-      sparks.rotation.y = time * 0.025;
+      if (!prefersReduced && sparkPointsRef.current) {
+        sparkPointsRef.current.rotation.y = time * 0.025;
+      }
       renderer.render(scene, camera);
     };
 
-    animate();
-
-    const onResize = () => {
-      if (!container) return;
-      const w = container.clientWidth;
-      const h = container.clientHeight || 580;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
+    const onVisibilityChange = () => {
+      isTabVisible = !document.hidden;
+      if (isTabVisible && isVisible) {
+        startLoop();
+      } else {
+        stopLoop();
+      }
     };
-    window.addEventListener("resize", onResize);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    // Intersection Observer to cancel animation when offscreen
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      observer = new IntersectionObserver(([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && isTabVisible) {
+          startLoop();
+        } else {
+          stopLoop();
+        }
+      }, { threshold: 0.05 });
+      observer.observe(container);
+    }
+
+    // WebGL Context Loss Handling
+    const onContextLost = (e: Event) => {
+      e.preventDefault();
+      stopLoop();
+      if (isMounted) setWebglError(true);
+    };
+    dom.addEventListener("webglcontextlost", onContextLost);
+
+    // Container ResizeObserver: dynamic aspect ratio and framing recalculation
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const { width, height } = entry.contentRect;
+          if (width > 0 && height > 0) {
+            renderer.setSize(width, height);
+            updateCameraFraming(width, height);
+          }
+        }
+      });
+      resizeObserver.observe(container);
+    }
+
+    startLoop();
 
     return () => {
-      cancelAnimationFrame(animId);
+      isMounted = false;
+      stopLoop();
+      if (observer) observer.disconnect();
+      if (resizeObserver) resizeObserver.disconnect();
+      if (mediaQuery) mediaQuery.removeEventListener("change", onMediaChange);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       dom.removeEventListener("pointerdown", onPointerDown);
       dom.removeEventListener("wheel", onWheel);
       dom.removeEventListener("click", onCanvasClick);
+      dom.removeEventListener("webglcontextlost", onContextLost);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
-      window.removeEventListener("resize", onResize);
 
       brainMaterialsRef.current.forEach((mat) => mat.dispose());
       electrodeSpheres.forEach((sph) => sph.geometry.dispose());
@@ -467,36 +613,32 @@ export default function NeuralCortex3D() {
         container.removeChild(dom);
       }
     };
-  }, []);
+  }, [webglRetryKey, updateCameraFraming]);
 
-  // Update Brain Materials and Lighting Color Based on Diagnostic Parameters
+  // Update Local Accent Lighting Color Based on Diagnostic Parameters
   useEffect(() => {
     if (brainMaterialsRef.current.length === 0) return;
 
+    // The brain body stays neutral slate-graphite (0x444d5a) in all modes to maintain anatomical gyri readability.
+    // Only the localized accent light and subtle aura adapt to the physiological state:
     if (emgLevel >= 75 && protectionTier === "raw") {
-      // Severe Unprotected EMG Noise Contamination (Crimson Alert)
-      brainMaterialsRef.current.forEach((mat) => {
-        mat.color.setHex(0x28080c);
-        mat.emissive.setHex(0xf43f5e);
-        mat.emissiveIntensity = 0.42;
-      });
-      if (auraLightRef.current) auraLightRef.current.color.setHex(0xf43f5e);
+      // Unprotected EMG Noise Contamination: subtle warning rose accent near temporal lobe
+      if (auraLightRef.current) {
+        auraLightRef.current.color.setHex(0xf43f5e);
+        auraLightRef.current.intensity = 1.8;
+      }
     } else if (protectionTier === "miora" && emgLevel >= 30) {
-      // MIORA 4-Gate Active Filtering & Protection (Emerald Shield)
-      brainMaterialsRef.current.forEach((mat) => {
-        mat.color.setHex(0x042416);
-        mat.emissive.setHex(0x10b981);
-        mat.emissiveIntensity = 0.38;
-      });
-      if (auraLightRef.current) auraLightRef.current.color.setHex(0x10b981);
+      // MIORA 4-Gate Active Filtering: controlled emerald accent
+      if (auraLightRef.current) {
+        auraLightRef.current.color.setHex(0x10b981);
+        auraLightRef.current.intensity = 1.6;
+      }
     } else {
-      // Pure Motor Intention State (Electric Cyan)
-      brainMaterialsRef.current.forEach((mat) => {
-        mat.color.setHex(0x041828);
-        mat.emissive.setHex(0x00e5ff);
-        mat.emissiveIntensity = 0.28;
-      });
-      if (auraLightRef.current) auraLightRef.current.color.setHex(0x00e5ff);
+      // Pure Motor Intention: crisp focused cyan accent
+      if (auraLightRef.current) {
+        auraLightRef.current.color.setHex(0x00e5ff);
+        auraLightRef.current.intensity = 1.8;
+      }
     }
   }, [emgLevel, protectionTier]);
 
@@ -511,17 +653,63 @@ export default function NeuralCortex3D() {
 
     let animId: number;
     let sampleTime = 0;
+    let isCanvasVisible = true;
+    let isDocVisible = typeof document !== "undefined" ? !document.hidden : true;
+
+    const onVisChange = () => {
+      isDocVisible = !document.hidden;
+    };
+    document.addEventListener("visibilitychange", onVisChange);
+
+    let obs: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      obs = new IntersectionObserver(([entry]) => {
+        isCanvasVisible = entry.isIntersecting;
+      }, { threshold: 0.05 });
+      obs.observe(canvas);
+    }
 
     const render = () => {
       animId = requestAnimationFrame(render);
-      if (isPaused) return;
+      if (isPaused || !isCanvasVisible || !isDocVisible) return;
 
-      const w = canvas.width;
-      const h = canvas.height;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 2);
+      const displayW = Math.round(rect.width);
+      const displayH = Math.round(rect.height);
 
-      // Dark CRT Phosphor Fade Background
-      ctx.fillStyle = "rgba(5, 7, 10, 0.28)";
+      if (displayW > 0 && displayH > 0) {
+        const targetW = displayW * dpr;
+        const targetH = displayH * dpr;
+        if (canvas.width !== targetW || canvas.height !== targetH) {
+          canvas.width = targetW;
+          canvas.height = targetH;
+        }
+      }
+
+      const w = displayW || 800;
+      const h = displayH || 340;
+
+      ctx.save();
+      ctx.scale(dpr, dpr);
+
+      // Clean background matching simulator workbench
+      ctx.fillStyle = "#040608";
       ctx.fillRect(0, 0, w, h);
+
+      // Fine subtle grid pattern matching InteractiveDemo workbench (24px)
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let gx = 0; gx < w; gx += 24) {
+        ctx.moveTo(gx, 0);
+        ctx.lineTo(gx, h);
+      }
+      for (let gy = 0; gy < h; gy += 24) {
+        ctx.moveTo(0, gy);
+        ctx.lineTo(w, gy);
+      }
+      ctx.stroke();
 
       sampleTime += 0.055;
 
@@ -539,8 +727,8 @@ export default function NeuralCortex3D() {
         channels.forEach((ch, idx) => {
           const centerY = idx * rowHeight + rowHeight / 2;
 
-          // Channel grid guide
-          ctx.strokeStyle = "rgba(255, 255, 255, 0.06)";
+          // Channel centerline guide
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(0, centerY);
@@ -548,25 +736,42 @@ export default function NeuralCortex3D() {
           ctx.stroke();
 
           // Channel Label & Status
-          ctx.font = "10px monospace";
+          ctx.font = "11px ui-monospace, SFMono-Regular, Menlo, monospace";
           ctx.fillStyle = ch.color;
-          ctx.fillText(ch.name, 12, idx * rowHeight + 16);
+          ctx.fillText(ch.name, 12, idx * rowHeight + 17);
 
-          if (ch.isContralateral) {
-            ctx.fillStyle = "#38bdf8";
-            ctx.fillText("[MU-ERD ДЕСИНХРОНИЗАЦИЯ: 80% БӘСЕҢДЕУ]", 210, idx * rowHeight + 16);
-          } else if (ch.isEmg && emgLevel > 0) {
-            ctx.fillStyle = "#f43f5e";
-            ctx.fillText(`[EMG ШУЫ: ${emgLevel}% ҚУАТ // 140+ μV ШЫҢДАР]`, 210, idx * rowHeight + 16);
-          } else if (ch.isOutput) {
-            ctx.fillStyle = protectionTier === "miora" ? "#10b981" : "#f43f5e";
-            ctx.fillText(protectionTier === "miora" ? "✓ 4-ШЛЮЗ: ТАЗА НИЕТ САҚТАЛДЫ" : "⚠ ҚОРҒАНЫССЫЗ: ҚАТЕ БҰЙРЫҚ ҚАУПІ", 210, idx * rowHeight + 16);
+          // Responsive secondary status indicator (compact on mobile)
+          if (w >= 540) {
+            if (ch.isContralateral) {
+              ctx.fillStyle = "#38bdf8";
+              ctx.fillText("[MU-ERD ДЕСИНХРОНИЗАЦИЯ: 80% БӘСЕҢДЕУ]", Math.min(240, w - 290), idx * rowHeight + 17);
+            } else if (ch.isEmg && emgLevel > 0) {
+              ctx.fillStyle = "#f43f5e";
+              ctx.fillText(`[EMG ШУЫ: ${emgLevel}% ҚУАТ // 140+ μV ШЫҢДАР]`, Math.min(240, w - 280), idx * rowHeight + 17);
+            } else if (ch.isOutput) {
+              ctx.fillStyle = protectionTier === "miora" ? "#10b981" : "#f43f5e";
+              ctx.fillText(protectionTier === "miora" ? "✓ 4-ШЛЮЗ: ТАЗА НИЕТ САҚТАЛДЫ" : "⚠ ҚОРҒАНЫССЫЗ: ҚАТЕ БҰЙРЫҚ ҚАУПІ", Math.min(240, w - 280), idx * rowHeight + 17);
+            }
+          } else {
+            // Mobile compact badges
+            if (ch.isContralateral) {
+              ctx.fillStyle = "#38bdf8";
+              ctx.fillText("[ERD -80%]", w - 85, idx * rowHeight + 17);
+            } else if (ch.isEmg && emgLevel > 0) {
+              ctx.fillStyle = "#f43f5e";
+              ctx.fillText(`[EMG ${emgLevel}%]`, w - 85, idx * rowHeight + 17);
+            } else if (ch.isOutput) {
+              ctx.fillStyle = protectionTier === "miora" ? "#10b981" : "#f43f5e";
+              ctx.fillText(protectionTier === "miora" ? "✓ MIORA" : "⚠ BYPASS", w - 75, idx * rowHeight + 17);
+            }
           }
 
-          // Trace Synthesis
+          // Trace Synthesis - Precise 1.5-1.8px crisp line matching simulator workbench
           ctx.beginPath();
           ctx.strokeStyle = ch.color;
-          ctx.lineWidth = ch.isOutput ? 2.0 : 1.4;
+          ctx.lineWidth = ch.isOutput ? 1.8 : 1.5;
+          ctx.lineJoin = "round";
+          ctx.lineCap = "round";
 
           for (let x = 0; x < w; x += 3) {
             const t = sampleTime + x * 0.04;
@@ -650,13 +855,13 @@ export default function NeuralCortex3D() {
           ctx.fillRect(x + 4, y, barWidth - 8, normalizedHeight);
 
           // Labels
-          ctx.font = "9px monospace";
+          ctx.font = "10px ui-monospace, SFMono-Regular, Menlo, monospace";
           ctx.fillStyle = "#94a3b8";
-          ctx.fillText(`${b.freq}Hz`, x + 6, h - 18);
+          ctx.fillText(`${b.freq}Hz`, x + 4, h - 18);
 
           if (isMuBand && (motorIntent === "left" || motorIntent === "right")) {
             ctx.fillStyle = "#00e5ff";
-            ctx.fillText("ERD", x + 6, y - 8);
+            ctx.fillText("ERD", x + 4, y - 8);
           } else if (isEmgBand && emgLevel >= 75) {
             ctx.fillStyle = "#f43f5e";
             ctx.fillText("EMG!", x + 4, y - 8);
@@ -664,17 +869,23 @@ export default function NeuralCortex3D() {
         });
 
         // Graph Legend
-        ctx.font = "11px monospace";
+        ctx.font = "11px ui-monospace, SFMono-Regular, Menlo, monospace";
         ctx.fillStyle = "#f8fafc";
         ctx.fillText("POWER SPECTRAL DENSITY (PSD) // 0–64 HZ FAST FOURIER TRANSFORM", 50, 25);
         ctx.fillStyle = "#94a3b8";
         ctx.fillText("■ 8–12 Гц: Mu-Ырғағы (Ниет) | ■ 40–64 Гц: Шайнау EMG Шуы", 50, 42);
       }
+
+      ctx.restore();
     };
 
     render();
 
-    return () => cancelAnimationFrame(animId);
+    return () => {
+      cancelAnimationFrame(animId);
+      document.removeEventListener("visibilitychange", onVisChange);
+      if (obs) obs.disconnect();
+    };
   }, [displayMode, motorIntent, emgLevel, protectionTier, isPaused]);
 
   const currentLobe = LOBE_DETAILS[activeLobeKey] || LOBE_DETAILS.motor;
@@ -689,10 +900,7 @@ export default function NeuralCortex3D() {
             <span>03 // ЖОҒАРЫ ДӘЛДІКТЕГІ НЕЙРО-ДИАГНОСТИКАЛЫҚ СТАНЦИЯ</span>
           </div>
           <h2 className="text-3xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-[1.08] mb-4">
-            Қозғалыс ниеті мен EMG шуын{" "}
-            <span className="font-serif italic text-white/95 font-normal">
-              модельдеу
-            </span>
+            Қозғалыс ниеті мен EMG шуын модельдеу
           </h2>
           <p className="text-sm sm:text-base text-neutral-400 font-light max-w-3xl mx-auto leading-relaxed">
             Моторлық қыртыстағы 8–12 Гц Mu-десинхронизациясы (ERD) мен самай бұлшықеттерінің 40–120 Гц шайнау артефактілерін нақты уақытта модельдеу. Төменде физикалық 4-арналы осциллограф, жиіліктік спектр (FFT) және 10-20 жүйесінің 3D топологиялық сканері берілген.
@@ -700,41 +908,50 @@ export default function NeuralCortex3D() {
         </div>
 
         {/* High-Level Diagnostic Mode Switcher Ribbon (Preserving Test Selectors) */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 mb-8">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8">
           <button
+            data-cortex-mode="intent"
             onClick={() => handleModeChange("intent")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-full text-xs font-mono tracking-wider transition-all border ${
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-sans font-medium tracking-normal transition-all border ${
               activeMode === "intent"
-                ? "bg-cyan-500/15 border-cyan-400 text-cyan-300 shadow-[0_0_24px_rgba(0,229,255,0.25)]"
-                : "bg-white/[0.03] border-white/15 text-neutral-400 hover:text-white hover:border-white/30"
+                ? "bg-cyan-500/15 border-cyan-400/80 text-cyan-200 shadow-[0_0_20px_rgba(0,229,255,0.2)]"
+                : "bg-white/[0.03] border-white/10 text-neutral-400 hover:text-white hover:border-white/25"
             }`}
           >
             <span className={`w-2 h-2 rounded-full ${activeMode === "intent" ? "bg-cyan-400 animate-pulse" : "bg-neutral-600"}`} />
-            <span>1. МОТОРЛЫҚ НИЕТ (C3/Cz/C4)</span>
+            <span className="font-mono text-[11px] text-cyan-400/80 font-bold">1.</span>
+            <span>Моторлық ниет</span>
+            <span className="font-mono text-[10px] text-neutral-400">(C3/Cz/C4)</span>
           </button>
 
           <button
+            data-cortex-mode="noise"
             onClick={() => handleModeChange("noise")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-full text-xs font-mono tracking-wider transition-all border ${
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-sans font-medium tracking-normal transition-all border ${
               activeMode === "noise"
-                ? "bg-rose-500/15 border-rose-400 text-rose-300 shadow-[0_0_24px_rgba(244,63,94,0.25)]"
-                : "bg-white/[0.03] border-white/15 text-neutral-400 hover:text-white hover:border-white/30"
+                ? "bg-rose-500/15 border-rose-400/80 text-rose-200 shadow-[0_0_20px_rgba(244,63,94,0.2)]"
+                : "bg-white/[0.03] border-white/10 text-neutral-400 hover:text-white hover:border-white/25"
             }`}
           >
             <span className={`w-2 h-2 rounded-full ${activeMode === "noise" ? "bg-rose-400 animate-ping" : "bg-neutral-600"}`} />
-            <span>2. ШАЙНАУ КЕДЕРГІСІ (EMG ШУ)</span>
+            <span className="font-mono text-[11px] text-rose-400/80 font-bold">2.</span>
+            <span>Шайнау кедергісі</span>
+            <span className="font-mono text-[10px] text-neutral-400">(EMG Шу)</span>
           </button>
 
           <button
+            data-cortex-mode="cascade"
             onClick={() => handleModeChange("cascade")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-full text-xs font-mono tracking-wider transition-all border ${
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-sans font-medium tracking-normal transition-all border ${
               activeMode === "cascade"
-                ? "bg-emerald-500/15 border-emerald-400 text-emerald-300 shadow-[0_0_24px_rgba(16,185,129,0.25)]"
-                : "bg-white/[0.03] border-white/15 text-neutral-400 hover:text-white hover:border-white/30"
+                ? "bg-emerald-500/15 border-emerald-400/80 text-emerald-200 shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+                : "bg-white/[0.03] border-white/10 text-neutral-400 hover:text-white hover:border-white/25"
             }`}
           >
             <span className={`w-2 h-2 rounded-full ${activeMode === "cascade" ? "bg-emerald-400 animate-pulse" : "bg-neutral-600"}`} />
-            <span>3. MIORA 4-GATE ҚОРҒАНЫСЫ</span>
+            <span className="font-mono text-[11px] text-emerald-400/80 font-bold">3.</span>
+            <span>MIORA 4-Gate</span>
+            <span className="font-mono text-[10px] text-neutral-400">Қорғанысы</span>
           </button>
         </div>
 
@@ -770,8 +987,8 @@ export default function NeuralCortex3D() {
           <div className="grid grid-cols-1 lg:grid-cols-12 border-b border-white/10">
             
             {/* 3D WebGL Canvas Area (7 Cols) */}
-            <div className="lg:col-span-7 relative min-h-[480px] lg:min-h-[580px] border-b lg:border-b-0 lg:border-r border-white/10 bg-gradient-to-b from-[#080d14] to-[#040608]">
-              {loading && (
+            <div className="lg:col-span-7 relative min-h-[480px] lg:min-h-[580px] border-b lg:border-b-0 lg:border-r border-white/10 bg-[#06080c] bg-[radial-gradient(ellipse_75%_65%_at_50%_45%,rgba(38,48,65,0.4),transparent_75%)]">
+              {loading && !webglError && (
                 <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#050608]/90 backdrop-blur-md">
                   <div className="flex flex-col items-center gap-3">
                     <div className="w-8 h-8 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin" />
@@ -782,46 +999,94 @@ export default function NeuralCortex3D() {
                 </div>
               )}
 
+              {webglError && (
+                <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#070a10] p-6 text-center">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-3">
+                    <AlertTriangle size={24} />
+                  </div>
+                  <h3 className="text-white text-sm sm:text-base font-medium mb-1 font-mono tracking-wider">
+                    3D WEBGL ЖЕДЕЛДЕТКІШІ ҚОЛЖЕТІМСІЗ
+                  </h3>
+                  <p className="text-xs text-neutral-400 max-w-sm mb-4 leading-relaxed">
+                    Құрылғыңызда WebGL өшірілген немесе графикалық үдеткіш контексті жоғалтты. Төменде 2D топографиялық карта қосылды.
+                  </p>
+                  <div className="w-56 h-36 relative border border-white/10 rounded-xl bg-black/50 flex items-center justify-center mb-4 p-2">
+                    <svg viewBox="0 0 160 120" className="w-40 h-28 opacity-90">
+                      <ellipse cx="80" cy="60" rx="55" ry="45" fill="none" stroke="#334155" strokeWidth="2" />
+                      <path d="M 72 15 Q 80 5 88 15" fill="none" stroke="#334155" strokeWidth="2" />
+                      <line x1="80" y1="15" x2="80" y2="105" stroke="#475569" strokeDasharray="3,3" strokeWidth="1.5" />
+                      <circle cx="80" cy="55" r="4.5" fill="#00e5ff" />
+                      <text x="80" y="47" fill="#00e5ff" fontSize="8" textAnchor="middle" fontFamily="monospace">Cz</text>
+                      <circle cx="48" cy="55" r="4.5" fill="#00e5ff" />
+                      <text x="38" y="58" fill="#00e5ff" fontSize="8" textAnchor="end" fontFamily="monospace">C3</text>
+                      <circle cx="112" cy="55" r="4.5" fill="#00e5ff" />
+                      <text x="122" y="58" fill="#00e5ff" fontSize="8" textAnchor="start" fontFamily="monospace">C4</text>
+                      <circle cx="30" cy="72" r="4.5" fill="#f43f5e" />
+                      <text x="22" y="75" fill="#f43f5e" fontSize="8" textAnchor="end" fontFamily="monospace">T3</text>
+                      <circle cx="130" cy="72" r="4.5" fill="#f43f5e" />
+                      <text x="138" y="75" fill="#f43f5e" fontSize="8" textAnchor="start" fontFamily="monospace">T4</text>
+                      <circle cx="80" cy="32" r="4.5" fill="#10b981" />
+                      <text x="80" y="27" fill="#10b981" fontSize="8" textAnchor="middle" fontFamily="monospace">Fz</text>
+                    </svg>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWebglError(false);
+                      setLoading(true);
+                      setWebglRetryKey((k) => k + 1);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-xs font-mono hover:bg-cyan-500/30 transition-all cursor-pointer"
+                  >
+                    <RotateCcw size={14} />
+                    <span>Қайта жүктеу (Retry WebGL)</span>
+                  </button>
+                </div>
+              )}
+
               {/* Three.js Mount Container */}
               <div ref={containerRef} className="w-full h-full min-h-[480px] lg:min-h-[580px] cursor-grab active:cursor-grabbing" />
 
               {/* Floating Camera Presets */}
-              <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 p-1 rounded-full border border-white/15 bg-[#050608]/85 backdrop-blur-md text-[11px] font-mono">
+              <div className="absolute top-4 right-4 z-20 flex items-center gap-1 p-1 rounded-full border border-white/10 bg-[#050608]/85 backdrop-blur-md text-xs font-sans">
                 <button
+                  type="button"
                   onClick={() => setViewPreset("motor")}
-                  className={`px-3 py-1 rounded-full transition-all ${
-                    cameraPreset === "motor" ? "bg-cyan-500/20 text-cyan-300 font-semibold" : "text-neutral-400 hover:text-white"
+                  className={`px-3 py-1 rounded-full transition-all text-xs font-medium ${
+                    cameraPreset === "motor" ? "bg-cyan-500/20 text-cyan-300 font-semibold shadow-[0_0_12px_rgba(0,229,255,0.2)]" : "text-neutral-400 hover:text-white"
                   }`}
                 >
-                  ТӨБЕДЕН (МОТОР)
+                  Төбеден (Мотор)
                 </button>
                 <button
+                  type="button"
                   onClick={() => setViewPreset("temporal")}
-                  className={`px-3 py-1 rounded-full transition-all ${
-                    cameraPreset === "temporal" ? "bg-rose-500/20 text-rose-300 font-semibold" : "text-neutral-400 hover:text-white"
+                  className={`px-3 py-1 rounded-full transition-all text-xs font-medium ${
+                    cameraPreset === "temporal" ? "bg-rose-500/20 text-rose-300 font-semibold shadow-[0_0_12px_rgba(244,63,94,0.2)]" : "text-neutral-400 hover:text-white"
                   }`}
                 >
-                  САМАЙ (ШАЙНАУ)
+                  Самай (Шайнау)
                 </button>
                 <button
+                  type="button"
                   onClick={() => setViewPreset("front")}
-                  className={`px-3 py-1 rounded-full transition-all ${
-                    cameraPreset === "front" ? "bg-white/20 text-white font-semibold" : "text-neutral-400 hover:text-white"
+                  className={`px-3 py-1 rounded-full transition-all text-xs font-medium ${
+                    cameraPreset === "front" ? "bg-white/15 text-white font-semibold" : "text-neutral-400 hover:text-white"
                   }`}
                 >
-                  360° ШОЛУ
+                  360° Шолу
                 </button>
               </div>
 
               {/* Bottom Floating Electrode Quick Info Badge */}
-              <div className="absolute bottom-4 left-4 z-20 max-w-sm">
-                <div className="p-3.5 rounded-xl border border-white/15 bg-[#050608]/90 backdrop-blur-md">
-                  <div className="flex items-center justify-between text-xs font-mono text-cyan-400 mb-1">
+              <div className="absolute bottom-3 left-3 z-20 max-w-[260px] sm:max-w-[280px]">
+                <div className="p-2.5 px-3 rounded-xl border border-white/10 bg-[#050608]/90 backdrop-blur-md shadow-lg">
+                  <div className="flex items-center justify-between text-[11px] font-mono text-cyan-400 mb-0.5">
                     <span className="font-semibold">{currentLobe.nameKz}</span>
-                    <span className="text-[10px] text-white/50">{currentLobe.status}</span>
+                    <span className="text-[9px] text-white/50">{currentLobe.status}</span>
                   </div>
-                  <div className="text-[10px] font-mono text-neutral-400 italic mb-1.5">{currentLobe.nameLat}</div>
-                  <div className="flex items-center justify-between text-[10px] font-mono border-t border-white/10 pt-1.5 text-neutral-300">
+                  <div className="text-[9px] font-mono text-neutral-400 italic mb-1">{currentLobe.nameLat}</div>
+                  <div className="flex items-center justify-between text-[9px] font-mono border-t border-white/10 pt-1 text-neutral-300">
                     <span>АРНА: {currentLobe.electrodes}</span>
                     <span className="text-cyan-300">{currentLobe.impedance}</span>
                   </div>

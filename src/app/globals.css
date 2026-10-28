@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400;1,6..72,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,18 +6,61 @@
 
 :root {
   --color-black: #050608;
+  --color-bg: #050608;
+  --color-surface: #0c0f13;
+  --color-surface-elevated: #131820;
+  --color-text-primary: #f3f5f7;
+  --color-text-secondary: #b0b8c2;
+  --color-text-muted: #6f7884;
+  --color-signal: #00d8ec;
+  --color-success: #00e676;
+  --color-warning: #ffab00;
+  --color-error: #ff5252;
+
   --color-brand-primary: #d7e2e9;
-  --color-brand-secondary: #00e5ff;
+  --color-brand-secondary: #00d8ec;
   --color-brand-tertiary: #49555c;
   --color-brand-accent: #ffab00;
   --color-brand-success: #00e676;
-  --color-scheme-stroke-primary: rgba(215, 226, 233, 0.12);
-  --color-scheme-stroke-secondary: rgba(255, 255, 255, 0.08);
+  --color-scheme-stroke-primary: rgba(255, 255, 255, 0.08);
+  --color-scheme-stroke-secondary: rgba(255, 255, 255, 0.05);
 
-  --font-serif: "Newsreader", "Playfair Display", "Georgia", "Cambria", "Times New Roman", serif;
-  --font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --font-serif: "Newsreader", "Georgia", "Cambria", serif;
+  --font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
   --font-ui: var(--font-sans);
+}
+
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: 24px;
+  background: #ffffff;
+  color: #050608;
+  padding: 10px 18px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 13px;
+  border-radius: 8px;
+  z-index: 1000;
+  transition: top 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.skip-link:focus {
+  top: 16px;
+  outline: 2px solid var(--color-signal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
 * {

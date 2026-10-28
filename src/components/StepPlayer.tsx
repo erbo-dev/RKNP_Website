@@ -301,10 +301,14 @@ export function StepPlayer({
   pace = 3,
   /* how far back the ripple runs, 0..100 */
   wake = 100,
+  activeStep,
+  onChange,
 }: {
   steps?: number;
   pace?: number;
   wake?: number;
+  activeStep?: number;
+  onChange?: (step: number) => void;
 } = {}) {
   const n = clamp(Math.round(steps), MIN_STEPS, MAX_STEPS);
   const still = stillness();
@@ -410,6 +414,12 @@ export function StepPlayer({
   /* a knob moving is a reason to re-settle */
   useEffect(() => { run(); }, [n, pace, at, playing]);
 
+  useEffect(() => {
+    if (activeStep !== undefined && activeStep !== at && activeStep >= 0 && activeStep < n) {
+      go(activeStep, true);
+    }
+  }, [activeStep, n]);
+
   /* ── changing step ───────────────────────────────────────
      Every edge gets one timed move to its new place, and the
      wave is started from where the bar left. */
@@ -427,6 +437,7 @@ export function StepPlayer({
     }
     live.current.at = to;
     setAt(to);
+    onChange?.(to);
     if (fromHand) prog.current = 0;
     run();
   }

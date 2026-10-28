@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 
 export const metadata: Metadata = {
   title: "MIORA — Neural Signal Integrity",
-  description: "Protecting the signal. Preserving the intent. An experimental decision-protection layer for more reliable brain–computer interfaces.",
+  description: "Protecting the signal. Preserving the intent. An experimental decision-protection layer for brain–computer interfaces.",
   keywords: ["MIORA", "BCI", "Brain-Computer Interface", "EEG", "EMG artifact", "Reliable AI", "Decision Protection Layer"],
   authors: [{ name: "Bekarys Qydyrbek" }, { name: "Erbosyn Shaimardan" }],
   icons: {
@@ -20,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="kk" className="dark scroll-smooth font-sans">
       <body className="bg-background text-foreground antialiased selection:bg-brand-secondary/20">
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

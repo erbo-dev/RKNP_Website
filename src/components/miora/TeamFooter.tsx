@@ -1,27 +1,26 @@
 "use client";
 
 import React from "react";
-import { GraduationCap, Award, Shield, ArrowUpRight, Github, Mail, Globe } from "lucide-react";
+import { GraduationCap, ArrowUpRight } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function TeamFooter() {
+  const { lang, t } = useLanguage();
+
   return (
-    <footer id="team" className="bg-[#050608] border-t border-white/[0.08] text-[#d7e2e9]">
+    <footer id="team" aria-labelledby="team-heading" className="bg-[#050608] border-t border-white/[0.08] text-[#d7e2e9]">
       {/* Team Cards Section */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-28 border-b border-white/[0.08]">
         <div className="max-w-3xl mb-16">
-          <div className="font-mono text-xs tracking-[0.25em] text-neutral-500 uppercase mb-4 flex items-center gap-2">
+          <div className="font-mono text-xs tracking-[0.25em] text-neutral-400 uppercase mb-4 flex items-center gap-2">
             <GraduationCap size={14} className="text-cyan-400" />
-            <span>08 // Зерттеу тобы және жетекшілік</span>
+            <span>{t.team.kicker}</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-[1.08] mb-4">
-            Жоба авторлары және{" "}
-            <span className="font-serif italic text-white/95 font-normal">
-              ғылыми жетекші
-            </span>
-            .
+          <h2 id="team-heading" className="text-3xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-[1.08] mb-4">
+            {t.team.headline} {t.team.headlineEmphasis}.
           </h2>
           <p className="text-base text-neutral-400 font-light leading-relaxed">
-            Назарбаев Зияткерлік мектебінде әзірленген нейротехнологиялық зерттеу бастамасы.
+            {t.team.description}
           </p>
         </div>
 
@@ -31,16 +30,16 @@ export default function TeamFooter() {
           <div className="p-8 sm:p-10 flex flex-col justify-between">
             <div>
               <div className="w-12 h-12 rounded-xl border border-white/10 bg-white/[0.03] flex items-center justify-center font-mono font-medium text-white mb-6">
-                ҚБ
+                BQ
               </div>
               <div className="font-mono text-[10px] text-cyan-400 uppercase tracking-widest mb-1.5">
-                Жоба авторы // Researcher
+                {lang === "kk" ? "Жоба авторы // Researcher" : "Project Author // Researcher"}
               </div>
-              <h3 className="font-serif text-2xl font-normal text-white mb-3">
-                Қыдырбек Бекарыс
+              <h3 className="font-sans text-xl sm:text-2xl font-medium text-white mb-3">
+                {t.team.author1Name}
               </h3>
               <p className="text-sm text-neutral-400 leading-relaxed font-light mb-6">
-                BCI жүйелері, ЭЭГ сигналдарын цифрлық өңдеу (DSP) және 4-шлюздік каскадты шешім қабылдау логикасының авторы.
+                {t.team.author1Bio}
               </p>
             </div>
             <div className="pt-4 border-t border-white/[0.06] font-mono text-[11px] text-neutral-500">
@@ -52,16 +51,16 @@ export default function TeamFooter() {
           <div className="p-8 sm:p-10 flex flex-col justify-between">
             <div>
               <div className="w-12 h-12 rounded-xl border border-white/10 bg-white/[0.03] flex items-center justify-center font-mono font-medium text-white mb-6">
-                ШЕ
+                ES
               </div>
               <div className="font-mono text-[10px] text-cyan-400 uppercase tracking-widest mb-1.5">
-                Жоба авторы // Engineer
+                {lang === "kk" ? "Жоба авторы // Engineer" : "Project Author // Engineer"}
               </div>
-              <h3 className="font-serif text-2xl font-normal text-white mb-3">
-                Шәймардан Ербосын
+              <h3 className="font-sans text-xl sm:text-2xl font-medium text-white mb-3">
+                {t.team.author2Name}
               </h3>
               <p className="text-sm text-neutral-400 leading-relaxed font-light mb-6">
-                Машиналық оқыту модельдері, жартылай синтетикалық ЭМГ артефактілерін модельдеу және эксперименталды бағалау.
+                {t.team.author2Bio}
               </p>
             </div>
             <div className="pt-4 border-t border-white/[0.06] font-mono text-[11px] text-neutral-500">
@@ -73,26 +72,26 @@ export default function TeamFooter() {
           <div className="p-8 sm:p-10 flex flex-col justify-between bg-white/[0.01]">
             <div>
               <div className="w-12 h-12 rounded-xl border border-cyan-500/30 bg-cyan-950/20 flex items-center justify-center font-mono font-medium text-cyan-400 mb-6">
-                ҚҚ
+                KQ
               </div>
               <div className="font-mono text-[10px] text-emerald-400 uppercase tracking-widest mb-1.5">
-                Ғылыми жетекші // Scientific Supervisor
+                {lang === "kk" ? "Ғылыми жетекші // Supervisor" : "Scientific Supervisor"}
               </div>
-              <h3 className="font-serif text-2xl font-normal text-white mb-3">
-                Қабылбек Қалима
+              <h3 className="font-sans text-xl sm:text-2xl font-medium text-white mb-3">
+                {t.team.supervisorName}
               </h3>
               <p className="text-sm text-neutral-400 leading-relaxed font-light mb-6">
-                Ғылыми әдіснама, эксперименттердің дұрыстығын верификациялау және академиялық хаттамаларды сараптау.
+                {t.team.supervisorBio}
               </p>
             </div>
             <div className="pt-4 border-t border-white/[0.06] font-mono text-[11px] text-neutral-500">
-              ПЕДАГОГ-САРАПШЫ • NIS ALMATY–NAURYZBAY
+              EDUCATOR-EXPERT • NIS ALMATY–NAURYZBAY
             </div>
           </div>
         </div>
 
         {/* Institution Console Strip */}
-        <div className="p-8 sm:p-10 border border-white/[0.08] bg-[#07090d]/80 backdrop-blur-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+        <div className="p-8 sm:p-10 border border-white/[0.08] bg-[#07090d]/80 backdrop-blur-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 rounded-2xl">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center text-white font-mono font-medium text-sm">
               NIS
@@ -102,15 +101,18 @@ export default function TeamFooter() {
                 Назарбаев Зияткерлік мектебі (NIS Almaty–Nauryzbay)
               </div>
               <div className="text-xs font-mono text-neutral-500 mt-0.5">
-                Химия-биология бағытындағы Назарбаев Зияткерлік мектебі, Алматы қ.
+                {lang === "kk"
+                  ? "Химия-биология бағытындағы Назарбаев Зияткерлік мектебі, Алматы қ."
+                  : "Nazarbayev Intellectual School of Chemistry and Biology, Almaty"}
               </div>
             </div>
           </div>
           <a
             href="#demo"
-            className="px-6 py-3 rounded-full bg-white text-black font-mono text-xs font-semibold hover:bg-neutral-200 transition-all shadow-[0_4px_20px_rgba(255,255,255,0.15)]"
+            className="px-6 py-3 rounded-full bg-white text-black font-mono text-xs font-semibold hover:bg-neutral-200 transition-all shadow-[0_4px_20px_rgba(255,255,255,0.15)] flex items-center gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-400"
           >
-            СИМУЛЯТОРДЫ СЫНАУ
+            <span>{t.nav.tryDemo}</span>
+            <ArrowUpRight size={13} />
           </a>
         </div>
       </div>
@@ -127,36 +129,36 @@ export default function TeamFooter() {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-8 text-xs">
+        <div className="flex flex-wrap gap-6 sm:gap-8 text-xs">
           <a href="#hero" className="hover:text-white transition-colors">
-            Басты бет
+            {lang === "kk" ? "Басты бет" : "Overview"}
           </a>
           <a href="#challenge" className="hover:text-white transition-colors">
-            ЭМГ Кедергісі
+            {t.nav.challenge}
           </a>
           <a href="#cortex" className="hover:text-white transition-colors">
-            3D Сканер
+            {t.nav.cortex}
           </a>
           <a href="#cascade" className="hover:text-white transition-colors">
-            4 Шлюз
+            {t.nav.cascade}
           </a>
           <a href="#demo" className="hover:text-white transition-colors">
-            Симулятор
+            {t.nav.demo}
           </a>
           <a href="#specs" className="hover:text-white transition-colors">
-            Спецификация
+            {t.nav.specs}
           </a>
           <a href="#research" className="hover:text-white transition-colors">
-            Әдіснама
+            {t.nav.research}
           </a>
         </div>
       </div>
 
       {/* Bottom Legal Disclaimer */}
-      <div className="border-t border-white/[0.05] bg-[#030405] py-6 px-6 md:px-12 text-[10px] font-mono text-neutral-600 text-center">
+      <div className="border-t border-white/[0.05] bg-[#030405] py-6 px-6 md:px-12 text-[10px] font-mono text-neutral-500 text-center">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
-          <span>© 2026 MIORA Research Group. Барлық құқықтар қорғалған.</span>
-          <span>RESEARCH PROTOTYPE. NOT AN FDA-CLEARED MEDICAL DEVICE. FOR SCIENTIFIC EVALUATION ONLY.</span>
+          <span>© 2026 MIORA Research Group. {lang === "kk" ? "Барлық құқықтар қорғалған." : "All rights reserved."}</span>
+          <span className="text-neutral-400">{t.team.footerDisclaimer}</span>
         </div>
       </div>
     </footer>

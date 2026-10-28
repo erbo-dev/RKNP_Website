@@ -1,27 +1,26 @@
 "use client";
 
 import React from "react";
-import { BookOpen, Layers, Database, Terminal, Milestone, ArrowUpRight } from "lucide-react";
+import { BookOpen, Layers, Database, Terminal, Milestone } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function ResearchSection() {
+  const { lang, t } = useLanguage();
+
   return (
-    <section id="research" className="py-28 px-6 md:px-12 bg-[#050608] border-b border-white/[0.08]">
+    <section id="research" aria-labelledby="research-heading" className="py-28 px-6 md:px-12 bg-[#050608] border-b border-white/[0.08]">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="max-w-3xl mb-16">
           <div className="font-mono text-xs tracking-[0.25em] text-cyan-400 uppercase mb-4 flex items-center gap-2">
             <BookOpen size={14} className="animate-pulse" />
-            <span>07 // Ғылыми негіз және әдіснама</span>
+            <span>{t.research.kicker}</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-[1.08] mb-6">
-            Ашық ғылыми деректер және{" "}
-            <span className="font-serif italic text-white/95 font-normal">
-              қатаң математика
-            </span>
-            .
+          <h2 id="research-heading" className="text-3xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-[1.08] mb-6">
+            {t.research.headline} {t.research.headlineEmphasis}.
           </h2>
           <p className="text-base sm:text-lg text-neutral-400 font-light leading-relaxed">
-            MIORA халықаралық рецензияланған ашық ғылыми репозиторийлерді (PhysioNet, BCI Competition) және қатаң математикалық шешім қабылдау логикасын басшылыққа алады.
+            {t.research.description}
           </p>
         </div>
 
@@ -34,17 +33,19 @@ export default function ResearchSection() {
                 <Database size={18} />
               </div>
               <div className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest mb-2">
-                01 // Ашық ЭЭГ базалары
+                01 // {lang === "kk" ? "Академиялық базалар" : "Academic Cohorts"}
               </div>
               <h3 className="text-xl sm:text-2xl font-normal text-white mb-3">
-                Академиялық когорталар
+                {lang === "kk" ? "BCI IV-2a және PhysioNet" : "BCI IV-2a & PhysioNet"}
               </h3>
               <p className="text-sm text-neutral-400 leading-relaxed font-light mb-6">
-                Зерттеу BCI Competition және PhysioNet халықаралық репозиторийлеріндегі моторлы елестету (Motor Imagery) ЭЭГ деректерін пайдаланады.
+                {lang === "kk"
+                  ? "Зерттеу BCI Competition және PhysioNet халықаралық репозиторийлеріндегі моторлы елестету (Motor Imagery, 9 қатысушы) ЭЭГ деректерін пайдаланады."
+                  : "Validation utilizes standard motor imagery benchmarks (BCI Competition IV-2a, 9 participants) across 4-channel motor cortex recordings."}
               </p>
             </div>
             <div className="pt-4 border-t border-white/[0.06] font-mono text-[11px] text-neutral-500">
-              МОТОРЛЫҚ КОРТЕКС • 64-АРНАЛЫ ЖАЗБАЛАР
+              MOTOR CORTEX • 250 HZ ACQUISITION
             </div>
           </div>
 
@@ -55,17 +56,19 @@ export default function ResearchSection() {
                 <Layers size={18} />
               </div>
               <div className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest mb-2">
-                02 // Шуды модельдеу
+                02 // {lang === "kk" ? "Шуды модельдеу" : "Noise Modeling"}
               </div>
               <h3 className="text-xl sm:text-2xl font-normal text-white mb-3">
-                ЭМГ физиологиялық шуы
+                {lang === "kk" ? "ЭМГ физиологиялық шуы" : "Physiological EMG Noise"}
               </h3>
               <p className="text-sm text-neutral-400 leading-relaxed font-light mb-6">
-                Нақты шайнау бұлшықеттерінен (m. masseter, m. temporalis) жазылған электромиограммалар таза ЭЭГ-ге сигнал-шу қатынасын (SNR) басқара отырып қосылды.
+                {lang === "kk"
+                  ? "Нақты шайнау бұлшықеттерінен (m. masseter, m. temporalis) жазылған электромиограммалар таза ЭЭГ-ге сигнал-шу қатынасын (SNR) басқара отырып қосылды."
+                  : "Realistic temporalis and masseter EMG recordings superimposed onto clean EEG trials at varying signal-to-noise ratios (SNR from +18 to -24 dB)."}
               </p>
             </div>
             <div className="pt-4 border-t border-white/[0.06] font-mono text-[11px] text-neutral-500">
-              40–100 ГЦ СПЕКТРЛІК ДИАПАЗОН
+              40–100 HZ SPECTRAL CONTAMINATION
             </div>
           </div>
 
@@ -76,13 +79,15 @@ export default function ResearchSection() {
                 <Terminal size={18} />
               </div>
               <div className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest mb-2">
-                03 // Қос декодерлік эксперт
+                03 // {lang === "kk" ? "Қос декодерлік сарапшы" : "Dual-Decoder Verification"}
               </div>
               <h3 className="text-xl sm:text-2xl font-normal text-white mb-3">
-                Ансамбльдік шешім
+                {lang === "kk" ? "Шешім маржасының каскады" : "Decision Margin Cascade"}
               </h3>
               <p className="text-sm text-neutral-400 leading-relaxed font-light mb-6">
-                Базалық кеңістіктік классификатор (CSP + LDA) және шуға төзімді эксперттік модель параллель жұмыс істеп, классификациялық маржаны салыстырады.
+                {lang === "kk"
+                  ? "Базалық кеңістіктік классификатор (CSP + LDA) және шуға төзімді сарапшылық модель қатар бағаланып, классификациялық маржа тексеріледі."
+                  : "A standard spatial CSP + LDA baseline evaluates alongside an auxiliary expert model, requiring a verifiable margin delta (Δ ≥ 15 p.p.) before overriding."}
               </p>
             </div>
             <div className="pt-4 border-t border-white/[0.06] font-mono text-[11px] text-neutral-500">
@@ -92,33 +97,35 @@ export default function ResearchSection() {
         </div>
 
         {/* MIORA-2 Future Roadmap — Minimalist Surgical Console */}
-        <div className="p-8 sm:p-12 border border-white/[0.08] bg-[#07090d]/80 backdrop-blur-xl">
+        <div className="p-8 sm:p-12 border border-white/[0.08] bg-[#07090d]/80 backdrop-blur-xl rounded-2xl">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-950/20 font-mono text-[10px] text-cyan-400 uppercase mb-4 tracking-wider">
                 <Milestone size={12} />
-                <span>Болашақ бағыт // Engineering Roadmap</span>
+                <span>{lang === "kk" ? "Болашақ бағыт // Engineering Roadmap" : "Future Trajectory // Engineering Roadmap"}</span>
               </div>
               <h3 className="text-2xl sm:text-3xl font-light text-white mb-3 tracking-tight">
                 MIORA-2: Real-Time BCI Streaming Pipeline
               </h3>
               <p className="text-sm sm:text-base text-neutral-400 leading-relaxed font-light">
-                Келесі кезеңде біз алгоритмдік конвейерді ультра-төмен кідірісті (&lt; 20 мс) нақты уақыттағы ағындық микроконтроллерлерге енгізіп, биондық протездер мен көмекші интерфейстерге бейімдейміз.
+                {lang === "kk"
+                  ? "Келесі кезеңде біз алгоритмдік конвейерді ультра-төмен кідірісті (< 20 мс) нақты уақыттағы ағындық микроконтроллерлерге енгізіп, биондық протездер мен көмекші интерфейстерге бейімдейміз."
+                  : "The next phase targets porting the validated cascade to low-power embedded microcontrollers (< 20 ms end-to-end loop) for real-time robotic neuro-prosthetics."}
               </p>
             </div>
 
             <div className="flex flex-col gap-3.5 font-mono text-xs text-neutral-300">
               <div className="flex items-center gap-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                <span>Тікелей бұлшықет сенсорларын интеграциялау</span>
+                <span>{lang === "kk" ? "Тікелей бұлшықет сенсорларын интеграциялау" : "Dedicated temporal EMG sensor fusion"}</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                <span>Edge-AI микроконтроллерлеріне оңтайландыру</span>
+                <span>{lang === "kk" ? "Edge-AI микроконтроллерлеріне оңтайландыру" : "Edge-AI embedded microchip acceleration"}</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                <span>Ашық бастапқы кодты BCI кітапханасы</span>
+                <span>{lang === "kk" ? "Ашық бастапқы кодты BCI кітапханасы" : "Open-source Python & C++ DSP library"}</span>
               </div>
             </div>
           </div>
