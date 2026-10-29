@@ -11,6 +11,7 @@ export interface NavTranslations {
   cortex: string;
   cascade: string;
   demo: string;
+  realDemo: string;
   specs: string;
   research: string;
   team: string;
@@ -224,6 +225,7 @@ export const translations: Record<Language, Translations> = {
       cortex: "3D Сканер",
       cascade: "4 Шлюз",
       demo: "Симулятор",
+      realDemo: "Нақты сигнал",
       specs: "Метрикалар",
       research: "Әдіснама",
       team: "Зерттеу тобы",
@@ -416,6 +418,7 @@ export const translations: Record<Language, Translations> = {
       cortex: "3D Cortex",
       cascade: "4 Gates",
       demo: "Simulator",
+      realDemo: "Real EEG",
       specs: "Metrics",
       research: "Methodology",
       team: "Research Team",

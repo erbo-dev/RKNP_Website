@@ -5,6 +5,7 @@ import ProblemSection from "@/components/miora/ProblemSection";
 import IntroducingSection from "@/components/miora/IntroducingSection";
 import CascadeSection from "@/components/miora/CascadeSection";
 import InteractiveDemo from "@/components/miora/InteractiveDemo";
+import RealSignalDemo from "@/components/miora/RealSignalDemo";
 import ProductSpecsSection from "@/components/miora/ProductSpecsSection";
 import ResearchSection from "@/components/miora/ResearchSection";
 import TeamFooter from "@/components/miora/TeamFooter";
@@ -33,6 +34,7 @@ export default function Home() {
       <NeuralCortex3D />
       <CascadeSection />
       <InteractiveDemo />
+      <RealSignalDemo />
       <ProductSpecsSection />
       <ResearchSection />
       <TeamFooter />

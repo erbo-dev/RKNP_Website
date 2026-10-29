@@ -16,6 +16,7 @@ export default function Navbar() {
     { id: "cortex", label: t.nav.cortex, href: "#cortex" },
     { id: "cascade", label: t.nav.cascade, href: "#cascade" },
     { id: "demo", label: t.nav.demo, href: "#demo" },
+    { id: "real-demo", label: t.nav.realDemo, href: "#real-demo" },
     { id: "research", label: t.nav.research, href: "#research" },
   ];
 
